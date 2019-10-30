@@ -36,6 +36,6 @@ export default {
   z-index: 2;
   background-color: #fff;
   border-top: 1px solid #e4e4e4;
-  height: 60px;
+  height: 0;
 }
 </style>

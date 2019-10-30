@@ -1,6 +1,6 @@
 <template>
   <div class="analysis">
-    <div class="content">
+    <div class="content" v-show="isReport">
       <div class="img-Head">
         <div class="Head-radius">
           <img class="transtion" src="../../assets/images/saomiao/light.png" alt />
@@ -26,17 +26,36 @@
       </div>
       <div class="status-info">
         <p>
-          上庭数据提取中
+          {{statusInfo[statusInfoNum].up}}
           <i :class="{ 'active_': isActive.isActive1 }"></i>
         </p>
         <p>
-          中庭数据提取中
+          {{statusInfo[statusInfoNum].and}}
           <i :class="{ 'active_': isActive.isActive2 }"></i>
         </p>
         <p>
-          下庭数据提取中
+          {{statusInfo[statusInfoNum].down}}
           <i :class="{ 'active_': isActive.isActive3 }"></i>
         </p>
+      </div>
+    </div>
+    <!-- 面向报告生成页 -->
+    <div class="report" v-show="!isReport">
+      <div class="img-Head">
+        <div class="Head-radius">
+          <van-image @error="errorimg" round :src="imageHead" />
+        </div>
+        <p>报告已生成!</p>
+      </div>
+      <div class="report-input">
+        <div class="input-content">
+          <input v-show="!isName" type="text" v-model="name" placeholder="请输入姓名领取报告" />
+          <van-button v-show="!isName" type="info" @click="handleSaveName">保存</van-button>
+          <p v-show="isName">{{ name }}</p>
+        </div>
+      </div>
+      <div class="receive">
+        <van-button :class="{ saveName: isName }" :disabled="!isName" type="info" @click="handleReceiveReport">领取报告</van-button>
       </div>
     </div>
   </div>
@@ -51,11 +70,32 @@ export default {
         isActive2: true,
         isActive3: true,
       },
-      status: 'transtion-one'
+      status: 'transtion-one',
+      statusInfo: [
+        {
+          up: '上庭数据提取中',
+          and: '中庭数据提取中',
+          down: '下庭数据提取中'
+        },
+        {
+          up: '定位眼长、眼高',
+          and: '定位鼻高、鼻翼宽',
+          down: '定位嘴宽、嘴唇厚度'
+        },
+        {
+          up: '量取下颌角度',
+          and: '对比各部位数据',
+          down: '匹配五行格局'
+        }
+      ],
+      statusInfoNum: 0,
+      isReport: true,
+      name: '',
+      isName: false
     }
   },
   mounted() {
-    this.updateStatus()
+    // this.updateStatus()
   },
   methods: {
     errorimg(e) {
@@ -63,16 +103,31 @@ export default {
     },
     // 过场 上传动画
     updateStatus() {
-      const three = () => {
-        setTimeout(() => {
-        this.status = 'transtion-three'
-        }, 6000)
-      }
       setTimeout(() => {
+        this.statusInfoNum = 1
         this.status = 'transtion-two'
         three()
       }, 2000)
-
+      const three = () => {
+        setTimeout(() => {
+          this.statusInfoNum = 2
+          this.status = 'transtion-three'
+          is_report()
+        }, 6000)
+      }
+      const is_report = () => {
+        setTimeout(() => {
+          this.isReport = false
+        }, 2000)
+      }
+    },
+    // 保存姓名
+    handleSaveName(e){
+      console.log(this.name)
+      this.isName = true
+    },
+    handleReceiveReport() {
+      this.$router.push({name: 'report'})
     }
   }
 }
@@ -81,10 +136,11 @@ export default {
 .analysis {
   width: 100%;
   height: 100%;
-  background: url("../../assets/images/saomiao/bg.png") no-repeat;
-  background-size: 100% 100%;
+  background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
+  background-size: 100%;
   color: #fff;
   font-weight: 400;
+  background-color: #001037;
 }
 .content {
   width: 585px;
@@ -252,6 +308,83 @@ export default {
     }
     p:nth-child(3) {
       border-bottom: none;
+    }
+  }
+}
+.report {
+  .img-Head {
+    position: relative;
+    top: 110px;
+    .Head-radius {
+      width: 334px;
+      height: 334px;
+      margin: 0 auto;
+      position: relative;
+      background: url("../../assets/images/saomiao/outerRing.png") no-repeat;
+      background-size: 100% 100%;
+      overflow: hidden;
+      border-radius: 50%;
+    }
+    p {
+      font-size: 30px;
+      line-height: 30px;
+      font-weight: 400;
+    }
+    .van-image {
+      width: 260px;
+      height: 260px;
+      margin-top: 37px;
+      z-index: 1;
+    }
+  }
+  .report-input {
+    margin-top: 230px;
+    .input-content {
+      width: 750px;
+      height: 150px;
+      background: url("../../assets/images/saomiao/bg_input.png") no-repeat;
+      background-size: 100% 100%;
+      input {
+        position: relative;
+        background-color: rgba(0, 0, 0, 0);
+        width: 252px;
+        margin: 0 auto;
+        top: 63px;
+        border: none;
+        background: url("../../assets/images/saomiao/edit.png") no-repeat;
+        background-size: 26px 26px;
+        background-position: 0 1.267vw;
+        text-indent: 36px;
+      }
+      input::-webkit-input-placeholder {
+        color: #fff;
+        font-size: 24px;
+        font-weight: 400;
+      }
+      .van-button{
+        position: relative;
+        top:  63px;
+        border-radius: 8px; 
+      }
+      p{
+        line-height: 150px;
+      }
+    }
+  }
+  .receive {
+    margin-top: 191px;
+    .van-button {
+      background: #3E97FF;
+      border-radius: 16px;
+      border: 2px solid rgba(62, 151, 255, 1);
+      width: 310px;
+      height: 68px;
+      font-size:30px;
+      font-weight:400;
+      color: #fff;
+    }
+    .saveName{
+      color: #fff;
     }
   }
 }
