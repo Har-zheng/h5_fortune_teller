@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+  
+
+  <script>
+    var nameData = [
+        [{
+          name: '风机',
+          valueData: '1'
+        },
+        {
+          name: '测试',
+          valueData: '1'
+        },
+        ],
+        [{
+          name: '风机',
+          valueData: '2'
+        },
+        {
+          name: '测试',
+          valueData: '1'
+        },
+        ]
+      ]
+      var name_data_new = [];
+      nameData.forEach((item, index) => {
+        item.forEach((item_loop, loop_index) => {
+          name_data_new.push(item_loop)
+        })
+      })
+      var arr = []
+      var obj = {};
+      name_data_new.forEach((item, index) => {
+        if (!obj[name_data_new[index].name]) {
+          arr.push({
+            name: item.name,
+            valueData: [item.valueData]
+          })
+          obj[name_data_new[index].name] = true
+        } else {
+          arr.forEach((arr_item, index_arr) => {
+            if (arr_item.name === name_data_new[index].name) {
+              arr_item.valueData.push(name_data_new[index].valueData)
+            }
+          })
+        }
+      })
+      console.log(nameData)
+      console.log(arr)  
+  </script>
+</body>
+</html>

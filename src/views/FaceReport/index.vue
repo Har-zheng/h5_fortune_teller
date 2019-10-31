@@ -9,17 +9,14 @@
     <div class="container">
       <div class="title">
         <i></i>
-        <p> {{ attribute }}</p>
+        <p>{{ personal_type.title }}</p>
       </div>
       <div class="assessment">
         <div class="info">
           <i class="icon"></i>
           <div class="text">
             <p class="text-title">综合评估</p>
-            <span>
-              {{ overview }}
-              
-            </span>
+            <span>{{ personal_type.describe }}</span>
           </div>
         </div>
         <van-button class="btn_photo_bg" @click="saveshare">保存分享</van-button>
@@ -43,7 +40,12 @@
             <span class="title_text">{{ head_position[0].describe }}</span>
           </p>
         </div>
-        <div class="footer-middle" v-for="(item,index) in  head_position_new" :key="index" :style="{ 'z-index': head_position.length-index }" >
+        <div
+          class="footer-middle"
+          v-for="(item,index) in  head_position_new"
+          :key="index"
+          :style="{ 'z-index': head_position.length-index }"
+        >
           <div class="bg_img">
             <p class="item_p">
               <span class="title_span">{{ item.part }}</span>
@@ -70,6 +72,8 @@
   </div>
 </template>
 <script>
+import { All_Types_Data } from '../../api/app'
+import axios  from 'axios'
 export default {
   data() {
     return {
@@ -115,28 +119,52 @@ export default {
           describe: '思维冥界；为人亲和，情商高，会顾及别人的感受。'
         }
       ],
+      
       overview: '你的长相就是人们口中传颂的海王鼻基底挺拔的你是个自信有想法且有征服欲望的人，两颞饱满让你有敏捷的思维，更好的理清和把控两性关系，眼睛下方的卧蚕让你更加迷人，大多数异性见了你都会被你的双眼深深吸引，你知道你自己有多么迷人，并且持续的散发着魅力，感情中你能够占据主导地位，拥有着号令整个海洋的潜力。你的目标不是一片小小的鱼塘，而是广阔的星辰大海。',
       top_img: require('../../assets/images02/photograph/timg01.jpg'),
       attribute: '海王',
-      qr_code_img: '../../assets/images02/photograph/more_report.png'
+      qr_code_img: '../../assets/images02/photograph/more_report.png',
+      personal_type: {},
+      type_num: 1
     }
   },
   computed: {
-    head_position_new:function(){
-     return this.head_position.filter((element, index) => {
-        if(index !== 0){
+    head_position_new: function () {
+      return this.head_position.filter((element, index) => {
+        if (index !== 0) {
           return element
         }
       })
       console.log(arr)
     }
   },
-  mounted(){},
+  created() {
+    this.get_all_types()
+  },
   methods: {
     saveshare() {
 
     },
     headPositionMiddle() {
+    },
+    get_all_types() {
+      // All_Types_Data().then(res => {
+      //   // map filter find forEach
+      //   const personal_type =  res.find((element, index) => {
+      //     return element.type === this.type_num
+      //   })
+      //   console.log(personal_type)
+      //   this.personal_type = personal_type
+      // })
+      axios.get('./config.json').then(res => {
+        const data = res.data
+        // map filter find forEach
+        const personal_type =  data.find((element, index) => {
+          return element.type === this.type_num
+        })
+        console.log(personal_type)
+        this.personal_type = personal_type
+      })
     }
   }
 }
@@ -208,12 +236,12 @@ export default {
         background: url("../../assets/images02/photograph/kuang.png") no-repeat;
         background-size: 100%;
         display: inline-block;
-        width: 280px;
+        width: 320px;
         height: 78px;
         position: absolute;
         top: 12px;
         left: 50%;
-        margin-left: -140px;
+        margin-left: -160px;
       }
       p {
         position: relative;
@@ -408,7 +436,7 @@ export default {
       .footer {
         position: relative;
         z-index: 22;
-        margin-top: -120px; 
+        margin-top: -120px;
         .a_ {
           margin-top: 30px;
           font-size: 14px;

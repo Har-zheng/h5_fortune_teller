@@ -3,6 +3,22 @@
     <router-view/>
   </div>
 </template>
+<script>
+import comm_fun from './utils/CommonFunction'
+import { mapMutations } from 'vuex'
+export default {
+  created() {
+    
+  },
+  methods: {
+    ...mapMutations(['SAVE_URL'])
+  },
+  mounted() {
+    console.log(comm_fun.GetRequestUrl())
+    this.SAVE_URL(comm_fun.GetRequestUrl())
+  }
+}
+</script>
 <style>
 html,body, #app{
   height: 100%;

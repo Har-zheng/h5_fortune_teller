@@ -74,6 +74,10 @@
 </template>
 <script>
 import BaseRouterTransition from '../../components/BaseRouterTransition'
+import comm_fun from '../../utils/CommonFunction'
+var COS = require('cos-js-sdk-v5')
+import { imgCosupload, ImgUrlBeauty } from '../../api/app.js'
+import { mapActions, mapState } from 'vuex'
 export default {
   data() {
     return {
@@ -85,20 +89,29 @@ export default {
       tip_img: {
         correct: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA4CAMAAABwmqASAAAAk1BMVEUAAAADxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwWPcL6XAAAAMHRSTlMA8QX6o03dzunlJh8QCPbWsZQ3KgvtvbacfnJqXllBPjMWx4tvY0guHfOpgnlmU7/6TN/xAAABlUlEQVRIx53W15qCMBQE4NARCypYsGJbuzvv/3T7yeKaclaS/PdDAswJMDtZ3y7X3XmxVXAYApFNsPAATMxznQmepsbBdopKYRo8tvDrYBhcOagFZsF1Dy+lWfCMP4nRa3TwdjIIJjE4Hf3gJgRvox10xxC0tZNTiIa6wQMkS81g2YOk0Gx5CJnmZPtQOK5OcAHCl85gOSD4GskxCKNBc/AOVbzXuM0TsdepVmv76kbph9NlogCyiK5sEAbihZQOXLrk8+/LR/AVkh05SLeqnQ/+UnJfZ+S5lqKSfqjdnBp5nxigIXj0ITvn3lrqUu2hVywj8Bav/UOwV6dvAFFYL7oF76rOUAzZnSiB2vACqlb1toVb6BMVz3wPsrm85Danfxcm6qLiXYb/HsxBS+nKGm9O8uF0k9oS59w+vM9nzsMRh5csKy2JQLuwJrkPSpqzZjeozhnTsfRg++lZO4BUOl2l2OLIZdoSvhS9jDG76N7wD22E2lgvoP74jE7M1MqrTxVzwTP6zWzMAO/IrAywY3Zcv6noP1SEq/OgNc3TAAAAAElFTkSuQmCC',
         warning: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAM1BMVEUAAAD7ZAD6ZAD7ZAD9YwD7ZAD8ZAD5YQD7ZAD7ZAD7ZAD6ZAD7ZAD7ZAD8ZAD7ZAD7ZADc5bCPAAAAEHRSTlMA6gzDN5dwGNC0ot6BWCRIgBgKRwAAAQpJREFUOMu9lNt2hCAMRUmUi4BO/v9rOx2HniG6CH1o91v0cMkWcf8KeyLPk9kkT9JcOsuLPJNd5c3qbFILJzu7yw+72R0hTFaPVT6o42yUjmhrA3lC2xLCYutbMJ8/h5na+KXF0MelzYZVCg+06bDUsTY6Sxrq851dbpW/19Z49OV6q60Rvssgje2afUgDnrGS4tQGHRvqorNBAKnBEpQ2UoeNP2uKd9rQ/4FK6VOvZH/3Cw4HNumoMaIH6IM2A+hLYpKgrYeee96hp9PH+vmKs3G5F6pe8X5vFdpU5zAEDjzUCzJdJ8HegMc3Vb1kUeDe0GRHMg05+QX4m2wWNDgCJ9cXmaD4w/0dXyVhOsjXZsVVAAAAAElFTkSuQmCC',
-      }
+      },
+      file: null
     }
   },
   components: {
     BaseRouterTransition
   },
+  computed: {
+    ...mapState({
+      parmes_url: state => state.app.save_url
+    })
+  },
   methods: {
+    ...mapActions([
+      'set_app'
+    ]),
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
       // alert(JSON.stringify(file))
       // console.log(file)
       // 在这里应该调用上传接口  做一些用户操作提示性的tip
+      this.file = file
       this.ConfirmUpload(file)
-
     },
     ConfirmUpload(file) {
       console.log(file)
@@ -109,12 +122,67 @@ export default {
     // 确认 上传
     handleBtnConfirm() {
       console.log('上传')
-      this.$router.push({name: 'analysis'})
+      // this.$router.push({ name: 'analysisnew' })
+      // console.log(imgCosupload)
+      imgCosupload({ version: 1 }).then(res => {
+        const data = res.data
+        console.log(data)
+        let cos = new COS({
+          getAuthorization: function (options, callback) {
+            // 异步获取临时密钥
+            callback({
+              TmpSecretId: data.credentials.tmpSecretId,
+              TmpSecretKey: data.credentials.tmpSecretKey,
+              XCosSecurityToken: data.credentials.sessionToken,
+              ExpiredTime: data.expiredTime
+            })
+          }
+        })
+        var file_data = this.file
+        var this_ = this
+        if (!file_data) return
+        cos.putObject({
+          Bucket: data.bucket,
+          Region: data.region,
+          Key: 'h5/ai/beauty/images/' + file_data.file.name,
+          Body: file_data.file
+        }, function (err, data) {
+          if (data) {
+            this_.img_success(data)
+          }
+          console.log(err || data)
+        })
+      })
+    },
+    // 上传成功后 通知url到后台
+    img_success(data) {
+      const image = comm_fun.img_location(data)
+      // "version": 1, "data": {"image": "http://domain.jpg"}
+      const { channel_id, instance_id, client } = this.parmes_url
+      var parmes_data = {
+        version: 1,
+        data: {
+          channel_id, // 渠道id
+          instance_id,  // 配置的实例
+          image,
+          client
+        }
+      }
+      ImgUrlBeauty(parmes_data).then(res => {
+        const { instance, original_id, result } = res.data
+        this.set_app({
+          parmes_data: parmes_data.data,
+          instance,
+          original_id,
+          result
+        })
+        this.$router.push({ name: 'analysisnew' })
+      })
     },
     // 重新上传
     handleBtnAgain() {
       this.isConfirm = true
-      this.photo_img = 'https://c-ssl.duitang.com/uploads/item/201603/08/20160308194110_PGhCJ.jpeg'
+      this.photo_img = 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/h5/ai/beauty/images/touxiang.png'
     }
   }
 }
@@ -171,10 +239,10 @@ export default {
       display: inline-block;
       line-height: 36px;
     }
-    span:nth-child(1) {
+    span:nth-child(3) {
       color: #ff71c1;
     }
-    span:nth-child(2) {
+    span:nth-child(3) {
       color: #4eb0ff;
     }
   }

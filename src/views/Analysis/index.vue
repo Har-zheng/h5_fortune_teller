@@ -78,6 +78,9 @@
 <script>
 import BaseRouterTransition from '../../components/BaseRouterTransition'
 import { Dialog } from 'vant';
+import { mapState } from 'vuex'
+import { img_location } from '../../utils/CommonFunction'
+
 export default {
   data() {
     return {
@@ -86,7 +89,7 @@ export default {
       title3: '智能解码中',
       isTitle: '',
       photo_img: require('../../assets/images02/photograph/photo02.png'),
-      pro_img: require('../../assets/images02/photograph/photo01.png'),
+      pro_img: '',
       status: 'transtion-one',
       statusInfo: [
         {
@@ -111,7 +114,7 @@ export default {
         isActive2: true,
         isActive3: true,
       },
-      isReport: false,
+      isReport: true,
       isName: false,
       name: ''
     }
@@ -119,8 +122,14 @@ export default {
   components: {
     BaseRouterTransition
   },
+  computed: {
+    ...mapState({
+      image: state => state.app.app.parmes_data.image,
+    })
+  },
   mounted() {
-    // this.updateStatus()
+    this.pro_img =  this.image
+    this.updateStatus()
   },
   methods: {
     errorimg(e) {
@@ -163,9 +172,9 @@ export default {
         });
       } else {
         console.log(this.name)
-        this.$router.push({ name: 'report' })
+        this.$router.push({ name: 'facereport' })
       }
-      
+
     }
   }
 }
@@ -222,10 +231,10 @@ export default {
       display: inline-block;
       line-height: 36px;
     }
-    span:nth-child(1) {
+    span:nth-child(2) {
       color: #ff71c1;
     }
-    span:nth-child(2) {
+    span:nth-child(3) {
       color: #4eb0ff;
     }
   }

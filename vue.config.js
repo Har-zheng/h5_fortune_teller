@@ -58,12 +58,12 @@ module.exports = {
     hotOnly: false,
     proxy: { // 设置代理
       '/api': {
-        target: 'http://localhost:5000/api/',
-        ws: true,
+        target: 'http://core-service.myreal3d.com/',
+        // ws: true,
         changOrigin: true,
-        pathRewrite: {
-          '^/api': ''
-        }
+        // pathRewrite: {
+        //   '^/api': ''
+        // }
       }
     }
   },
