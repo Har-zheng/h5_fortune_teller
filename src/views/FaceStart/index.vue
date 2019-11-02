@@ -4,19 +4,18 @@
       <img src="../../assets/images02/photograph/LOGO_cc.png" alt />
     </div>
     <div class="top_img">
-      <img class="text" src="../../assets/images02/photograph/haiyang.png" alt="加载失败!" />
-      <img class="english" src="../../assets/images02/photograph/haiyang2.png" alt="加载失败!" />
-      
-      <img class="test" src="../../assets/images02/photograph/ic_bg4.png" alt="加载失败!" />
+      <van-image class="text" :src="text_img" alt="加载失败!" />
+      <van-image class="english" :src="english_img" alt="加载失败!" />
+      <van-image class="test" :src="test_img" alt="加载失败!" />
     </div>
     <div class="footer">
       <div class="code">
+        <van-image :src="code_img" alt />
         <i></i>
-        <img  src="../../assets/images02/photograph/code.png" alt />
       </div>
       <p class="QR_code">长按识别二维码</p>
       <div class="footer_img">
-        <img  @click="startTesing" :src="qr_code_img" alt="加载失败!">
+        <van-image @click="startTesing" :src="qr_code_img" alt="加载失败!" />
       </div>
       <p class="a_">
         HTTP://WWW.MYREAL3D.COM
@@ -29,13 +28,17 @@
 export default {
   data() {
     return {
-      qr_code_img: require('../../assets/images02/photograph/start_test.png')
+      qr_code_img: require('../../assets/images02/photograph/start_test.png'),
+      text_img: require('../../assets/images02/photograph/haiyang.png'),
+      english_img: require('../../assets/images02/photograph/haiyang2.png'),
+      test_img: require('../../assets/images02/photograph/ic_bg4.png'),
+      code_img: require('../../assets/images02/photograph/code.png'),
     }
   },
   methods: {
     startTesing() {
       console.log('start')
-      this.$router.push({name: 'PhotoPage'})
+      this.$router.push({ name: 'PhotoPage' })
     }
   }
 }
@@ -72,6 +75,10 @@ export default {
       width: 432px;
       height: 34px;
       margin-top: 25px;
+      .van-image {
+        width: 432px;
+        height: 34px;
+      }
     }
   }
   .footer {
@@ -97,7 +104,7 @@ export default {
         margin-left: -115px;
         z-index: 1;
       }
-      img {
+      .van-image {
         position: relative;
         z-index: 2;
         width: 220px;
@@ -112,11 +119,10 @@ export default {
     }
     .footer_img {
       margin-top: 40px;
-      img {
+      .van-image {
         width: 235px;
         height: 71px;
       }
-      
     }
   }
 }

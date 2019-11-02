@@ -31,25 +31,25 @@
           <div class="hand-img">
             <i class="icon_yuan"></i>
             <div class="img-radio">
-              <img src="../../assets/images02/photograph/timg01.jpg" alt />
+              <img :src="parmes_data_img" alt />
             </div>
           </div>
           <p class="part_title">部位分析</p>
           <p class="item_p">
-            <span class="title_span">{{ head_position[0].part }}</span>
-            <span class="title_text">{{ head_position[0].describe }}</span>
+            <span class="title_span">{{ head_position[0].full_name }}</span>
+            <span class="title_text">{{ head_position[0].explanation['D'] }}</span>
           </p>
         </div>
         <div
           class="footer-middle"
           v-for="(item,index) in  head_position_new"
           :key="index"
-          :style="{ 'z-index': head_position.length-index }"
+          :style="{ 'z-index': head_position_new.length-index }"
         >
           <div class="bg_img">
             <p class="item_p">
-              <span class="title_span">{{ item.part }}</span>
-              <span class="title_text">{{ item.describe }}</span>
+              <span class="title_span">{{ item.full_name }}</span>
+              <span class="title_text">{{ item.explanation['D'] }}</span>
             </p>
           </div>
         </div>
@@ -73,59 +73,42 @@
 </template>
 <script>
 import { All_Types_Data } from '../../api/app'
-import axios  from 'axios'
+import { mapState } from 'vuex'
+import axios from 'axios'
+const h001 = require('../../assets/images02/haiwang/001.jpg')
+const h001_1 = require('../../assets/images02/haiwang/001-1.jpg')
+const h002 = require('../../assets/images02/haiwang/002.jpg')
+const h003 = require('../../assets/images02/haiwang/003.jpg')
+const h004 = require('../../assets/images02/haiwang/004.jpg')
+const h005 = require('../../assets/images02/haiwang/005.jpg')
+const h006 = require('../../assets/images02/haiwang/006.jpg')
+const h007 = require('../../assets/images02/haiwang/007.jpg')
+const h008 = require('../../assets/images02/haiwang/008.jpg')
 export default {
   data() {
     return {
       head_position: [
         {
-          id: '001',
-          part: '颞部宽:',
-          describe: '颞部宽显得人思维缜密，逻辑能力强，权威大气。'
-        },
-        {
-          id: '002',
-          part: '颞部饱满：',
-          describe: '思维冥界；为人亲和，情商高，会顾及别人的感受。'
-        },
-        {
-          id: '002',
-          part: '颞部饱满：',
-          describe: '思维冥界；为人亲和，情商高，会顾及别人的感受。'
-        },
-        {
-          id: '002',
-          part: '颞部饱满：',
-          describe: '思维冥界；为人亲和，情商高，会顾及别人的感受。'
-        },
-        {
-          id: '002',
-          part: '颞部饱满：',
-          describe: '思维冥界；为人亲和，情商高，会顾及别人的感受。'
-        },
-        {
-          id: '002',
-          part: '颞部饱满：',
-          describe: '思维冥界；为人亲和，情商高，会顾及别人的感受。'
-        },
-        {
-          id: '002',
-          part: '颞部饱满：',
-          describe: '思维冥界；为人亲和，情商高，会顾及别人的感受。'
-        },
-        {
-          id: '002',
-          part: '颞部饱满：',
-          describe: '思维冥界；为人亲和，情商高，会顾及别人的感受。'
+          degree: "适度",
+          explanation: {
+            C: "",
+            D: ""
+          },
+          full_name: "鼻梁适度",
+          is_defect: 0,
+          label_id: 254,
+          label_number: "p2_004_005_3",
+          name: "鼻梁",
+          solutions: [],
         }
       ],
-      
+
       overview: '你的长相就是人们口中传颂的海王鼻基底挺拔的你是个自信有想法且有征服欲望的人，两颞饱满让你有敏捷的思维，更好的理清和把控两性关系，眼睛下方的卧蚕让你更加迷人，大多数异性见了你都会被你的双眼深深吸引，你知道你自己有多么迷人，并且持续的散发着魅力，感情中你能够占据主导地位，拥有着号令整个海洋的潜力。你的目标不是一片小小的鱼塘，而是广阔的星辰大海。',
       top_img: require('../../assets/images02/photograph/timg01.jpg'),
       attribute: '海王',
       qr_code_img: '../../assets/images02/photograph/more_report.png',
       personal_type: {},
-      type_num: 1
+      type_num: 1,
     }
   },
   computed: {
@@ -135,10 +118,19 @@ export default {
           return element
         }
       })
-      console.log(arr)
-    }
+    },
+    ...mapState({
+      parmes_data_img: state => state.app.app.parmes_data.image,
+      customized_features: state => state.app.app.instance.customized_features,
+      level: state => state.app.app.result.level,
+      gender: state => state.app.app.result.gender,
+      test: state => state.app.app.result.test,
+    })
   },
   created() {
+
+  },
+  mounted() {
     this.get_all_types()
   },
   methods: {
@@ -148,7 +140,7 @@ export default {
     headPositionMiddle() {
     },
     get_all_types() {
-      // All_Types_Data().then(res => {
+      // All_Types_Data().then(res => { 
       //   // map filter find forEach
       //   const personal_type =  res.find((element, index) => {
       //     return element.type === this.type_num
@@ -156,15 +148,72 @@ export default {
       //   console.log(personal_type)
       //   this.personal_type = personal_type
       // })
+      this.type_num = this.level
+      console.log(this.test)
+      this.isImage()
       axios.get('./config.json').then(res => {
         const data = res.data
         // map filter find forEach
-        const personal_type =  data.find((element, index) => {
+        const personal_type = data.find((element, index) => {
           return element.type === this.type_num
         })
         console.log(personal_type)
         this.personal_type = personal_type
       })
+      console.log(this.app)
+      console.log(this.customized_features)
+      const sele_item = []
+      this.customized_features.filter((item, index) => {
+        const se = item.labels.filter((label_item, label_index) => {
+          return item.selected_label_id === label_item.label_id
+        })
+        console.log(se)
+        if (se[0].explanation === null) {
+          se[0].explanation = {
+            "C": '',
+            "D": ''
+          }
+        }
+        sele_item.push(se[0])
+      })
+      this.head_position = sele_item
+    },
+    // bg
+    isImage() {
+      if(this.gender === undefined) {
+        this.gender = 'Female'
+      }
+      switch (this.type_num) {
+        case 0:
+          this.top_img = h001
+          break;
+        case 1:
+          this.top_img = h002
+          break;
+        case 2:
+          this.top_img = h003
+          break;
+        case 3:
+          this.top_img = h004
+          break;
+        case 4:
+          this.top_img = h005
+          break;
+        case 5:
+          this.top_img = h006
+          break;
+        case 6:
+          this.top_img = h007
+          break;
+        case 7:
+          this.top_img = h008
+          break;
+        default:
+          break;
+      }
+      if (this.gender === "Female" && this.type_num === 0) {
+        this.top_img = h001_1
+      }
     }
   }
 }
@@ -175,9 +224,6 @@ export default {
   font-weight: 400;
   color: #fff;
   background-color: #04032b;
-  -webkit-box-flex: 1;
-  -ms-flex: 1;
-  flex: 1;
   // overflow: scroll !important;
   z-index: 1;
   .top {
@@ -310,6 +356,7 @@ export default {
         margin-top: 55px;
         width: 292px;
         height: 102px;
+        font-size: 30px;
         background: url("../../assets/images02/photograph/tijiaoanniu.png")
           no-repeat center;
         background-size: 100%;
@@ -354,6 +401,7 @@ export default {
             display: inline-block;
             border-radius: 50%;
             img {
+              height: 100%;
               text-align: center;
               margin: 0 auto;
             }

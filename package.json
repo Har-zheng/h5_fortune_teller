@@ -8,20 +8,26 @@
   },
   "dependencies": {
     "axios": "^0.19.0",
+    "blueimp-load-image": "^2.24.0",
     "core-js": "^2.6.5",
     "cos-js-sdk-v5": "^0.5.20",
     "cssnano": "^4.1.10",
     "eruda": "^1.5.8",
+    "exif-js": "^2.3.0",
     "face-api.js": "^0.21.0",
+    "jquery": "^3.4.1",
     "postcss-aspect-ratio-mini": "^1.0.1",
     "postcss-cssnext": "^3.1.0",
+    "postcss-import": "^12.0.1",
     "postcss-px-to-viewport": "^1.1.1",
+    "postcss-url": "^8.0.0",
     "postcss-viewport-units": "^0.1.6",
     "postcss-write-svg": "^3.0.1",
     "vant": "^2.2.0",
     "vue": "^2.6.10",
     "vue-router": "^3.0.3",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "weixin-js-sdk": "^1.4.0-test"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.11.0",

@@ -1,30 +1,48 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view />
   </div>
 </template>
 <script>
 import comm_fun from './utils/CommonFunction'
-import { mapMutations } from 'vuex'
+import { mapActions } from 'vuex'
 export default {
   created() {
-    
   },
   methods: {
-    ...mapMutations(['SAVE_URL'])
+    ...mapActions([
+      'save_url',
+      'set_app'
+    ]),
   },
   mounted() {
     console.log(comm_fun.GetRequestUrl())
-    this.SAVE_URL(comm_fun.GetRequestUrl())
+    // 初始化 用户刷新时
+    const GetRequestUrl = JSON.stringify(comm_fun.GetRequestUrl())
+    if (GetRequestUrl !== "{}") {
+      sessionStorage.setItem('GetRequestUrl', GetRequestUrl)
+      this.save_url(comm_fun.GetRequestUrl())
+    } else {
+      const GetRequestUrl_GET = JSON.parse(sessionStorage.getItem('GetRequestUrl'))
+      this.save_url(GetRequestUrl_GET)
+    }
+    const app = sessionStorage.getItem('app')
+    if(app !== null){
+      this.set_app(JSON.parse(app))
+    }
+    comm_fun.initWxShare()
+    // comm_fun.onbeforeunloadEnvt()
   }
 }
 </script>
 <style>
-html,body, #app{
+html,
+body,
+#app {
   height: 100%;
 }
 #app {
-  font-family: 'PingFangSC-Regular', 'PingFangSC';
+  font-family: "PingFangSC-Regular", "PingFangSC";
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -48,47 +66,128 @@ html,body, #app{
    License: none (public domain)
 */
 
-html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
-a, abbr, acronym, address, big, cite, code,
-del, dfn, em, img, ins, kbd, q, s, samp,
-small, strike, strong, sub, sup, tt, var,
-b, u, i, center,
-dl, dt, dd, ol, ul, li,
-fieldset, form, label, legend,
-table, caption, tbody, tfoot, thead, tr, th, td,
-article, aside, canvas, details, embed, 
-figure, figcaption, footer, header, hgroup, 
-menu, nav, output, ruby, section, summary,
-time, mark, audio, video {
-	margin: 0;
-	padding: 0;
-	border: 0;
-	font-size: 100%;
-	font: inherit;
-	vertical-align: baseline;
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure, 
-footer, header, hgroup, menu, nav, section {
-	display: block;
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+  display: block;
 }
 body {
-	line-height: 1;
+  line-height: 1;
 }
-ol, ul {
-	list-style: none;
+ol,
+ul {
+  list-style: none;
 }
-blockquote, q {
-	quotes: none;
+blockquote,
+q {
+  quotes: none;
 }
-blockquote:before, blockquote:after,
-q:before, q:after {
-	content: '';
-	content: none;
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
 }
 table {
-	border-collapse: collapse;
-	border-spacing: 0;
+  border-collapse: collapse;
+  border-spacing: 0;
 }
 </style>

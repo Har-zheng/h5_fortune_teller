@@ -11,7 +11,7 @@
       </p>
       <div class="img-Head">
         <i :src="photo_img">
-          <van-image :src="pro_img" />
+          <van-image radius="8" :src="pro_img" />
         </i>
         <div class="feature">
           <p>上庭</p>
@@ -32,7 +32,7 @@
             <div>综合分析</div>
           </div>
           <div class="transtion-css">
-            <img :class="[status]" src="../../assets/images/saomiao/status@2x.png" alt />
+            <img :class="[status]" :src="status_img" alt />
           </div>
           <div class="status-info">
             <p>
@@ -91,6 +91,7 @@ export default {
       photo_img: require('../../assets/images02/photograph/photo02.png'),
       pro_img: '',
       status: 'transtion-one',
+      status_img: require('../../assets/images/saomiao/status@2x.png'),
       statusInfo: [
         {
           up: '上庭数据提取中',
@@ -265,7 +266,7 @@ export default {
       left: 12vw;
     }
     .transtion-two {
-      left: 37.333vw;
+      left: 36.333vw;
       animation: statusCssone 1.2s linear;
     }
     @keyframes statusCssone {
@@ -273,19 +274,19 @@ export default {
         left: 12vw;
       }
       100% {
-        left: 37.333vw;
+        left: 36.333vw;
       }
     }
     .transtion-three {
-      left: 64vw;
+      left: 62vw;
       animation: statusCssthree 1.2s linear;
     }
     @keyframes statusCssthree {
       0% {
-        left: 37.333vw;
+        left: 36.333vw;
       }
       100% {
-        left: 64vw;
+        left: 62vw;
       }
     }
   }
@@ -298,7 +299,7 @@ export default {
       text-align: left;
       height: 80px;
       line-height: 80px;
-      font-size: 24px;
+      font-size: 25px;
       font-weight: 400;
       position: relative;
       // border-bottom: 1px solid #327fe1;
@@ -436,16 +437,20 @@ export default {
       // height: 150px;
       // background: url("../../assets/images/saomiao/bg_input.png") no-repeat;
       background-size: 100% 100%;
+      padding-bottom: 22px; 
+      border-bottom: 2px solid #007ACF;
+      width: 344px;
+      margin: 0 auto;
       input {
         // background-color: rgba(0, 0, 0, 0);
-        width: 252px;
+        width: 330px;
         margin: 0 auto;
         top: 63px;
         border: none;
         background: url("../../assets/images/saomiao/edit.png") no-repeat;
         background-size: 26px 26px;
         background-position: 0 1.267vw;
-        text-indent: 36px;
+        text-indent: 46px;
       }
       input::-webkit-input-placeholder {
         color: #fff;
@@ -476,7 +481,7 @@ export default {
     }
     .btn_photo_bg {
       border: none;
-      margin-top: 60px;
+      margin-top: 38px;
       background: url("../../assets/images02/photograph/tijiaoanniu.png")
         no-repeat center;
       background-size: 100%;

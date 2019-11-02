@@ -1,6 +1,6 @@
 const app = {
   state: {
-    app: [],
+    app: {},
     save_url: {}
   },
   mutations: {
@@ -16,6 +16,9 @@ const app = {
   actions: {
     set_app: ({commit}, app_data)  => {
       commit('SET_APP',app_data)
+    },
+    save_url: ({commit}, data)  => {
+      commit('SAVE_URL',data)
     }
   }
 }

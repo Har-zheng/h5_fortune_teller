@@ -9,8 +9,8 @@
         <span>{{ title }}</span>
         <span>{{ title2 }}</span>
       </p>
-      <div class="img-Head">
-        <van-image radius="6" :src="photo_img" />
+      <div class="img-Head" ref="img_Head">
+        <img :class="{'imgRotate' : isRotate}" ref="top_img" radius="6" :src="photo_img" />
       </div>
       <div class="head-icon">
         <p class="title">{{ isTitle }}</p>
@@ -31,8 +31,8 @@
           <div class="need-confirm-content">
             <p>
               头部姿势：
-              <span>非正面</span>
-              <img :src="tip_img.warning" alt />
+              <span>正面</span>
+              <img :src="tip_img.correct" alt />
             </p>
             <p>
               左眼状态：
@@ -78,6 +78,8 @@ import comm_fun from '../../utils/CommonFunction'
 var COS = require('cos-js-sdk-v5')
 import { imgCosupload, ImgUrlBeauty } from '../../api/app.js'
 import { mapActions, mapState } from 'vuex'
+import { Toast, Dialog } from 'vant'
+import imgExif from '../../mixin/imgExif'
 export default {
   data() {
     return {
@@ -90,9 +92,11 @@ export default {
         correct: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA4CAMAAABwmqASAAAAk1BMVEUAAAADxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwWPcL6XAAAAMHRSTlMA8QX6o03dzunlJh8QCPbWsZQ3KgvtvbacfnJqXllBPjMWx4tvY0guHfOpgnlmU7/6TN/xAAABlUlEQVRIx53W15qCMBQE4NARCypYsGJbuzvv/3T7yeKaclaS/PdDAswJMDtZ3y7X3XmxVXAYApFNsPAATMxznQmepsbBdopKYRo8tvDrYBhcOagFZsF1Dy+lWfCMP4nRa3TwdjIIJjE4Hf3gJgRvox10xxC0tZNTiIa6wQMkS81g2YOk0Gx5CJnmZPtQOK5OcAHCl85gOSD4GskxCKNBc/AOVbzXuM0TsdepVmv76kbph9NlogCyiK5sEAbihZQOXLrk8+/LR/AVkh05SLeqnQ/+UnJfZ+S5lqKSfqjdnBp5nxigIXj0ITvn3lrqUu2hVywj8Bav/UOwV6dvAFFYL7oF76rOUAzZnSiB2vACqlb1toVb6BMVz3wPsrm85Danfxcm6qLiXYb/HsxBS+nKGm9O8uF0k9oS59w+vM9nzsMRh5csKy2JQLuwJrkPSpqzZjeozhnTsfRg++lZO4BUOl2l2OLIZdoSvhS9jDG76N7wD22E2lgvoP74jE7M1MqrTxVzwTP6zWzMAO/IrAywY3Zcv6noP1SEq/OgNc3TAAAAAElFTkSuQmCC',
         warning: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAM1BMVEUAAAD7ZAD6ZAD7ZAD9YwD7ZAD8ZAD5YQD7ZAD7ZAD7ZAD6ZAD7ZAD7ZAD8ZAD7ZAD7ZADc5bCPAAAAEHRSTlMA6gzDN5dwGNC0ot6BWCRIgBgKRwAAAQpJREFUOMu9lNt2hCAMRUmUi4BO/v9rOx2HniG6CH1o91v0cMkWcf8KeyLPk9kkT9JcOsuLPJNd5c3qbFILJzu7yw+72R0hTFaPVT6o42yUjmhrA3lC2xLCYutbMJ8/h5na+KXF0MelzYZVCg+06bDUsTY6Sxrq851dbpW/19Z49OV6q60Rvssgje2afUgDnrGS4tQGHRvqorNBAKnBEpQ2UoeNP2uKd9rQ/4FK6VOvZH/3Cw4HNumoMaIH6IM2A+hLYpKgrYeee96hp9PH+vmKs3G5F6pe8X5vFdpU5zAEDjzUCzJdJ8HegMc3Vb1kUeDe0GRHMg05+QX4m2wWNDgCJ9cXmaD4w/0dXyVhOsjXZsVVAAAAAElFTkSuQmCC',
       },
-      file: null
+      file: null,
+      isRotate: false
     }
   },
+  mixins: [imgExif],
   components: {
     BaseRouterTransition
   },
@@ -118,12 +122,20 @@ export default {
       this.photo_img = file.content
       this.isTitle = '确认照片'
       this.isConfirm = false
+      this.getImgExif(file)
     },
     // 确认 上传
     handleBtnConfirm() {
       console.log('上传')
       // this.$router.push({ name: 'analysisnew' })
       // console.log(imgCosupload)
+      // 自定义加载图标
+      const Toast1 = Toast.loading({
+        duration: 0, // 持续展示 toast
+        message: '加载中...',
+        forbidClick: true,
+        loadingType: 'spinner'
+      });
       imgCosupload({ version: 1 }).then(res => {
         const data = res.data
         console.log(data)
@@ -144,21 +156,22 @@ export default {
         cos.putObject({
           Bucket: data.bucket,
           Region: data.region,
-          Key: 'h5/ai/beauty/images/' + file_data.file.name,
+          Key: `h5/ai/beauty/images/${new Date().getTime()}_` + file_data.file.name,
           Body: file_data.file
         }, function (err, data) {
           if (data) {
-            this_.img_success(data)
+            this_.img_success(data, this_, Toast1)
           }
           console.log(err || data)
         })
       })
     },
     // 上传成功后 通知url到后台
-    img_success(data) {
+    img_success(data, this_, Toast1) {
       const image = comm_fun.img_location(data)
       // "version": 1, "data": {"image": "http://domain.jpg"}
-      const { channel_id, instance_id, client } = this.parmes_url
+      const { channel_id, instance_id, client } = this_.parmes_url
+      console.log(this_.parmes_url)
       var parmes_data = {
         version: 1,
         data: {
@@ -168,20 +181,46 @@ export default {
           client
         }
       }
+
       ImgUrlBeauty(parmes_data).then(res => {
-        const { instance, original_id, result } = res.data
-        this.set_app({
-          parmes_data: parmes_data.data,
-          instance,
-          original_id,
-          result
-        })
-        this.$router.push({ name: 'analysisnew' })
+        console.log(res)
+        Toast1.clear();
+        if (res.code === 0) {
+          const { instance, original_id, result } = res.data
+          this.$router.push({ name: 'analysisnew' })
+          this.isReload({
+            parmes_data: parmes_data.data,
+            instance,
+            original_id,
+            result
+          })
+
+        } else {
+          alert(JSON.stringify(res))
+          Dialog.alert({
+            message: '图片上传失败!请重试'
+          }).then(() => {
+            this.$router.push({ name: 'PhotoPage' })
+          });
+        }
+      }).catch(error => {
+        Toast1.clear();
+        Dialog.alert({
+          message: '图片上传超时!请重试'
+        }).then(() => {
+          this.$router.push({ name: 'PhotoPage' })
+        });
       })
+    },
+    // 用户刷新储存
+    isReload(data) {
+      this.set_app(data)
+      sessionStorage.setItem('app', JSON.stringify(data))
     },
     // 重新上传
     handleBtnAgain() {
       this.isConfirm = true
+      this.isRotate = false
       this.photo_img = 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/h5/ai/beauty/images/touxiang.png'
     }
   }
@@ -239,7 +278,7 @@ export default {
       display: inline-block;
       line-height: 36px;
     }
-    span:nth-child(3) {
+    span:nth-child(2) {
       color: #ff71c1;
     }
     span:nth-child(3) {
@@ -267,7 +306,20 @@ export default {
       margin-bottom: 30px;
       font-size: 24px;
       font-weight: 400;
+      position: relative;
       // color: #008DFF;
+    }
+    .item:before {
+      content: "";
+      display: inline-block;
+      width: 8px;
+      height: 8px;
+      background: #fff;
+      position: absolute;
+      top: 50%;
+      border-radius: 50%;
+      margin-top: -4px;
+      margin-left: -10px;
     }
     .item:nth-child(1) {
       width: 160px;
@@ -296,7 +348,7 @@ export default {
       padding: 46px 124px 45px 91px;
       p {
         text-align: left;
-        font-size: 24px;
+        font-size: 25px;
         font-weight: 400;
         line-height: 24px;
         color: #008dff;
@@ -334,6 +386,13 @@ export default {
         no-repeat center;
       background-size: 100%;
       color: #e6eeff;
+      font-size: 30px;
+    }
+    #btn_photo {
+      .van-icon {
+        position: relative;
+        top: 4px;
+      }
     }
   }
   .bottom_btn {
@@ -359,8 +418,14 @@ export default {
 }
 .img-Head {
   margin-bottom: 26px;
+  width: 310px;
+  overflow: hidden;
+  margin: 0 auto;
 }
 .head-icon {
+  .title {
+    margin: 18px 0 26px 0;
+  }
   .icon {
     width: 91px;
     height: 6px;
@@ -380,8 +445,15 @@ export default {
     margin-top: 42px;
   }
 }
-.img-Head .van-image {
+.img-Head {
   width: 310px;
-  height: 310px;
+  position: relative;
+  img {
+    height: 310px;
+    border-radius: 8px;
+  }
+  .imgRotate {
+    transform: rotate(-90deg);
+  }
 }
 </style>

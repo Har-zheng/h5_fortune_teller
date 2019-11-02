@@ -3,7 +3,6 @@ import Router from 'vue-router'
 import PhotoPage from './views/PhotoPage/index.vue'
 import Page from './views/Frame/index'
 
-
 Vue.use(Router)
 
 export default new Router({
@@ -12,9 +11,9 @@ export default new Router({
   routes: [{
       path: '/',
       name: 'home',
-      component: Page,
+      component:Page,
       redirect: {
-        name: 'PhotoPage'
+        name: 'faceStart'
       },
       children: [{
           path: '/PhotoPage',

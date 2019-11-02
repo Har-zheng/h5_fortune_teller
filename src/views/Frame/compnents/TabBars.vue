@@ -1,5 +1,5 @@
 <template>
-  <div class="tab-bar">
+  <div class="tab-barss">
 
   </div>
 </template>
@@ -12,7 +12,7 @@ export default {
 .tab-bar{
   width: 100%;
   height: 0;
-  background-color: blanchedalmond;
+  // background-color: blanchedalmond;
   position: fixed;
   bottom: 0;
 }
