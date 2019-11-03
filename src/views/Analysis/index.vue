@@ -10,8 +10,10 @@
         <span>{{ title2 }}</span>
       </p>
       <div class="img-Head">
-        <i :src="photo_img">
-          <van-image radius="8" :src="pro_img" />
+        <i :src="photo_img" ref="img_Head">
+          <div class="bg">
+            <img ref="top_img" radius="8" :src="pro_img" />
+          </div>
         </i>
         <div class="feature">
           <p>上庭</p>
@@ -32,7 +34,9 @@
             <div>综合分析</div>
           </div>
           <div class="transtion-css">
-            <img :class="[status]" :src="status_img" alt />
+            <img :class="[status]"
+                 :src="status_img"
+                 alt />
           </div>
           <div class="status-info">
             <p>
@@ -52,20 +56,22 @@
       </BaseRouterTransition>
       <BaseRouterTransition>
         <!-- 面向报告生成页 -->
-        <div class="report" v-show="!isReport">
+        <div class="report"
+             v-show="!isReport">
           <div class="report-input">
             <div class="input-content">
-              <input v-show="!isName" type="text" v-model="name" placeholder="请输入您的姓名" />
+              <input v-show="!isName"
+                     type="text"
+                     v-model="name"
+                     placeholder="请输入您的姓名" />
               <!-- <van-button v-show="!isName" type="info" @click="handleSaveName">保存</van-button> -->
               <p v-show="isName">{{ name }}</p>
             </div>
           </div>
           <div class="receive">
-            <van-button
-              :class="{ saveName: isName }"
-              class="btn_photo_bg"
-              @click="handleReceiveReport"
-            >领取报告</van-button>
+            <van-button :class="{ saveName: isName }"
+                        class="btn_photo_bg"
+                        @click="handleReceiveReport">领取报告</van-button>
           </div>
         </div>
       </BaseRouterTransition>
@@ -80,8 +86,9 @@ import BaseRouterTransition from '../../components/BaseRouterTransition'
 import { Dialog } from 'vant';
 import { mapState } from 'vuex'
 import { img_location } from '../../utils/CommonFunction'
-
+import imgExif from '../../mixin/imgExif'
 export default {
+  mixins: [imgExif],
   data() {
     return {
       title: '测测你颜值',
@@ -126,11 +133,15 @@ export default {
   computed: {
     ...mapState({
       image: state => state.app.app.parmes_data.image,
+      imgContent: state => state.app.app.imgContent,
     })
   },
-  mounted() {
-    this.pro_img =  this.image
+  created(){
     this.updateStatus()
+  },
+  mounted() {
+    this.pro_img = this.imgContent
+    // this.updateStatus()
   },
   methods: {
     errorimg(e) {
@@ -138,6 +149,7 @@ export default {
     },
     // 过场 上传动画
     updateStatus() {
+      this.imgPosition()
       setTimeout(() => {
         this.statusInfoNum = 1
         this.status = 'transtion-two'
@@ -357,10 +369,16 @@ export default {
     width: 310px;
     height: 310px;
   }
-  .van-image {
-    width: 260px;
+  .bg {
+    // width: 260px;
+    height: 290px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  img {
     height: 260px;
     margin-top: 24px;
+    border-radius: 8px; 
   }
   .feature {
     position: absolute;
@@ -437,8 +455,8 @@ export default {
       // height: 150px;
       // background: url("../../assets/images/saomiao/bg_input.png") no-repeat;
       background-size: 100% 100%;
-      padding-bottom: 22px; 
-      border-bottom: 2px solid #007ACF;
+      padding-bottom: 22px;
+      border-bottom: 2px solid #007acf;
       width: 344px;
       margin: 0 auto;
       input {
