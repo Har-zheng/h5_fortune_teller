@@ -13,7 +13,6 @@
     "cos-js-sdk-v5": "^0.5.20",
     "cssnano": "^4.1.10",
     "eruda": "^1.5.8",
-    "exif-js": "^2.3.0",
     "face-api.js": "^0.21.0",
     "jquery": "^3.4.1",
     "postcss-aspect-ratio-mini": "^1.0.1",
