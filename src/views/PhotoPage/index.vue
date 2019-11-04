@@ -9,17 +9,26 @@
         <span>{{ title }}</span>
         <span>{{ title2 }}</span>
       </p>
-      <div class="img-Head" ref="img_Head">
-        <img :class="{'imgRotate' : isRotate}" ref="top_img" radius="6" :src="photo_img" />
+      <div class="img-Head"
+           :class="{'ConfirmCss': isConfirm}">
+        <i ref="img_Head">
+          <img :class="{'imgRotate' : isRotate}"
+               ref="top_img"
+               radius="6"
+               :src="photo_img" />
+        </i>
+
       </div>
       <div class="head-icon">
         <p class="title">{{ isTitle }}</p>
         <p class="icon"></p>
       </div>
       <BaseRouterTransition>
-        <p class="title tip" v-show="isConfirm">满足以下要求，结果更准确</p>
+        <p class="title tip"
+           v-show="isConfirm">满足以下要求，结果更准确</p>
       </BaseRouterTransition>
-      <div class="need" v-show="isConfirm">
+      <div class="need"
+           v-show="isConfirm">
         <div class="item">正面</div>
         <div class="item">五官清晰</div>
         <div class="item">不戴眼镜</div>
@@ -27,44 +36,54 @@
         <div class="item">无刘海遮挡</div>
       </div>
       <BaseRouterTransition>
-        <div class="need-confirm" v-show="!isConfirm">
+        <div class="need-confirm"
+             v-show="!isConfirm">
           <div class="need-confirm-content">
             <p>
               头部姿势：
               <span>正面</span>
-              <img :src="tip_img.correct" alt />
+              <img :src="tip_img.correct"
+                   alt />
             </p>
             <p>
               左眼状态：
               <span>睁眼，未戴眼镜</span>
-              <img :src="tip_img.correct" alt />
+              <img :src="tip_img.correct"
+                   alt />
             </p>
             <p>
               右眼状态：
               <span>睁眼，未戴眼镜</span>
-              <img :src="tip_img.correct" alt />
+              <img :src="tip_img.correct"
+                   alt />
             </p>
           </div>
         </div>
       </BaseRouterTransition>
-      <div class="photograph-btn" v-show="isConfirm">
-        <van-uploader class="button" :after-read="afterRead">
-          <van-button class="button-div btn_photo_bg" id="btn_photo" type="primary">
-            <van-icon color="#84FF00" size="4vw" name="photograph" />拍照/上传照片
+      <div class="photograph-btn"
+           v-show="isConfirm">
+        <van-uploader class="button"
+                      :after-read="afterRead">
+          <van-button class="button-div btn_photo_bg"
+                      id="btn_photo"
+                      type="primary">
+            <van-icon color="#84FF00"
+                      size="4vw"
+                      name="photograph" />拍照/上传照片
           </van-button>
         </van-uploader>
         <p>HTTP://WWW.MYREAL3D.COM</p>
       </div>
 
       <BaseRouterTransition>
-        <div class="bottom_btn" v-show="!isConfirm">
+        <div class="bottom_btn"
+             v-show="!isConfirm">
           <div class="button button-conf">
-            <van-button
-              class="button-div btn_photo_bg btn_photo_color"
-              @click="handleBtnAgain"
-              type="primary"
-            >重新上传</van-button>
-            <van-button class="button-div button-cancel btn_photo_bg" @click="handleBtnConfirm">确认上传</van-button>
+            <van-button class="button-div btn_photo_bg btn_photo_color"
+                        @click="handleBtnAgain"
+                        type="primary">重新上传</van-button>
+            <van-button class="button-div button-cancel btn_photo_bg"
+                        @click="handleBtnConfirm">确认上传</van-button>
           </div>
           <p>HTTP://WWW.MYREAL3D.COM</p>
         </div>
@@ -132,7 +151,7 @@ export default {
       // 自定义加载图标
       const Toast1 = Toast.loading({
         duration: 0, // 持续展示 toast
-        message: '加载中...',
+        message: '图片正在上传...',
         forbidClick: true,
         loadingType: 'spinner'
       });
@@ -160,14 +179,14 @@ export default {
           Body: file_data.file
         }, function (err, data) {
           if (data) {
-            this_.img_success(data, this_, Toast1)
+            this_.img_success(data, this_, Toast1, file_data.content)
           }
           console.log(err || data)
         })
       })
     },
     // 上传成功后 通知url到后台
-    img_success(data, this_, Toast1) {
+    img_success(data, this_, Toast1, imgContent) {
       const image = comm_fun.img_location(data)
       // "version": 1, "data": {"image": "http://domain.jpg"}
       const { channel_id, instance_id, client } = this_.parmes_url
@@ -178,7 +197,7 @@ export default {
           channel_id, // 渠道id
           instance_id,  // 配置的实例
           image,
-          client
+          client,
         }
       }
 
@@ -192,7 +211,8 @@ export default {
             parmes_data: parmes_data.data,
             instance,
             original_id,
-            result
+            result,
+            imgContent
           })
 
         } else {
@@ -219,6 +239,9 @@ export default {
     },
     // 重新上传
     handleBtnAgain() {
+      const top_img = this.$refs.top_img
+      top_img.style.left = 0
+      top_img.style.marginLeft = 0
       this.isConfirm = true
       this.isRotate = false
       this.photo_img = 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/h5/ai/beauty/images/touxiang.png'
@@ -447,13 +470,29 @@ export default {
 }
 .img-Head {
   width: 310px;
+  height: 310px;
   position: relative;
+  background: url("../../assets/images02/photograph/photo02.png") no-repeat;
+  background-size: 100%;
+
   img {
-    height: 310px;
+    height: 260px;
     border-radius: 8px;
+    margin-top: 24px;
   }
   .imgRotate {
     transform: rotate(-90deg);
   }
+  i {
+    position: relative;
+    display: inline-block;
+    width: 266px;
+    height: 290px;
+    overflow: hidden;
+    border-radius: 8px;
+  }
+}
+.ConfirmCss {
+  background: none;
 }
 </style>
