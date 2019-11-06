@@ -45,6 +45,16 @@ export default new Router({
           name: 'faceStart',
           component: () => import('./views/FaceStart/index.vue')
         },
+        {
+          path: '/userInfo',
+          name: 'userInfo',
+          component: () => import('./views/userInfo/index.vue')
+        },
+        {
+          path: '/bootpage',
+          name: 'bootpage',
+          component: () => import('./views/BootPage/index.vue')
+        },
       ]
     },
     {

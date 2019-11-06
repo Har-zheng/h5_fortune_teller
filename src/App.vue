@@ -6,6 +6,7 @@
 <script>
 import comm_fun from './utils/CommonFunction'
 import { mapActions } from 'vuex'
+import { wxgetreport } from './api/app'
 export default {
   created() {
   },
@@ -32,6 +33,7 @@ export default {
     }
     comm_fun.initWxShare()
     // comm_fun.onbeforeunloadEnvt()
+    // 判断是否绑定手机号
   }
 }
 </script>

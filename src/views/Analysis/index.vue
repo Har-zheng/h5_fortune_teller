@@ -10,15 +10,17 @@
         <span>{{ title2 }}</span>
       </p>
       <div class="img-Head">
-        <i :src="photo_img" ref="img_Head">
-          <div class="bg">
+        <i :src="photo_img">
+          <div class="bg" ref="img_Head">
             <img ref="top_img" radius="8" :src="pro_img" />
           </div>
         </i>
         <div class="feature">
-          <p>上庭</p>
-          <p>中庭</p>
-          <p>下庭</p>
+          <van-swipe :autoplay="1000" :show-indicators="false" vertical :touchable="false">
+            <van-swipe-item v-for="(item ,index) in swper" :key="index">
+              <img ref="swipe_img" radius="8" :src="item" />
+            </van-swipe-item>
+          </van-swipe>
         </div>
       </div>
       <div class="head-icon">
@@ -34,9 +36,7 @@
             <div>综合分析</div>
           </div>
           <div class="transtion-css">
-            <img :class="[status]"
-                 :src="status_img"
-                 alt />
+            <img :class="[status]" :src="status_img" alt />
           </div>
           <div class="status-info">
             <p>
@@ -56,22 +56,20 @@
       </BaseRouterTransition>
       <BaseRouterTransition>
         <!-- 面向报告生成页 -->
-        <div class="report"
-             v-show="!isReport">
+        <div class="report" v-show="!isReport">
           <div class="report-input">
             <div class="input-content">
-              <input v-show="!isName"
-                     type="text"
-                     v-model="name"
-                     placeholder="请输入您的姓名" />
+              <input v-show="!isName" type="text" v-model="name" placeholder="请输入您的姓名" />
               <!-- <van-button v-show="!isName" type="info" @click="handleSaveName">保存</van-button> -->
               <p v-show="isName">{{ name }}</p>
             </div>
           </div>
           <div class="receive">
-            <van-button :class="{ saveName: isName }"
-                        class="btn_photo_bg"
-                        @click="handleReceiveReport">领取报告</van-button>
+            <van-button
+              :class="{ saveName: isName }"
+              class="btn_photo_bg"
+              @click="handleReceiveReport"
+            >领取报告</van-button>
           </div>
         </div>
       </BaseRouterTransition>
@@ -87,6 +85,16 @@ import { Dialog } from 'vant';
 import { mapState } from 'vuex'
 import { img_location } from '../../utils/CommonFunction'
 import imgExif from '../../mixin/imgExif'
+import { wxgetreport } from '../../api/app'
+const h001 = require('../../assets/images02/haiwang/001.jpg')
+const h001_1 = require('../../assets/images02/haiwang/001-1.jpg')
+const h002 = require('../../assets/images02/haiwang/002.jpg')
+const h003 = require('../../assets/images02/haiwang/003.jpg')
+const h004 = require('../../assets/images02/haiwang/004.jpg')
+const h005 = require('../../assets/images02/haiwang/005.jpg')
+const h006 = require('../../assets/images02/haiwang/006.jpg')
+const h007 = require('../../assets/images02/haiwang/007.jpg')
+const h008 = require('../../assets/images02/haiwang/008.jpg')
 export default {
   mixins: [imgExif],
   data() {
@@ -124,7 +132,18 @@ export default {
       },
       isReport: true,
       isName: false,
-      name: ''
+      name: '',
+      swper: [
+        h001,
+        h001_1,
+        h002,
+        h003,
+        h004,
+        h005,
+        h006,
+        h007,
+        h008,
+      ]
     }
   },
   components: {
@@ -136,12 +155,13 @@ export default {
       imgContent: state => state.app.app.imgContent,
     })
   },
-  created(){
+  created() {
     this.updateStatus()
   },
   mounted() {
     this.pro_img = this.imgContent
     // this.updateStatus()
+    this.getwxgetreport()
   },
   methods: {
     errorimg(e) {
@@ -165,14 +185,14 @@ export default {
       const is_report = () => {
         setTimeout(() => {
           this.title3 = '报告生成完成，待确认身份'
-          this.isReport = false
+          this.$router.push({name: 'facereport'})
+          // this.isReport = false
         }, 2000)
       }
     },
     // 保存姓名
     handleSaveName(e) {
       console.log(this.name)
-
       this.isName = true
     },
     handleReceiveReport() {
@@ -188,6 +208,18 @@ export default {
         this.$router.push({ name: 'facereport' })
       }
 
+    },
+    getwxgetreport(){
+      let data = {
+        version: 1,
+        data: {
+          open_id: 'oYUGVwUQPL5gyNlVSaDpjRSuAY6k',
+          channel_id: 'ys'
+        }
+      }
+      wxgetreport(data).then(res => {
+        console.log(res)
+      })
     }
   }
 }
@@ -370,7 +402,8 @@ export default {
     height: 310px;
   }
   .bg {
-    // width: 260px;
+    position: relative;
+    width: 270px;
     height: 290px;
     margin: 0 auto;
     overflow: hidden;
@@ -378,14 +411,26 @@ export default {
   img {
     height: 260px;
     margin-top: 24px;
-    border-radius: 8px; 
+    border-radius: 8px;
   }
   .feature {
     position: absolute;
     z-index: 2;
     left: 50%;
-    top: 60px;
+    top: 0;
     font-size: 25px;
+    margin-top: 24px;
+    margin-left: -135px;
+    width: 270px;
+    height: 290px;
+    .van-swipe {
+      height: 260px;
+      img {
+        margin-top: 0;
+        border-radius: 8px;
+        
+      }
+    }
     p {
       color: #55b9ff;
       height: 58px;

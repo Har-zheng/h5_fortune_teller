@@ -80,10 +80,10 @@ function initWxShare() {
       // ?channel_id=M3D&instance_id=98&client=2
       wx.ready(() => {
         wx.onMenuShareTimeline({
-          title: '测测你颜值属于哪一种类型', // 分享标题
-          desc: '测测你颜值属于哪一种类型', // 分享描述
+          title: '海洋鱼类图鉴', // 分享标题
+          desc: '测！你能否统领这片海洋', // 分享描述
           // http://report-dev.myreal3d.com/
-          link: `http://h5.myreal3d.com/fortune-teller/#/faceStart?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: `http://h5.myreal3d.com/fortune-teller/#/bootpage?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
             // 设置成功
@@ -94,9 +94,9 @@ function initWxShare() {
           },
         });
         wx.onMenuShareAppMessage({
-          title: '测测你颜值属于哪一种类型', // 分享标题
-          desc: '测测你颜值属于哪一种类型', // 分享描述
-          link: `http://h5.myreal3d.com/fortune-teller/#/faceStart?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          title: '海洋鱼类图鉴', // 分享标题
+          desc: '测！你能否统领这片海洋', // 分享描述
+          link: `http://h5.myreal3d.com/fortune-teller/#/bootpage?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
             // 设置成功
@@ -107,9 +107,9 @@ function initWxShare() {
           },
         });
         wx.onMenuShareQQ({
-          title: '测测你颜值属于哪一种类型', // 分享标题
-          desc: '测测你颜值属于哪一种类型', // 分享描述
-          link: `http://h5.myreal3d.com/fortune-teller/#/faceStart?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          title: '海洋鱼类图鉴', // 分享标题
+          desc: '测！你能否统领这片海洋', // 分享描述
+          link: `http://h5.myreal3d.com/fortune-teller/#/bootpage?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
             // 用户确认分享后执行的回调函数
@@ -121,9 +121,9 @@ function initWxShare() {
           },
         });
         wx.onMenuShareQZone({
-          title: '测测你颜值属于哪一种类型', // 分享标题
-          desc: '测测你颜值属于哪一种类型', // 分享描述
-          link: `http://h5.myreal3d.com/fortune-teller/#/faceStart?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          title: '海洋鱼类图鉴', // 分享标题
+          desc: '测！你能否统领这片海洋', // 分享描述
+          link: `http://h5.myreal3d.com/fortune-teller/#/bootpage?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
             // 用户确认分享后执行的回调函数

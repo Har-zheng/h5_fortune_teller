@@ -5,7 +5,7 @@ import {
 // 创建 axios 请求 
 const service = axios.create({
   baseURL: process.env.VUE_APP_URL,
-  timeout: 600000 // 设置超时时间
+  timeout: 600000 * 2 // 设置超时时间
 })
 
 // 请求响应拦截 拦截 头

@@ -9,26 +9,19 @@
         <span>{{ title }}</span>
         <span>{{ title2 }}</span>
       </p>
-      <div class="img-Head"
-           :class="{'ConfirmCss': isConfirm}">
+      <div class="img-Head" :class="{'ConfirmCss': isConfirm}">
         <i ref="img_Head">
-          <img :class="{'imgRotate' : isRotate}"
-               ref="top_img"
-               radius="6"
-               :src="photo_img" />
+          <img :class="{'imgRotate' : isRotate}" ref="top_img" radius="6" :src="photo_img" />
         </i>
-
       </div>
       <div class="head-icon">
         <p class="title">{{ isTitle }}</p>
         <p class="icon"></p>
       </div>
       <BaseRouterTransition>
-        <p class="title tip"
-           v-show="isConfirm">满足以下要求，结果更准确</p>
+        <p class="title tip" v-show="isConfirm">满足以下要求，结果更准确</p>
       </BaseRouterTransition>
-      <div class="need"
-           v-show="isConfirm">
+      <div class="need" v-show="isConfirm">
         <div class="item">正面</div>
         <div class="item">五官清晰</div>
         <div class="item">不戴眼镜</div>
@@ -36,54 +29,44 @@
         <div class="item">无刘海遮挡</div>
       </div>
       <BaseRouterTransition>
-        <div class="need-confirm"
-             v-show="!isConfirm">
+        <div class="need-confirm" v-show="!isConfirm">
           <div class="need-confirm-content">
             <p>
               头部姿势：
               <span>正面</span>
-              <img :src="tip_img.correct"
-                   alt />
+              <img :src="tip_img.correct" alt />
             </p>
             <p>
               左眼状态：
               <span>睁眼，未戴眼镜</span>
-              <img :src="tip_img.correct"
-                   alt />
+              <img :src="tip_img.correct" alt />
             </p>
             <p>
               右眼状态：
               <span>睁眼，未戴眼镜</span>
-              <img :src="tip_img.correct"
-                   alt />
+              <img :src="tip_img.correct" alt />
             </p>
           </div>
         </div>
       </BaseRouterTransition>
-      <div class="photograph-btn"
-           v-show="isConfirm">
-        <van-uploader class="button"
-                      :after-read="afterRead">
-          <van-button class="button-div btn_photo_bg"
-                      id="btn_photo"
-                      type="primary">
-            <van-icon color="#84FF00"
-                      size="4vw"
-                      name="photograph" />拍照/上传照片
+      <div class="photograph-btn" v-show="isConfirm">
+        <van-uploader class="button" :after-read="afterRead">
+          <van-button class="button-div btn_photo_bg" id="btn_photo" type="primary">
+            <van-icon color="#84FF00" size="4vw" name="photograph" />拍照/上传照片
           </van-button>
         </van-uploader>
         <p>HTTP://WWW.MYREAL3D.COM</p>
       </div>
 
       <BaseRouterTransition>
-        <div class="bottom_btn"
-             v-show="!isConfirm">
+        <div class="bottom_btn" v-show="!isConfirm">
           <div class="button button-conf">
-            <van-button class="button-div btn_photo_bg btn_photo_color"
-                        @click="handleBtnAgain"
-                        type="primary">重新上传</van-button>
-            <van-button class="button-div button-cancel btn_photo_bg"
-                        @click="handleBtnConfirm">确认上传</van-button>
+            <van-button
+              class="button-div btn_photo_bg btn_photo_color"
+              @click="handleBtnAgain"
+              type="primary"
+            >重新上传</van-button>
+            <van-button class="button-div button-cancel btn_photo_bg" @click="handleBtnConfirm">确认上传</van-button>
           </div>
           <p>HTTP://WWW.MYREAL3D.COM</p>
         </div>
@@ -99,6 +82,7 @@ import { imgCosupload, ImgUrlBeauty } from '../../api/app.js'
 import { mapActions, mapState } from 'vuex'
 import { Toast, Dialog } from 'vant'
 import imgExif from '../../mixin/imgExif'
+import axios from 'axios'
 export default {
   data() {
     return {
@@ -189,7 +173,7 @@ export default {
     img_success(data, this_, Toast1, imgContent) {
       const image = comm_fun.img_location(data)
       // "version": 1, "data": {"image": "http://domain.jpg"}
-      const { channel_id, instance_id, client } = this_.parmes_url
+      const { channel_id, instance_id, client, open_id } = this_.parmes_url
       console.log(this_.parmes_url)
       var parmes_data = {
         version: 1,
@@ -200,26 +184,48 @@ export default {
           client,
         }
       }
+      if (open_id !== undefined) {
+        parmes_data.data['open_id'] = open_id
+      }
 
       ImgUrlBeauty(parmes_data).then(res => {
         console.log(res)
         Toast1.clear();
         if (res.code === 0) {
-          const { instance, original_id, result } = res.data
+          let { instance, original_id, result, user_channel_id } = res.data
           this.$router.push({ name: 'analysisnew' })
           this.isReload({
             parmes_data: parmes_data.data,
             instance,
             original_id,
             result,
-            imgContent
+            imgContent,
+            user_channel_id
           })
-
         } else {
+          // let this_ = this
+          // axios.get('./response.json').then(res => {
+          //   console.log(res)
+          //   let { instance, original_id, result, user_channel_id } = res.data.data
+          //   this_.isReload({
+          //     parmes_data: parmes_data.data,
+          //     instance,
+          //     original_id,
+          //     result,
+          //     imgContent,
+          //     user_channel_id
+          //   })
+
+          //   setTimeout(() => {
+          //     this.$router.push({ name: 'analysisnew' })
+          //   }, 3000)
+          // })
+
           alert(JSON.stringify(res))
           Dialog.alert({
             message: '图片上传失败!请重试'
           }).then(() => {
+
             this.$router.push({ name: 'PhotoPage' })
           });
         }
@@ -234,6 +240,7 @@ export default {
     },
     // 用户刷新储存
     isReload(data) {
+      console.log(data)
       this.set_app(data)
       sessionStorage.setItem('app', JSON.stringify(data))
     },
@@ -244,7 +251,7 @@ export default {
       top_img.style.marginLeft = 0
       this.isConfirm = true
       this.isRotate = false
-      this.photo_img = 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/h5/ai/beauty/images/touxiang.png'
+      this.photo_img = require('../../assets/images02/photograph/touxiang.png')
     }
   }
 }

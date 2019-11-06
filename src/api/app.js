@@ -29,3 +29,27 @@ export function ImgUrlBeauty(data) {
     data
   })
 }
+// 判断用户是否已经绑定过
+export function wxgetreport(data){
+  return request({
+    url: 'http://core-service.myreal3d.com/api/wxgetreport',
+    method: 'POST',
+    data
+  })
+}
+// 获取验证码
+export function getSendCode(data){
+  return request({
+    url: 'http://core-service.myreal3d.com/api/sendcode',
+    method: 'POST',
+    data
+  })
+}
+// 用戶綁定 提交信息 /api/ai/bind
+export function userBindInfo(data){
+  return request({
+    url: '/api/ai/bind',
+    method: 'POST',
+    data
+  })
+}
