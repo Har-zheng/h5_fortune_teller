@@ -11,6 +11,7 @@ export default {
           try {
             if (data.hasOwnProperty('exif')) {
               var orientation = data.exif.get('Orientation')
+              console.log(orientation)
               if (orientation === 6) {
                 this_.isRotate = true
               }
