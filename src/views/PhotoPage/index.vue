@@ -13,7 +13,7 @@
       </p>
       <div class="img-Head" :class="{'ConfirmCss': isConfirm}">
         <div class="ios_bug" ref="img_Head">
-          <img :class="{'imgRotate' : isRotate}" ref="top_img" radius="6" :src="photo_img" />
+          <img :class="{'imgRotate' : isRotate}" id="imgElement" ref="top_img" radius="6" :src="photo_img" />
         </div>
         <!-- <div class="logo" style="margin-top: -10px;">
           <img src="../../assets/images02/photograph/LOGO_cc.png" alt />
@@ -254,8 +254,10 @@ export default {
       const top_img = this.$refs.top_img
       top_img.style.left = 0
       top_img.style.marginLeft = 0
+      top_img.style.transform = 'rotate(0deg)'
       this.isConfirm = true
       this.isRotate = false
+
       this.photo_img = require('../../assets/images02/photograph/touxiang.png')
     }
   }
@@ -266,8 +268,7 @@ export default {
   background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   color: #fff;
   background-color: #001037;
@@ -512,7 +513,7 @@ export default {
 
   .ios_bug {
     position: relative;
-    width: 310px;
+    width: 270px;
     height: 270px;
     overflow: hidden;
     display: inline-block;

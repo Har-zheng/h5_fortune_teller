@@ -1,30 +1,64 @@
 import loadImage from 'blueimp-load-image'
+import EXIF from 'exif-js'
 export default {
   methods: {
     // 1 获取 file 图片的 源信息
     getImgExif(file) {
       const this_ = this
-      loadImage(
-        file.file,
-        function (img, data) {
-          // console.log(data)
-          try {
-            if (data.hasOwnProperty('exif')) {
-              console.log(data.exif)
-              var orientation = data.exif.get('Orientation')
-              console.log(orientation)
-              if (orientation === 6) {
-                this_.isRotate = true
-              }
-            }
-          } catch (error) {
-            console.log(error)
-          }
-        }, {
-          meta: true
-        }
-      )
-      // this.imgPosition()
+      const top_img = this.$refs.top_img
+      // 读取img 中的exif 信息  被旋转   Orientation 对应如下
+      /*
+          0°	        1
+          顺时针90°	  6
+          逆时针90°	  8
+          180°	      3
+          .imgRotate {
+      transform: rotate(-90deg);
+    }
+      */
+     setTimeout(function () {
+      EXIF.getData(file.file, function () {
+        console.log(EXIF.getAllTags(this))
+        let Orientation = EXIF.getTag(this, 'Orientation')
+        console.log(Orientation)
+        // switch (Orientation) {
+        //   case 6:
+        //     top_img.style.transform = 'rotate(-90deg)'
+        //     break;
+        //   case 8:
+        //     top_img.style.transform = 'rotate(90deg)'
+        //     break;
+        //   case 3:
+        //     top_img.style.transform = 'rotate(180deg)'
+        //     break;
+        //   default:
+        //     break;
+        // }
+      })
+     },1000)
+
+
+      // loadImage(
+      //   file.file,
+      //   function (img, data) {
+      //     // console.log(data)
+      //     try {
+      //       if (data.hasOwnProperty('exif')) {
+      //         console.log(data.exif)
+      //         var orientation = data.exif.get('Orientation')
+      //         console.log(orientation)
+      //         if (orientation === 1) {
+      //           this_.isRotate = true
+      //         }
+      //       }
+      //     } catch (error) {
+      //       console.log(error)
+      //     }
+      //   }, {
+      //   meta: true
+      // }
+      // )
+      this.imgPosition()
     },
     imgPosition() {
       setTimeout(() => {
@@ -57,7 +91,6 @@ export default {
           swipe_img[index].style.position = 'absolute'
           swipe_img[index].style.left = '50%'
           swipe_img[index].style.marginLeft = `-${swipe_img_width / 2}px`
-
         })
 
       }, 100)

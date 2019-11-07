@@ -235,8 +235,7 @@ export default {
   background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   color: #fff;
   background-color: #001037;
