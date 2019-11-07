@@ -7,7 +7,7 @@ export default {
       loadImage(
         file.file,
         function (img, data) {
-          console.log(data)
+          // console.log(data)
           try {
             if (data.hasOwnProperty('exif')) {
               var orientation = data.exif.get('Orientation')
