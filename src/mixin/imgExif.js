@@ -10,6 +10,7 @@ export default {
           // console.log(data)
           try {
             if (data.hasOwnProperty('exif')) {
+              console.log(data.exif)
               var orientation = data.exif.get('Orientation')
               console.log(orientation)
               if (orientation === 6) {
