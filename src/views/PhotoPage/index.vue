@@ -1,7 +1,9 @@
 <template>
   <div class="home">
     <div class="bg-img">
-      <img src="../../assets/images02/photograph/ic_logo2.png" />
+      <div class="ios_bug_style">
+        <img src="../../assets/images02/photograph/ic_logo2.png" />
+      </div>
     </div>
     <div class="conetnt">
       <p class="title">
@@ -10,9 +12,12 @@
         <span>{{ title2 }}</span>
       </p>
       <div class="img-Head" :class="{'ConfirmCss': isConfirm}">
-        <i ref="img_Head">
+        <div class="ios_bug" ref="img_Head">
           <img :class="{'imgRotate' : isRotate}" ref="top_img" radius="6" :src="photo_img" />
-        </i>
+        </div>
+        <!-- <div class="logo" style="margin-top: -10px;">
+          <img src="../../assets/images02/photograph/LOGO_cc.png" alt />
+        </div>-->
       </div>
       <div class="head-icon">
         <p class="title">{{ isTitle }}</p>
@@ -261,17 +266,27 @@ export default {
   background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
   width: 100%;
   color: #fff;
   background-color: #001037;
 }
 .bg-img {
-  z-index: 1;
-  padding: 50px 20px;
-  text-align: right;
-  img {
+  padding: 32px 20px;
+  width: 100%;
+  height: 80px;
+  position: relative;
+  .ios_bug_style {
+    margin: 0 auto;
+    width: 190px;
     height: 80px;
+    position: absolute;
+    right: 70px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 
@@ -482,21 +497,47 @@ export default {
   background: url("../../assets/images02/photograph/photo02.png") no-repeat;
   background-size: 100%;
 
-  img {
-    height: 260px;
-    border-radius: 8px;
-    margin-top: 24px;
-  }
-  .imgRotate {
-    transform: rotate(-90deg);
-  }
-  i {
+  //  .img-radio {
+  //           width: 220px;
+  //           height: 220px;
+  //           overflow: hidden;
+  //           display: inline-block;
+  //           border-radius: 50%;
+  //           img {
+  //             height: 100%;
+  //             text-align: center;
+  //             margin: 0 auto;
+  //           }
+  //         }
+
+  .ios_bug {
     position: relative;
-    display: inline-block;
-    width: 266px;
-    height: 290px;
+    width: 310px;
+    height: 270px;
     overflow: hidden;
+    display: inline-block;
     border-radius: 8px;
+    margin: 0 auto;
+    margin-top: 16px;
+    img {
+      height: 100%;
+      text-align: center;
+      margin: 0 auto;
+    }
+    // margin-top: 10px;
+    // .van-image {
+    //   width: 266px;
+    //   height: 260px;
+    //   .van-image__img {
+    //     height: 260px;
+    //     border-radius: 8px;
+    //     margin-top: 24px;
+    //   }
+    // }
+
+    .imgRotate {
+      transform: rotate(-90deg);
+    }
   }
 }
 .ConfirmCss {

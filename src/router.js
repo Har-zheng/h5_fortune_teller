@@ -13,7 +13,7 @@ export default new Router({
       name: 'home',
       component:Page,
       redirect: {
-        name: 'faceStart'
+        name: 'bootpage'
       },
       children: [{
           path: '/PhotoPage',

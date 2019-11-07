@@ -12,16 +12,21 @@
       <div class="img-Head">
         <i :src="photo_img">
           <div class="bg" ref="img_Head">
-            <img ref="top_img" radius="8" :src="pro_img" />
+            <!-- <img ref="top_img" radius="8" :src="pro_img" /> -->
+            <van-swipe :autoplay="1000" :show-indicators="false" vertical :touchable="false">
+              <van-swipe-item v-for="(item ,index) in swper" :key="index">
+                <img ref="swipe_img" radius="8" :src="item" />
+              </van-swipe-item>
+            </van-swipe>
           </div>
         </i>
-        <div class="feature">
+        <!-- <div class="feature">
           <van-swipe :autoplay="1000" :show-indicators="false" vertical :touchable="false">
             <van-swipe-item v-for="(item ,index) in swper" :key="index">
               <img ref="swipe_img" radius="8" :src="item" />
             </van-swipe-item>
           </van-swipe>
-        </div>
+        </div>-->
       </div>
       <div class="head-icon">
         <p class="title">{{title3}}</p>
@@ -86,7 +91,8 @@ import { mapState } from 'vuex'
 import { img_location } from '../../utils/CommonFunction'
 import imgExif from '../../mixin/imgExif'
 import { wxgetreport } from '../../api/app'
-const h001 = require('../../assets/images02/haiwang/001.jpg')
+// const h001 = require('../../assets/images02/haiwang/001.jpg')
+const h001 = require('../../assets/images02/haiwang/test@2x.jpg')
 const h001_1 = require('../../assets/images02/haiwang/001-1.jpg')
 const h002 = require('../../assets/images02/haiwang/002.jpg')
 const h003 = require('../../assets/images02/haiwang/003.jpg')
@@ -161,7 +167,7 @@ export default {
   mounted() {
     this.pro_img = this.imgContent
     // this.updateStatus()
-    this.getwxgetreport()
+    // this.getwxgetreport()
   },
   methods: {
     errorimg(e) {
@@ -169,7 +175,7 @@ export default {
     },
     // 过场 上传动画
     updateStatus() {
-      this.imgPosition()
+      // this.imgPosition()
       setTimeout(() => {
         this.statusInfoNum = 1
         this.status = 'transtion-two'
@@ -205,11 +211,11 @@ export default {
         });
       } else {
         console.log(this.name)
-        this.$router.push({ name: 'facereport' })
+        // this.$router.push({ name: 'facereport' })
       }
 
     },
-    getwxgetreport(){
+    getwxgetreport() {
       let data = {
         version: 1,
         data: {
@@ -229,7 +235,8 @@ export default {
   background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
-  overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
   width: 100%;
   color: #fff;
   background-color: #001037;
@@ -404,14 +411,36 @@ export default {
   .bg {
     position: relative;
     width: 270px;
-    height: 290px;
-    margin: 0 auto;
+    height: 270px;
     overflow: hidden;
+    display: inline-block;
+    border-radius: 8px;
+    margin: 0 auto;
+    margin-top: 18px;
+    .van-swipe {
+      height: 270px;
+      .van-swipe-item {
+        position: relative;
+        width: 310px !important;
+        height: 270px !important;
+        overflow: hidden;
+        display: inline-block;
+        border-radius: 8px;
+        margin: 0 auto;
+        // margin-top: 16px;
+      }
+      img {
+        height: 100%;
+        text-align: center;
+        margin: 0 auto;
+        position: relative;
+      }
+    }
   }
   img {
-    height: 260px;
-    margin-top: 24px;
-    border-radius: 8px;
+    height: 100%;
+    text-align: center;
+    margin: 0 auto;
   }
   .feature {
     position: absolute;
@@ -425,10 +454,22 @@ export default {
     height: 290px;
     .van-swipe {
       height: 260px;
-      img {
-        margin-top: 0;
+      .van-swipe-item {
+        position: relative;
+        width: 310px !important;
+        height: 270px !important;
+        overflow: hidden;
+        display: inline-block;
         border-radius: 8px;
-        
+        margin: 0 auto;
+        margin-top: 16px;
+      }
+      img {
+        border-radius: 8px;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        margin: 0 auto;
       }
     }
     p {

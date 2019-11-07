@@ -15,7 +15,7 @@
     "dom-to-image": "^2.6.0",
     "eruda": "^1.5.8",
     "face-api.js": "^0.21.0",
-    "html2canvas": "^1.0.0-rc.3",
+    "html2canvas": "^1.0.0-rc.1",
     "jquery": "^3.4.1",
     "postcss-aspect-ratio-mini": "^1.0.1",
     "postcss-cssnext": "^3.1.0",

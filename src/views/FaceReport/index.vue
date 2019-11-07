@@ -21,9 +21,9 @@
             <span>{{ personal_type.describe }}</span>
           </div>
         </div>
-        <a :href="top_img" :download="top_img" class="share_btn">
+        <a :href="screenShotImg" :download="screenShotImg" class="share_btn">
           <div id="share_img">
-            <img :src="screenShotImg" alt />
+            <img :src="screenShotImg" id="shore_img_src" alt />
           </div>
           <van-button class="btn_photo_bg" @click="saveshare">长按保存分享</van-button>
         </a>
@@ -101,11 +101,11 @@
     <div class="test_img">
       <div class="html2_cavars" ref="html2_cavas" id="con">
         <div class="top">
-          <img class="top_img" :src="top_img" alt />
+          <img class="top_img" crossorigin="anonymous" :src="top_img" alt />
           <div class="hand-img">
             <i class="icon_yuan"></i>
             <div class="img-radio">
-              <img :src="parmes_data_img" alt />
+              <img crossorigin="anonymous" :src="parmes_data_img" alt />
             </div>
           </div>
           <i class="redio"></i>
@@ -131,14 +131,14 @@
             </p>
           </div>
           <div class="footer-content">
-            <div class="footer" v-show="!isUser_id">
+            <div class="footer">
               <div class="code">
                 <i></i>
-                <img src="../../assets/images02/photograph/code.png" alt />
+                <img crossorigin="anonymous" src="../../assets/images02/photograph/code.png" alt />
               </div>
               <p class="QR_code">长按识别二维码</p>
               <div class="footer_img">
-                <img :src="qr_code_shore_img" alt />
+                <img crossorigin="anonymous" :src="qr_code_shore_img" alt />
               </div>
               <p class="a_">
                 HTTP://WWW.MYREAL3D.COM
@@ -536,7 +536,7 @@ export default {
         height: 102px;
         position: relative;
         display: inline-block;
-         margin-top: -40px;
+        margin-top: -40px;
         #share_img {
           z-index: 2;
           width: 292px;
@@ -704,19 +704,28 @@ export default {
             background: url("../../assets/images02/photograph/kuang_code.png")
               no-repeat;
             background-size: 100%;
-            width: 230px;
-            height: 230px;
+            width: 240px;
+            height: 240px;
             position: absolute;
             left: 50%;
-            margin-left: -115px;
+            margin-left: -120px;
+            top: -5px;
             z-index: 1;
           }
+          position: relative;
+          width: 230px;
+          height: 230px;
+          // overflow: hidden;
+          display: inline-block;
+          border-radius: 8px;
+          margin: 0 auto;
+          margin-top: 16px;
           img {
+            height: 100%;
+            text-align: center;
+            margin: 0 auto;
             position: relative;
             z-index: 2;
-            width: 220px;
-            height: 220px;
-            margin-top: 4px;
           }
         }
         .QR_code {
@@ -725,10 +734,20 @@ export default {
           margin-top: 60px;
         }
         .footer_img {
-          margin-top: 40px;
+          position: relative;
+          width: 375px;
+          height: 98px;
+          // overflow: hidden;
+          display: inline-block;
+          border-radius: 8px;
+          margin: 0 auto;
+          margin-top: 30px;
           img {
-            width: 357px;
-            height: 98px;
+            height: 100%;
+            text-align: center;
+            margin: 0 auto;
+            position: relative;
+            z-index: 2;
           }
         }
       }
@@ -926,6 +945,11 @@ export default {
         .info {
           background: url("../../assets/images02/photograph/shuoming_kuang2.png")
             no-repeat;
+          min-height: 38.867vw;
+          height: unset;
+          .text {
+            display: inline-block;
+          }
         }
         .text_shore {
           font-size: 36px;
@@ -942,12 +966,35 @@ export default {
       }
       .footer-content {
         .footer {
+          .code {
+            position: relative;
+            width: 310px;
+            height: 270px;
+            overflow: hidden;
+            display: inline-block;
+            border-radius: 8px;
+            margin: 0 auto;
+            margin-top: 16px;
+            img {
+              height: 100%;
+              text-align: center;
+              margin: 0 auto;
+            }
+          }
           margin-top: 0;
           .footer_img {
-            margin-top: 40px;
+            position: relative;
+            width: 310px;
+            height: 90px;
+            overflow: hidden;
+            display: inline-block;
+            border-radius: 8px;
+            margin: 0 auto;
+            margin-top: 16px;
             img {
-              width: 220px !important;
-              height: 70px !important;
+              height: 100%;
+              text-align: center;
+              margin: 0 auto;
             }
           }
         }

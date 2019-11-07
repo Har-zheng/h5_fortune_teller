@@ -22,7 +22,7 @@ export default {
           meta: true
         }
       )
-      this.imgPosition()
+      // this.imgPosition()
     },
     imgPosition() {
       setTimeout(() => {
@@ -58,7 +58,7 @@ export default {
 
         })
 
-      }, 10)
+      }, 100)
     }
   }
 }
