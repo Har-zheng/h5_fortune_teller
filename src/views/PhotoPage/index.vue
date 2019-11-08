@@ -141,10 +141,9 @@ export default {
     // 确认 上传
     handleBtnConfirm() {
       console.log('上传')
-      // this.$router.push({ name: 'analysisnew' })
+      this.$router.push({ name: 'analysisnew' })
       // this.$router.push({ name: 'analysisnew' })
       // console.log(imgCosupload)
-
       // 上传图片前先进行图片压缩操作
       this.uploadImg(this.file, this.Orientation).then(res => {
         this.dataFileZip = res
@@ -263,9 +262,9 @@ export default {
   background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
-  // overflow: hidden;
-  overflow-y: scroll;
-  overflow-x: hidden;
+  overflow: hidden;
+  // overflow-y: scroll;
+  // overflow-x: hidden;
   width: 100%;
   color: #fff;
   background-color: #001037;

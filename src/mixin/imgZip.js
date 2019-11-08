@@ -1,4 +1,3 @@
-import $ from 'jquery'
 export default {
 
   methods: {
@@ -12,7 +11,7 @@ export default {
         } = imgElement
         let exif_clientWidth = null,
           exif_clientHeight = null
-        if (Orientation === 6 || Orientation === 8) {
+        if (Orientation*1 === 6 || Orientation*1 === 8) {
           exif_clientWidth = clientHeight
           exif_clientHeight = clientWidth
         } else {
@@ -38,28 +37,33 @@ export default {
             canvas.height = exif_clientHeight * 2
             let x = 0,
               y = 0
-            x = -exif_clientWidth * 2
-            y = -exif_clientWidth * 2
+
+            console.log(Orientation)
             switch (Orientation) {
-              case 1:
-                context.rotate(-Math.PI / 2)
-                // context.translate(-exif_clientWidth / 2, -exif_clientHeight / 2)
-                console.log(Orientation)
-                break;
               case 8:
-                context.rotate(90)
+                // 逆时针旋转90度  参考 https://segmentfault.com/a/1190000016535556
+                context.rotate(-Math.PI / 2)
+                x = -exif_clientWidth * 2
+                // context.rotate(3 * 90 * Math.PI / 180)
+                break;
+              case 6:
+                // 顺时针旋转90度
+                context.rotate(90 * Math.PI / 180)
+                y = - exif_clientHeight * 2
+                break;
+              case 3:
+                // 顺时针旋转180度
+                context.rotate(Math.PI)
+                x = -exif_clientWidth * 2
+                y = -exif_clientHeight * 2
                 break;
               default:
                 break;
             }
-
-
             /* drawImage画布绘制的方法。(0,0)表示以Canvas画布左上角为起点，400，300是将图片按给定的像素进行缩小。
             如果不指定缩小的像素图片将以图片原始大小进行绘制，图片像素如果大于画布将会从左上角开始按画布大小部分绘制图片，最后的图片就是张局部图。*/
-            context.drawImage(img, 0, 0, exif_clientWidth * 2, exif_clientHeight * 2, 0, 0, exif_clientWidth * 2, exif_clientHeight * 2)
+            context.drawImage(img, x, y, exif_clientWidth * 2, exif_clientHeight * 2)
             // 将绘制完成的图片重新转化为base64编码，file.file.type为图片类型，0.92为默认压缩质量
-
-
             file.content = canvas.toDataURL(file.file.type, 0.92)
             // console.log(file)
             function dataURLtoFile(dataurl, filename) {
@@ -75,14 +79,13 @@ export default {
                 type: mime
               });
             }
-            const dataFile = await dataURLtoFile(file.content, `yasuo_.jpg`)
+            const dataFile = await dataURLtoFile(file.content, `zip_img.jpg`)
             console.log(dataFile)
             resolve({
               content: file.content,
               file: dataFile
             })
             this.dataFileZip = dataFile
-            $('body').append(canvas)
           }
 
         } else {

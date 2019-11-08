@@ -1,7 +1,9 @@
 <template>
   <div class="report">
     <div class="top">
-      <img class="top_img" :src="top_img" alt />
+      <img class="top_img"
+           :src="top_img"
+           alt />
       <p class="line">
         <span>WHO AM I</span>
       </p>
@@ -21,11 +23,16 @@
             <span>{{ personal_type.describe }}</span>
           </div>
         </div>
-        <a :href="screenShotImg" :download="screenShotImg" class="share_btn">
+        <a :href="screenShotImg"
+           :download="screenShotImg"
+           class="share_btn">
           <div id="share_img">
-            <img :src="screenShotImg" id="shore_img_src" alt />
+            <img :src="screenShotImg"
+                 id="shore_img_src"
+                 alt />
           </div>
-          <van-button class="btn_photo_bg" @click="saveshare">长按保存分享</van-button>
+          <van-button class="btn_photo_bg"
+                      @click="saveshare">长按保存分享</van-button>
         </a>
         <p class="a_">
           HTTP://WWW.MYREAL3D.COM
@@ -34,25 +41,27 @@
         <p class="middle-title"></p>
       </div>
       <div class="footer-content">
-        <div class="top" :style="{ 'z-index': 99}">
+        <div class="top"
+             :style="{ 'z-index': 99}">
           <div class="hand-img">
             <i class="icon_yuan"></i>
-            <div class="img-radio" ref="img_Head">
-              <img ref="top_img" :src="parmes_data_img" alt />
+            <div class="img-radio"
+                 ref="img_Head">
+              <img ref="top_img"
+                   :src="parmes_data_img"
+                   alt />
             </div>
           </div>
           <p class="part_title">部位分析</p>
           <p class="item_p">
-            <span class="title_span">{{ head_position[0].full_name }}</span>
-            <span class="title_text">{{ head_position[0].explanation['D'] }}</span>
+            <span class="title_span">{{ head_position_all[0].full_name }}</span>
+            <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span>
           </p>
         </div>
-        <div
-          class="footer-middle"
-          v-for="(item,index) in  head_position_new"
-          :key="index"
-          :style="{ 'z-index': head_position_new.length-index }"
-        >
+        <div class="footer-middle"
+             v-for="(item,index) in  head_position_new"
+             :key="index"
+             :style="{ 'z-index': head_position_new.length-index }">
           <div class="bg_img">
             <p class="item_p">
               <span class="title_span">{{ item.full_name }}</span>
@@ -61,51 +70,68 @@
           </div>
         </div>
 
-        <div class="user_info" v-show="!isUser_id">
+        <div class="user_info"
+             v-show="!isUser_id">
           <p class="p1">鼻基底、下颌、皱纹... ...</p>
           <p class="p2">更多面部详细参数点击获取</p>
           <div class="from">
             <p class="from_p">
               <label for="name">昵称:</label>
-              <input type="text" v-model="name" />
+              <input type="text"
+                     v-model="name" />
             </p>
             <p class="from_p">
               <label for="number">电话:</label>
-              <input type="number" v-model="number" />
+              <input type="number"
+                     v-model="number" />
             </p>
             <p class="from_p from_code">
-              <input type="number" v-model="code_num" placeholder="填写验证码" />
+              <input type="number"
+                     v-model="code_num"
+                     placeholder="填写验证码" />
               <button @click="handlegetCode">{{ btn_text }}</button>
             </p>
             <div class="receive">
-              <van-button class="btn_photo_bg" @click="handleSubmitInfo">确认提交</van-button>
+              <van-button class="btn_photo_bg"
+                          @click="handleSubmitInfo">确认提交</van-button>
             </div>
           </div>
         </div>
-        <div class="footer" v-show="isUser_id">
+        <div class="footer"
+             v-show="isUser_id">
           <p class="a_">
             HTTP://WWW.MYREAL3D.COM
             <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
           </p>
           <div class="code">
             <i></i>
-            <img src="../../assets/images02/photograph/code.png" alt />
+            <img src="../../assets/images02/photograph/code.png"
+                 alt />
           </div>
           <p class="QR_code">长按识别二维码</p>
           <div class="footer_img">
-            <img :src="qr_code_img" alt />
+            <img :src="qr_code_img"
+                 alt />
           </div>
         </div>
       </div>
     </div>
     <div class="test_img">
-      <div class="html2_cavars" ref="html2_cavas" id="con">
+      <div class="html2_cavars"
+           ref="html2_cavas"
+           id="con">
         <div class="top">
-          <img class="top_img" crossorigin="anonymous" :src="top_img" alt />
+          <img class="top_img"
+               crossorigin="anonymous"
+               :src="top_img"
+               alt />
           <div class="hand-img">
             <i class="icon_yuan"></i>
             <div class="img-radio">
-              <img crossorigin="anonymous" ref="canvas_top_img" :src="parmes_data_img" alt />
+              <img crossorigin="anonymous"
+                   ref="canvas_top_img"
+                   :src="parmes_data_img"
+                   alt />
             </div>
           </div>
           <i class="redio"></i>
@@ -134,11 +160,15 @@
             <div class="footer">
               <div class="code">
                 <i></i>
-                <img crossorigin="anonymous" src="../../assets/images02/photograph/code.png" alt />
+                <img crossorigin="anonymous"
+                     src="../../assets/images02/photograph/code.png"
+                     alt />
               </div>
               <p class="QR_code">长按识别二维码</p>
               <div class="footer_img">
-                <img crossorigin="anonymous" :src="qr_code_shore_img" alt />
+                <img crossorigin="anonymous"
+                     :src="qr_code_shore_img"
+                     alt />
               </div>
               <p class="a_">
                 HTTP://WWW.MYREAL3D.COM
@@ -167,10 +197,12 @@ const h007 = require('../../assets/images02/haiwang/007.jpg')
 const h008 = require('../../assets/images02/haiwang/008.jpg')
 import html2cavas from './mixin/html2cavas'
 import imgExif from '../../mixin/imgExif'
+import { log } from 'util'
 export default {
   mixins: [html2cavas, imgExif],
   data() {
     return {
+      onle_one: [],
       head_position: [
         {
           degree: "适度",
@@ -187,7 +219,21 @@ export default {
         }
       ],
       // 需要填写信息 获取到所有信息
-      head_position_all: [],
+      head_position_all: [
+        {
+          degree: "适度",
+          explanation: {
+            C: "",
+            D: ""
+          },
+          full_name: "鼻梁适度",
+          is_defect: 0,
+          label_id: 254,
+          label_number: "p2_004_005_3",
+          name: "鼻梁",
+          solutions: [],
+        }
+      ],
       overview: '你的长相就是人们口中传颂的海王鼻基底挺拔的你是个自信有想法且有征服欲望的人，两颞饱满让你有敏捷的思维，更好的理清和把控两性关系，眼睛下方的卧蚕让你更加迷人，大多数异性见了你都会被你的双眼深深吸引，你知道你自己有多么迷人，并且持续的散发着魅力，感情中你能够占据主导地位，拥有着号令整个海洋的潜力。你的目标不是一片小小的鱼塘，而是广阔的星辰大海。',
       top_img: require('../../assets/images02/photograph/timg01.jpg'),
       attribute: '海王',
@@ -199,7 +245,8 @@ export default {
       btn_text: '获取验证码',
       name: '',
       number: '',
-      code_num: ''
+      code_num: '',
+      isSubmit: false
     }
   },
   computed: {
@@ -207,6 +254,8 @@ export default {
       return this.head_position.filter((element, index) => {
         if (index !== 0) {
           return element
+        } else {
+          this.onle_one = element
         }
       })
     },
@@ -269,8 +318,8 @@ export default {
         });
         return
       }
-      if(isSubmit) return
-      
+      console.log(this.isSubmit)
+      if (this.isSubmit) return
       let user_info = {
         version: 1,
         data: {
@@ -288,16 +337,21 @@ export default {
       // "open_id": "asdasdadsdasdas",
       this.isSubmit = false
       userBindInfo(user_info).then(res => {
-        this.isSubmit =  true
+
         console.log(res)
         if (res.code === 0) {
+          this.isSubmit = true
           const user_data = res.data
           this.head_position = []
-          this.head_position = this.head_position_all
+          this.$set(this.head_position, this.head_position_all)
+          // this.head_position = this.head_position_all
           this.isUser_id = true
           console.log(this.head_position)
           //防止 刷新当前页面 已提交user info 丢失
           sessionStorage.setItem('user_data', JSON.stringify(user_data))
+        } else {
+          this.isSubmit = true
+          alert(JSON.stringify(res))
         }
       })
     },
@@ -326,14 +380,17 @@ export default {
         const se = item.labels.filter((label_item, label_index) => {
           return item.selected_label_id === label_item.label_id
         })
-        // console.log(se)
+        console.log(se)
         if (se[0].explanation === null) {
           se[0].explanation = {
             "C": '',
             "D": ''
           }
         }
-        sele_item.push(se[0])
+        if (se[0].length !== 0 && se[0].is_defect === -1 && se[0].hasOwnProperty('explanation') && se[0].explanation !== null && se[0].explanation.D !== '') {
+          console.log(se[0])
+          sele_item.push(se[0])
+        }
       })
       this.head_position_all = sele_item
       const user_data = JSON.parse(sessionStorage.getItem('user_data'))
@@ -343,7 +400,7 @@ export default {
         console.log(this.original_id)
         this.isUser_id = true
         this.head_position = this.head_position_all
-      } else {
+      } else if(this.head_position_all.length >= 3){
         for (let i = 0; i < 3; i++) {
           this.head_position[i] = this.head_position_all[i]
         }
