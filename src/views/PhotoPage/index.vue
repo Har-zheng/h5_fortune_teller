@@ -11,9 +11,10 @@
         <span>{{ title }}</span>
         <span>{{ title2 }}</span>
       </p>
-      <div class="img-Head" :class="{'ConfirmCss': isConfirm}">
+      <div class="img-Head">
+        <div class="img-Head-bg" :class="{'ConfirmCss': isConfirm}"></div>
         <div class="ios_bug" ref="img_Head">
-          <img :class="{'imgRotate' : isRotate}" id="imgElement" ref="top_img" radius="6" :src="photo_img" />
+          <img id="imgElement" ref="top_img" radius="6" :src="photo_img" />
         </div>
         <!-- <div class="logo" style="margin-top: -10px;">
           <img src="../../assets/images02/photograph/LOGO_cc.png" alt />
@@ -87,6 +88,7 @@ import { imgCosupload, ImgUrlBeauty } from '../../api/app.js'
 import { mapActions, mapState } from 'vuex'
 import { Toast, Dialog } from 'vant'
 import imgExif from '../../mixin/imgExif'
+import imgZip from '../../mixin/imgZip'
 import axios from 'axios'
 export default {
   data() {
@@ -101,10 +103,12 @@ export default {
         warning: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAM1BMVEUAAAD7ZAD6ZAD7ZAD9YwD7ZAD8ZAD5YQD7ZAD7ZAD7ZAD6ZAD7ZAD7ZAD8ZAD7ZAD7ZADc5bCPAAAAEHRSTlMA6gzDN5dwGNC0ot6BWCRIgBgKRwAAAQpJREFUOMu9lNt2hCAMRUmUi4BO/v9rOx2HniG6CH1o91v0cMkWcf8KeyLPk9kkT9JcOsuLPJNd5c3qbFILJzu7yw+72R0hTFaPVT6o42yUjmhrA3lC2xLCYutbMJ8/h5na+KXF0MelzYZVCg+06bDUsTY6Sxrq851dbpW/19Z49OV6q60Rvssgje2afUgDnrGS4tQGHRvqorNBAKnBEpQ2UoeNP2uKd9rQ/4FK6VOvZH/3Cw4HNumoMaIH6IM2A+hLYpKgrYeee96hp9PH+vmKs3G5F6pe8X5vFdpU5zAEDjzUCzJdJ8HegMc3Vb1kUeDe0GRHMg05+QX4m2wWNDgCJ9cXmaD4w/0dXyVhOsjXZsVVAAAAAElFTkSuQmCC',
       },
       file: null,
-      isRotate: false
+      isRotate: false,
+      dataFileZip: null,
+      Orientation: ''
     }
   },
-  mixins: [imgExif],
+  mixins: [imgExif, imgZip],
   components: {
     BaseRouterTransition
   },
@@ -115,7 +119,8 @@ export default {
   },
   methods: {
     ...mapActions([
-      'set_app'
+      'set_app',
+      'set_beauty_info'
     ]),
     afterRead(file) {
       // 此时可以自行将文件上传至服务器
@@ -131,19 +136,27 @@ export default {
       this.isTitle = '确认照片'
       this.isConfirm = false
       this.getImgExif(file)
+
     },
     // 确认 上传
     handleBtnConfirm() {
       console.log('上传')
       // this.$router.push({ name: 'analysisnew' })
+      // this.$router.push({ name: 'analysisnew' })
       // console.log(imgCosupload)
+
+      // 上传图片前先进行图片压缩操作
+      this.uploadImg(this.file, this.Orientation).then(res => {
+        this.dataFileZip = res
+      })
+
       // 自定义加载图标
-      const Toast1 = Toast.loading({
-        duration: 0, // 持续展示 toast
-        message: '图片正在上传...',
-        forbidClick: true,
-        loadingType: 'spinner'
-      });
+      // const Toast1 = Toast.loading({
+      //   duration: 0, // 持续展示 toast
+      //   message: '图片正在上传...',
+      //   forbidClick: true,
+      //   loadingType: 'spinner'
+      // });
       imgCosupload({ version: 1 }).then(res => {
         const data = res.data
         console.log(data)
@@ -158,7 +171,7 @@ export default {
             })
           }
         })
-        var file_data = this.file
+        var file_data = this.dataFileZip
         var this_ = this
         if (!file_data) return
         cos.putObject({
@@ -168,14 +181,14 @@ export default {
           Body: file_data.file
         }, function (err, data) {
           if (data) {
-            this_.img_success(data, this_, Toast1, file_data.content)
+            this_.img_success(data, this_, file_data.content)
           }
           console.log(err || data)
         })
       })
     },
     // 上传成功后 通知url到后台
-    img_success(data, this_, Toast1, imgContent) {
+    img_success(data, this_, imgContent) {
       const image = comm_fun.img_location(data)
       // "version": 1, "data": {"image": "http://domain.jpg"}
       const { channel_id, instance_id, client, open_id } = this_.parmes_url
@@ -195,10 +208,11 @@ export default {
 
       ImgUrlBeauty(parmes_data).then(res => {
         console.log(res)
-        Toast1.clear();
+        // Toast1.clear();
         if (res.code === 0) {
           let { instance, original_id, result, user_channel_id } = res.data
-          this.$router.push({ name: 'analysisnew' })
+          // this.$router.push({ name: 'analysisnew' })
+          this.set_beauty_info(true)
           this.isReload({
             parmes_data: parmes_data.data,
             instance,
@@ -208,34 +222,15 @@ export default {
             user_channel_id
           })
         } else {
-          // let this_ = this
-          // axios.get('./response.json').then(res => {
-          //   console.log(res)
-          //   let { instance, original_id, result, user_channel_id } = res.data.data
-          //   this_.isReload({
-          //     parmes_data: parmes_data.data,
-          //     instance,
-          //     original_id,
-          //     result,
-          //     imgContent,
-          //     user_channel_id
-          //   })
-
-          //   setTimeout(() => {
-          //     this.$router.push({ name: 'analysisnew' })
-          //   }, 3000)
-          // })
-
           alert(JSON.stringify(res))
           Dialog.alert({
             message: '图片上传失败!请重试'
           }).then(() => {
-
             this.$router.push({ name: 'PhotoPage' })
           });
         }
       }).catch(error => {
-        Toast1.clear();
+        // Toast1.clear();
         Dialog.alert({
           message: '图片上传超时!请重试'
         }).then(() => {
@@ -268,7 +263,9 @@ export default {
   background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
-  overflow: hidden;
+  // overflow: hidden;
+  overflow-y: scroll;
+  overflow-x: hidden;
   width: 100%;
   color: #fff;
   background-color: #001037;
@@ -495,9 +492,18 @@ export default {
   width: 310px;
   height: 310px;
   position: relative;
-  background: url("../../assets/images02/photograph/photo02.png") no-repeat;
+  // background: url("../../assets/images02/photograph/photo02.png") no-repeat;
   background-size: 100%;
-
+  .img-Head-bg {
+    z-index: 2;
+    width: 310px;
+    height: 310px;
+    position: absolute;
+    left: 50%;
+    margin-left: -155px;
+    background: url("../../assets/images02/photograph/photo02.png") no-repeat;
+    background-size: 100%;
+  }
   //  .img-radio {
   //           width: 220px;
   //           height: 220px;
@@ -512,6 +518,7 @@ export default {
   //         }
 
   .ios_bug {
+    z-index: 1;
     position: relative;
     width: 270px;
     height: 270px;
@@ -519,7 +526,7 @@ export default {
     display: inline-block;
     border-radius: 8px;
     margin: 0 auto;
-    margin-top: 16px;
+    margin-top: 20px;
     img {
       height: 100%;
       text-align: center;
@@ -540,8 +547,8 @@ export default {
       transform: rotate(-90deg);
     }
   }
-}
-.ConfirmCss {
-  background: none;
+  .ConfirmCss {
+    background: none;
+  }
 }
 </style>

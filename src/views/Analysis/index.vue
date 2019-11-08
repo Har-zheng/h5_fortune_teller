@@ -87,7 +87,7 @@
 <script>
 import BaseRouterTransition from '../../components/BaseRouterTransition'
 import { Dialog } from 'vant';
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 import { img_location } from '../../utils/CommonFunction'
 import imgExif from '../../mixin/imgExif'
 import { wxgetreport } from '../../api/app'
@@ -159,7 +159,18 @@ export default {
     ...mapState({
       image: state => state.app.app.parmes_data.image,
       imgContent: state => state.app.app.imgContent,
+      Beauty_info: state => state.app.Beauty_info,
     })
+  },
+  watch: {
+    Beauty_info: {
+      handler(newVal) {
+        console.log(newVal)
+        if (newVal) {
+          this.$router.push({ name: 'facereport' })
+        }
+      }
+    }
   },
   created() {
     this.updateStatus()
@@ -170,6 +181,9 @@ export default {
     // this.getwxgetreport()
   },
   methods: {
+    ...mapActions([
+      'set_beauty_info'
+    ]),
     errorimg(e) {
       console.log(e)
     },
@@ -191,7 +205,9 @@ export default {
       const is_report = () => {
         setTimeout(() => {
           this.title3 = '报告生成完成，待确认身份'
-          this.$router.push({name: 'facereport'})
+          if (this.Beauty_info) {
+            this.$router.push({ name: 'facereport' })
+          }
           // this.isReport = false
         }, 2000)
       }
@@ -227,6 +243,9 @@ export default {
         console.log(res)
       })
     }
+  },
+  beforeDestroy() {
+    this.set_beauty_info(false)
   }
 }
 </script>

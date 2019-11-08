@@ -37,8 +37,8 @@
         <div class="top" :style="{ 'z-index': 99}">
           <div class="hand-img">
             <i class="icon_yuan"></i>
-            <div class="img-radio">
-              <img :src="parmes_data_img" alt />
+            <div class="img-radio" ref="img_Head">
+              <img ref="top_img" :src="parmes_data_img" alt />
             </div>
           </div>
           <p class="part_title">部位分析</p>
@@ -105,7 +105,7 @@
           <div class="hand-img">
             <i class="icon_yuan"></i>
             <div class="img-radio">
-              <img crossorigin="anonymous" :src="parmes_data_img" alt />
+              <img crossorigin="anonymous" ref="canvas_top_img" :src="parmes_data_img" alt />
             </div>
           </div>
           <i class="redio"></i>
@@ -166,8 +166,9 @@ const h006 = require('../../assets/images02/haiwang/006.jpg')
 const h007 = require('../../assets/images02/haiwang/007.jpg')
 const h008 = require('../../assets/images02/haiwang/008.jpg')
 import html2cavas from './mixin/html2cavas'
+import imgExif from '../../mixin/imgExif'
 export default {
-  mixins: [html2cavas],
+  mixins: [html2cavas, imgExif],
   data() {
     return {
       head_position: [
@@ -223,7 +224,7 @@ export default {
     this.get_all_types()
   },
   mounted() {
-
+    this.getImgExif(this.parmes_data_img)
   },
   methods: {
     handlegetCode() {
@@ -268,6 +269,8 @@ export default {
         });
         return
       }
+      if(isSubmit) return
+      
       let user_info = {
         version: 1,
         data: {
@@ -283,10 +286,13 @@ export default {
         user_info.data['open_id'] = open_id
       }
       // "open_id": "asdasdadsdasdas",
+      this.isSubmit = false
       userBindInfo(user_info).then(res => {
+        this.isSubmit =  true
         console.log(res)
         if (res.code === 0) {
           const user_data = res.data
+          this.head_position = []
           this.head_position = this.head_position_all
           this.isUser_id = true
           console.log(this.head_position)
@@ -302,7 +308,7 @@ export default {
     },
     get_all_types() {
       this.type_num = this.level
-      console.log(this.test)
+
       this.isImage()
       axios.get('./config.json').then(res => {
         const data = res.data
@@ -313,14 +319,14 @@ export default {
         console.log(personal_type)
         this.personal_type = personal_type
       })
-      console.log(this.app)
       console.log(this.customized_features)
       const sele_item = []
       this.customized_features.filter((item, index) => {
+        if (item.selected_label_id === 0) return
         const se = item.labels.filter((label_item, label_index) => {
           return item.selected_label_id === label_item.label_id
         })
-        console.log(se)
+        // console.log(se)
         if (se[0].explanation === null) {
           se[0].explanation = {
             "C": '',
@@ -330,20 +336,15 @@ export default {
         sele_item.push(se[0])
       })
       this.head_position_all = sele_item
-
-
       const user_data = JSON.parse(sessionStorage.getItem('user_data'))
       console.log(user_data)
-      if (user_data !== null) {
+      if (user_data !== null && user_data.image_id === this.original_id) {
         console.log(user_data.image_id)
         console.log(this.original_id)
-        console.log(user_data.image_id === this.original_id)
-        if (user_data.image_id === this.original_id) {
-          this.isUser_id = true
-          this.head_position = this.head_position_all
-        }
+        this.isUser_id = true
+        this.head_position = this.head_position_all
       } else {
-        for (let i = 0; i <= 3; i++) {
+        for (let i = 0; i < 3; i++) {
           this.head_position[i] = this.head_position_all[i]
         }
         console.log(this.head_position)
@@ -586,6 +587,7 @@ export default {
       clear: both;
       padding: 0 17px;
       position: relative;
+      background-color: #04032b;
       .top {
         background: url("../../assets/images02/photograph/buwei_01.png")
           no-repeat;
@@ -606,6 +608,7 @@ export default {
             overflow: hidden;
             display: inline-block;
             border-radius: 50%;
+            position: relative;
             img {
               height: 100%;
               text-align: center;

@@ -37,7 +37,7 @@ export default {
         scale: 1,
         canvas: canvas2,
         useCORS: true,
-        logging: true,
+        logging: false,
         windowWidth: targetDom.scrollWidth,
         windowHeight: targetDom.scrollHeight,
         // scrollX: 0,
@@ -79,7 +79,7 @@ export default {
               })
             }
           })
-          var file_data = dataURLtoFile(base64Url, 'shore')
+          var file_data = dataURLtoFile(base64Url, `${new Date().getTime()}_shore`)
           console.log(file_data)
           var this_ = this
           if (!file_data) return
