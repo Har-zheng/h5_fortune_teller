@@ -21,19 +21,19 @@ export default {
         console.log(EXIF.getAllTags(this))
         let Orientation = EXIF.getTag(this, 'Orientation')
         console.log(Orientation)
-        // switch (Orientation) {
-        //   case 6:
-        //     top_img.style.transform = 'rotate(-90deg)'
-        //     break;
-        //   case 8:
-        //     top_img.style.transform = 'rotate(90deg)'
-        //     break;
-        //   case 3:
-        //     top_img.style.transform = 'rotate(180deg)'
-        //     break;
-        //   default:
-        //     break;
-        // }
+        switch (Orientation) {
+          case 8:
+            top_img.style.transform = 'rotate(-90deg)'
+            break;
+          case 6:
+            top_img.style.transform = 'rotate(90deg)'
+            break;
+          case 3:
+            top_img.style.transform = 'rotate(180deg)'
+            break;
+          default:
+            break;
+        }
       })
      },1000)
 
