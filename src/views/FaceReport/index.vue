@@ -462,7 +462,7 @@ export default {
     .line {
       position: absolute;
       top: 364px;
-      font-size: 128px;
+      font-size: 80px;
       font-weight: 400;
       color: #001a56;
       line-height: 172px;
@@ -475,8 +475,8 @@ export default {
       margin: 0 auto;
       span {
         text-align: center;
-        display: inline;
-        width: 280px;
+        display: block;
+        // width: 280px;
         // margin-left: -140px;
       }
     }
@@ -704,7 +704,7 @@ export default {
           position: absolute;
           right: 0;
           width: 445px;
-          font-size: 22px;
+          font-size: 24px;
           font-weight: 400;
           line-height: 38px;
         }
