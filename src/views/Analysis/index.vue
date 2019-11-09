@@ -1,7 +1,9 @@
 <template>
   <div class="home">
-    <div class="bg-img">
-      <img src="../../assets/images02/photograph/ic_logo2.png" />
+    <div class="logo_img">
+      <div class="bg-img">
+        <img src="../../assets/images02/photograph/LOGO.png" />
+      </div>
     </div>
     <div class="conetnt">
       <p class="title">
@@ -259,15 +261,19 @@ export default {
   color: #fff;
   background-color: #001037;
 }
-.bg-img {
-  z-index: 1;
-  padding: 50px 20px;
+.logo_img {
   text-align: right;
-  img {
-    height: 80px;
+  .bg-img {
+    display: inline-block;
+    z-index: 1;
+    padding: 50px 20px;
+    width: 210px;
+    text-align: right;
+    img {
+      width: 100%;
+    }
   }
 }
-
 .conetnt {
   z-index: 2;
   line-height: 100%;

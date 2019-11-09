@@ -1,9 +1,7 @@
 <template>
   <div class="report">
     <div class="top">
-      <img class="top_img"
-           :src="top_img"
-           alt />
+      <img class="top_img" :src="top_img" alt />
       <p class="line">
         <span>WHO AM I</span>
       </p>
@@ -23,17 +21,12 @@
             <span>{{ personal_type.describe }}</span>
           </div>
         </div>
-        <a :href="screenShotImg"
-           :download="screenShotImg"
-           class="share_btn">
+        <div class="share_btn">
           <div id="share_img">
-            <img :src="screenShotImg"
-                 id="shore_img_src"
-                 alt />
+            <img :src="screenShotImg" id="shore_img_src" alt />
           </div>
-          <van-button class="btn_photo_bg"
-                      @click="saveshare">长按保存分享</van-button>
-        </a>
+          <van-button class="btn_photo_bg" @click="saveshare">长按保存分享</van-button>
+        </div>
         <p class="a_">
           HTTP://WWW.MYREAL3D.COM
           <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
@@ -41,15 +34,11 @@
         <p class="middle-title"></p>
       </div>
       <div class="footer-content">
-        <div class="top"
-             :style="{ 'z-index': 99}">
+        <div class="top" :style="{ 'z-index': 99}">
           <div class="hand-img">
             <i class="icon_yuan"></i>
-            <div class="img-radio"
-                 ref="img_Head">
-              <img ref="top_img"
-                   :src="parmes_data_img"
-                   alt />
+            <div class="img-radio" ref="img_Head">
+              <img ref="top_img" :src="parmes_data_img" alt />
             </div>
           </div>
           <p class="part_title">部位分析</p>
@@ -58,10 +47,12 @@
             <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span>
           </p>
         </div>
-        <div class="footer-middle"
-             v-for="(item,index) in  head_position_new"
-             :key="index"
-             :style="{ 'z-index': head_position_new.length-index }">
+        <div
+          class="footer-middle"
+          v-for="(item,index) in  head_position_new"
+          :key="index"
+          :style="{ 'z-index': head_position_new.length-index }"
+        >
           <div class="bg_img">
             <p class="item_p">
               <span class="title_span">{{ item.full_name }}</span>
@@ -70,77 +61,76 @@
           </div>
         </div>
 
-        <div class="user_info"
-             v-show="!isUser_id">
+        <div class="user_info" v-show="!isUser_id">
           <p class="p1">鼻基底、下颌、皱纹... ...</p>
           <p class="p2">更多面部详细参数点击获取</p>
           <div class="from">
             <p class="from_p">
               <label for="name">昵称:</label>
-              <input type="text"
-                     v-model="name" />
+              <input @blur="ios_blur" type="text" v-model="name" />
             </p>
             <p class="from_p">
               <label for="number">电话:</label>
-              <input type="number"
-                     v-model="number" />
+              <input type="number" @blur="ios_blur" v-model="number" />
             </p>
             <p class="from_p from_code">
-              <input type="number"
-                     v-model="code_num"
-                     placeholder="填写验证码" />
+              <input type="number" v-model="code_num" @blur="ios_blur" placeholder="填写验证码" />
               <button @click="handlegetCode">{{ btn_text }}</button>
             </p>
             <div class="receive">
-              <van-button class="btn_photo_bg"
-                          @click="handleSubmitInfo">确认提交</van-button>
+              <van-button class="btn_photo_bg" @click="handleSubmitInfo">确认提交</van-button>
             </div>
           </div>
         </div>
-        <div class="footer"
-             v-show="isUser_id">
+        <div class="footer" v-show="isUser_id">
           <p class="a_">
             HTTP://WWW.MYREAL3D.COM
             <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
           </p>
           <div class="code">
             <i></i>
-            <img src="../../assets/images02/photograph/code.png"
-                 alt />
+            <img src="../../assets/images02/photograph/code.png" alt />
           </div>
           <p class="QR_code">长按识别二维码</p>
           <div class="footer_img">
-            <img :src="qr_code_img"
-                 alt />
+            <img :src="qr_code_img" alt />
           </div>
+        </div>
+        <div class="BusinessCooperation">
+          <router-link :to="'buscoop'">
+            <p>
+              <img src="../../assets/images02/photograph/BusinessCooperation.png" alt />
+            </p>
+          </router-link>
         </div>
       </div>
     </div>
     <div class="test_img">
-      <div class="html2_cavars"
-           ref="html2_cavas"
-           id="con">
+      <div class="html2_cavars" ref="html2_cavas" id="con">
         <div class="top">
-          <img class="top_img"
-               crossorigin="anonymous"
-               :src="top_img"
-               alt />
-          <div class="hand-img">
+          <img class="top_img" crossorigin="anonymous" :src="top_img" alt />
+          <!-- <div class="hand-img">
             <i class="icon_yuan"></i>
             <div class="img-radio">
-              <img crossorigin="anonymous"
-                   ref="canvas_top_img"
-                   :src="parmes_data_img"
-                   alt />
+              <img crossorigin="anonymous" ref="canvas_top_img" :src="parmes_data_img" alt />
             </div>
-          </div>
+          </div>-->
           <i class="redio"></i>
-          <i class="icon"></i>
+          <!-- <i class="icon"></i> -->
         </div>
         <div class="container">
           <div class="title">
+            <div class="bootm_bg">
+              <span></span>
+              <span></span>
+              <span>
+                <!-- <strong>{{ score }}</strong>
+                <div class="div1">分</div>
+                <div class="div2">颜值魅力值</div>-->
+              </span>
+            </div>
             <i></i>
-            <span>{{ personal_type.title }}</span>
+            <span class="name_title">{{ personal_type.title }}</span>
             <!-- <p>{{ personal_type.title }}</p> -->
           </div>
           <div class="assessment">
@@ -151,29 +141,26 @@
                 <span>{{ personal_type.describe }}</span>
               </div>
             </div>
-            <p class="text_shore">
-              测测你是这片海域的
-              <span color="#fe70c0">哪条鱼?</span>
-            </p>
-          </div>
-          <div class="footer-content">
-            <div class="footer">
-              <div class="code">
-                <i></i>
-                <img crossorigin="anonymous"
-                     src="../../assets/images02/photograph/code.png"
-                     alt />
+            <div class="info">
+              <i class="icon shore_footer">
+                <div class="code">
+                  <i></i>
+                  <img crossorigin="anonymous" src="../../assets/images02/photograph/code.png" alt />
+                </div>
+                <p class="QR_code">长按识别二维码</p>
+              </i>
+              <div class="text shore_footer_text">
+                <div class="text-title">
+                  <div class="codetest">
+                    <img src="../../assets/images02/photograph/codetest.png" alt />
+                  </div>
+                </div>
+                <div class="text-title-login">
+                  <img src="../../assets/images02/photograph/logo2.png" alt />
+                </div>
+                <div class="tit_bg"></div>
+                <div class="tit_bg tit_bg2"></div>
               </div>
-              <p class="QR_code">长按识别二维码</p>
-              <div class="footer_img">
-                <img crossorigin="anonymous"
-                     :src="qr_code_shore_img"
-                     alt />
-              </div>
-              <p class="a_">
-                HTTP://WWW.MYREAL3D.COM
-                <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
-              </p>
             </div>
           </div>
         </div>
@@ -266,7 +253,8 @@ export default {
       gender: state => state.app.app.result.gender,
       test: state => state.app.app.result.test,
       original_id: state => state.app.app.original_id,
-      parmes_data: state => state.app.app.parmes_data
+      parmes_data: state => state.app.app.parmes_data,
+      score: state => state.app.app.result.score,
     })
   },
   created() {
@@ -276,6 +264,10 @@ export default {
     this.getImgExif(this.parmes_data_img)
   },
   methods: {
+    // 失去焦点
+    ios_blur() {
+      window.scroll(0, 0);//失焦后强制让页面归位
+    },
     handlegetCode() {
       if (this.number.length !== 11) {
         Dialog.alert({
@@ -343,10 +335,12 @@ export default {
           this.isSubmit = true
           const user_data = res.data
           this.head_position = []
-          this.$set(this.head_position, this.head_position_all)
-          // this.head_position = this.head_position_all
+          this.head_position = this.head_position_all
           this.isUser_id = true
-          console.log(this.head_position)
+          if (this.head_position_all.length >= 3) {
+            this.head_position[2].explanation['D'] = this.head_position_all[2].explanation['D']
+            this.$set(this.head_position[2].explanation, 'D', this.head_position_all[2].explanation['D'])
+          }
           //防止 刷新当前页面 已提交user info 丢失
           sessionStorage.setItem('user_data', JSON.stringify(user_data))
         } else {
@@ -380,29 +374,30 @@ export default {
         const se = item.labels.filter((label_item, label_index) => {
           return item.selected_label_id === label_item.label_id
         })
-        console.log(se)
+        // console.log(se)
         if (se[0].explanation === null) {
           se[0].explanation = {
             "C": '',
             "D": ''
           }
         }
-        if (se[0].length !== 0 && se[0].is_defect === -1 && se[0].hasOwnProperty('explanation') && se[0].explanation !== null && se[0].explanation.D !== '') {
+        if (se[0].length !== 0 && se[0].hasOwnProperty('explanation') && se[0].explanation !== null && se[0].explanation.D !== '') {
           console.log(se[0])
           sele_item.push(se[0])
         }
       })
       this.head_position_all = sele_item
+      const copy_all = JSON.parse(JSON.stringify(this.head_position_all))
       const user_data = JSON.parse(sessionStorage.getItem('user_data'))
       console.log(user_data)
       if (user_data !== null && user_data.image_id === this.original_id) {
         console.log(user_data.image_id)
         console.log(this.original_id)
         this.isUser_id = true
-        this.head_position = this.head_position_all
-      } else if(this.head_position_all.length >= 3){
+        this.head_position = copy_all
+      } else if (copy_all.length >= 3) {
         for (let i = 0; i < 3; i++) {
-          this.head_position[i] = this.head_position_all[i]
+          this.head_position[i] = copy_all[i]
         }
         console.log(this.head_position)
         this.head_position[2].explanation['D'] = '...... .......'
@@ -557,7 +552,6 @@ export default {
           background: url("../../assets/images02/photograph/dialogue.png")
             no-repeat;
           background-size: 100%;
-
           margin: 30px;
           float: left;
         }
@@ -600,7 +594,7 @@ export default {
           width: 292px;
           height: 102px;
           position: relative;
-          margin-top: -20px;
+          margin-top: -80px;
           // position: absolute;
           top: 165px;
           // opacity: 0;
@@ -644,7 +638,6 @@ export default {
       clear: both;
       padding: 0 17px;
       position: relative;
-      background-color: #04032b;
       .top {
         background: url("../../assets/images02/photograph/buwei_01.png")
           no-repeat;
@@ -667,7 +660,7 @@ export default {
             border-radius: 50%;
             position: relative;
             img {
-              height: 100%;
+              width: 100%;
               text-align: center;
               margin: 0 auto;
             }
@@ -711,7 +704,7 @@ export default {
           position: absolute;
           right: 0;
           width: 445px;
-          font-size: 30px;
+          font-size: 22px;
           font-weight: 400;
           line-height: 38px;
         }
@@ -919,6 +912,21 @@ export default {
       top: 320px;
       right: 0;
     }
+    // 商务合作
+    .BusinessCooperation {
+      margin-top: 30px;
+      position: relative;
+      z-index: 10;
+      p {
+        width: 200px;
+        height: 90px;
+        margin: 0 auto;
+        img {
+          width: 100%;
+          margin: 0 auto;
+        }
+      }
+    }
   }
 
   //   截图截图
@@ -930,8 +938,11 @@ export default {
     // background: url("../../assets/images02/photograph/bg_color.png") no-repeat;
     // background-size: 100% 100%;
     top: 0;
+    // top: 448vw;
+    background-color: #04032b;
   }
   .html2_cavars {
+    background-color: #04032b;
     // margin-top: 134vw;
     // display: none;
     .top {
@@ -949,7 +960,7 @@ export default {
           display: inline-block;
           border-radius: 50%;
           img {
-            height: 100%;
+            width: 100%;
             text-align: center;
             margin: 0 auto;
           }
@@ -971,13 +982,19 @@ export default {
     }
     .container {
       margin-top: -130px;
-      height: 1400px;
+      height: 1010px;
+      background: url("../../assets/images02/photograph/beijing.png") no-repeat;
+      background-size: 100%;
+      z-index: 4;
       .title {
         text-align: center;
         position: relative;
-        top: 45px;
-        margin-top: 120px;
-        padding-top: 56px;
+        // top: 45px;
+        // margin-top: 120px;
+        // padding-top: 56px;
+        top: 140px;
+        margin: 30px 0;
+        margin-top: 20px;
         i {
           background: url("../../assets/images02/photograph/kuang.png")
             no-repeat;
@@ -986,7 +1003,7 @@ export default {
           width: 320px;
           height: 78px;
           position: absolute;
-          top: 56px;
+          top: 30px;
           left: 50%;
           margin-left: -160px;
         }
@@ -999,16 +1016,156 @@ export default {
           color: #1594ff;
           line-height: 172x;
         }
+        .name_title {
+          top: -90px;
+          color: #fff;
+        }
         padding-bottom: 78px;
+        .bootm_bg {
+          span {
+            display: inline-block;
+            width: 100px;
+            height: 90px;
+            // background: url("../../assets/images02/photograph/textm3d.png")
+            //   no-repeat;
+            background-size: 100%;
+          }
+          span:nth-child(2) {
+            width: 420px;
+            height: 120px;
+            background: url("../../assets/images02/photograph/whoami.png")
+              no-repeat;
+            background-size: 100%;
+            margin: 0 6px 0 36px;
+          }
+          span:nth-child(3) {
+            width: 140px;
+            height: 90px;
+            background: none;
+            strong {
+              color: #fa6fbe;
+              font-weight: bold;
+              font-size: 80px;
+            }
+            .div1 {
+              display: inline-block;
+              font-size: 18px;
+            }
+            .div2 {
+              font-size: 12px;
+            }
+          }
+        }
       }
       .assessment {
+        .info:nth-child(1) {
+          margin-top: 40px;
+        }
         .info {
           background: url("../../assets/images02/photograph/shuoming_kuang2.png")
             no-repeat;
           min-height: 38.867vw;
           height: unset;
+          border-radius: 0 30px 30px 30px;
+          margin-bottom: 16px;
+          position: relative;
           .text {
             display: inline-block;
+            float: none;
+          }
+          .icon {
+          }
+          .shore_footer {
+            display: inline-block;
+            // float: none;
+            // margin: 0;
+            .code {
+              position: relative;
+              width: 180px;
+              height: 180px;
+              overflow: hidden;
+              display: inline-block;
+              border-radius: 8px;
+              margin: 0 auto;
+              margin-top: 10px;
+              img {
+                height: 100%;
+                text-align: center;
+                margin: 0 auto;
+              }
+            }
+            background: url("../../assets/images02/photograph/kuang_code.png")
+              no-repeat;
+            background-size: 100%;
+            width: 200px;
+            height: 200px;
+            .QR_code {
+              font-size: 16px;
+              line-height: 16px;
+              margin-top: 18px;
+              color: #636481;
+            }
+            .footer_img {
+              position: relative;
+              width: 375px;
+              height: 98px;
+              // overflow: hidden;
+              display: inline-block;
+              border-radius: 8px;
+              margin: 0 auto;
+              margin-top: 30px;
+              img {
+                height: 100%;
+                text-align: center;
+                margin: 0 auto;
+                position: relative;
+                z-index: 2;
+              }
+            }
+          }
+          .shore_footer_text {
+            width: 420px;
+            position: relative;
+            .codetest {
+              display: inline-block;
+              width: 240px;
+              height: 60px;
+              margin: 0 auto;
+              img {
+                width: 100%;
+                margin: 0 auto;
+              }
+            }
+            .text-title {
+              // display: inline-block;
+            }
+            .text-title:after {
+              content: none;
+            }
+            .text-title-login {
+              position: absolute;
+              top: 0;
+              right: 0;
+              display: inline-block;
+              width: 140px;
+              height: 60px;
+              img {
+                width: 100%;
+              }
+            }
+            .tit_bg {
+              width: 100%;
+              height: 60px;
+              background: url("../../assets/images02/photograph/001.png")
+                no-repeat;
+              background-size: 100%;
+            }
+            .tit_bg2 {
+              margin-top: 12px;
+              background: url("../../assets/images02/photograph/tip2.png")
+                no-repeat;
+              background-size: 100%;
+            }
           }
         }
         .text_shore {

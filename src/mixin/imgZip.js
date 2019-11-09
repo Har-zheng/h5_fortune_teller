@@ -11,7 +11,7 @@ export default {
         } = imgElement
         let exif_clientWidth = null,
           exif_clientHeight = null
-        if (Orientation*1 === 6 || Orientation*1 === 8) {
+        if (Orientation * 1 === 6 || Orientation * 1 === 8) {
           exif_clientWidth = clientHeight
           exif_clientHeight = clientWidth
         } else {
@@ -41,6 +41,8 @@ export default {
             console.log(Orientation)
             switch (Orientation) {
               case 8:
+                canvas.width = exif_clientHeight * 2
+                canvas.height = exif_clientWidth * 2
                 // 逆时针旋转90度  参考 https://segmentfault.com/a/1190000016535556
                 context.rotate(-Math.PI / 2)
                 x = -exif_clientWidth * 2
@@ -48,8 +50,10 @@ export default {
                 break;
               case 6:
                 // 顺时针旋转90度
+                canvas.width = exif_clientHeight * 2
+                canvas.height = exif_clientWidth * 2
                 context.rotate(90 * Math.PI / 180)
-                y = - exif_clientHeight * 2
+                y = -exif_clientHeight * 2
                 break;
               case 3:
                 // 顺时针旋转180度
@@ -87,7 +91,6 @@ export default {
             })
             this.dataFileZip = dataFile
           }
-
         } else {
           resolve(file)
           return file

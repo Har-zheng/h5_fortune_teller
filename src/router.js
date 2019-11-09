@@ -11,7 +11,7 @@ export default new Router({
   routes: [{
       path: '/',
       name: 'home',
-      component:Page,
+      component: Page,
       redirect: {
         name: 'bootpage'
       },
@@ -38,7 +38,12 @@ export default new Router({
         {
           path: '/facereport',
           name: 'facereport',
-          component: () => import('./views/FaceReport/index.vue')
+          component: () => import('./views/FaceReport/index.vue'),
+        },
+        {
+          path: '/buscoop',
+          name: 'buscoop',
+          component: () => import('./views/FaceReport/components/BusCoop.vue'),
         },
         {
           path: '/faceStart',

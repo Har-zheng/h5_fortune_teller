@@ -2,7 +2,7 @@
   <div class="home">
     <div class="bg-img">
       <div class="ios_bug_style">
-        <img src="../../assets/images02/photograph/ic_logo2.png" />
+        <img src="../../assets/images02/photograph/LOGO.png" />
       </div>
     </div>
     <div class="conetnt">
@@ -147,6 +147,7 @@ export default {
       // 上传图片前先进行图片压缩操作
       this.uploadImg(this.file, this.Orientation).then(res => {
         this.dataFileZip = res
+        console.log(this.dataFileZip)
       })
 
       // 自定义加载图标
@@ -251,7 +252,6 @@ export default {
       top_img.style.transform = 'rotate(0deg)'
       this.isConfirm = true
       this.isRotate = false
-
       this.photo_img = require('../../assets/images02/photograph/touxiang.png')
     }
   }
@@ -262,9 +262,9 @@ export default {
   background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
-  overflow: hidden;
   // overflow-y: scroll;
   // overflow-x: hidden;
+  overflow: hidden;
   width: 100%;
   color: #fff;
   background-color: #001037;
@@ -276,7 +276,7 @@ export default {
   position: relative;
   .ios_bug_style {
     margin: 0 auto;
-    width: 190px;
+    width: 220px;
     height: 80px;
     position: absolute;
     right: 70px;
