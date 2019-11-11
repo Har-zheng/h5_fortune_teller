@@ -43,7 +43,9 @@
             <div>综合分析</div>
           </div>
           <div class="transtion-css">
-            <img :class="[status]" :src="status_img" alt />
+            <div class="img_ios" :class="[status]">
+              <img :src="status_img" alt />
+            </div>
           </div>
           <div class="status-info">
             <p>
@@ -334,11 +336,18 @@ export default {
   .transtion-css {
     position: relative;
     // 12vw; 37.333vw 64vw
-    img {
+    .img_ios {
+      position: absolute;
       width: 18px;
       height: 12px;
-      position: absolute;
       left: 12vw;
+      margin: 0 auto;
+      top: -10px;
+      img {
+        width: 100%;
+        height: 100%;
+        margin: 0 auto;
+      }
     }
     .transtion-two {
       left: 36.333vw;
@@ -442,11 +451,11 @@ export default {
     margin: 0 auto;
     margin-top: 18px;
     .van-swipe {
-      height: 270px;
+      height: 36vw;
       .van-swipe-item {
         position: relative;
-        width: 310px !important;
-        height: 270px !important;
+        width: 41.333vw !important;
+        height: 36vw !important;
         overflow: hidden;
         display: inline-block;
         border-radius: 8px;

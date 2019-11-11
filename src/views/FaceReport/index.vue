@@ -255,6 +255,7 @@ export default {
       original_id: state => state.app.app.original_id,
       parmes_data: state => state.app.app.parmes_data,
       score: state => state.app.app.result.score,
+      user_channel_id: state => state.app.app.user_channel_id,
     })
   },
   created() {
@@ -329,7 +330,6 @@ export default {
       // "open_id": "asdasdadsdasdas",
       this.isSubmit = false
       userBindInfo(user_info).then(res => {
-
         console.log(res)
         if (res.code === 0) {
           this.isSubmit = true
@@ -357,6 +357,7 @@ export default {
     get_all_types() {
       this.type_num = this.level
 
+
       this.isImage()
       axios.get('./config.json').then(res => {
         const data = res.data
@@ -374,20 +375,25 @@ export default {
         const se = item.labels.filter((label_item, label_index) => {
           return item.selected_label_id === label_item.label_id
         })
-        // console.log(se)
-        if (se[0].explanation === null) {
+        console.log(se.length)
+        if (se.length !== 0 && se[0].explanation === null) {
           se[0].explanation = {
             "C": '',
             "D": ''
           }
         }
-        if (se[0].length !== 0 && se[0].hasOwnProperty('explanation') && se[0].explanation !== null && se[0].explanation.D !== '') {
-          console.log(se[0])
+        if (se.length !== 0 && se[0].hasOwnProperty('explanation') && se[0].explanation !== null) {
+          // console.log(se[0])
           sele_item.push(se[0])
         }
       })
       this.head_position_all = sele_item
       const copy_all = JSON.parse(JSON.stringify(this.head_position_all))
+      if (this.user_channel_id !== '') {
+        this.head_position = this.head_position_all
+        this.isUser_id = true
+        return;
+      }
       const user_data = JSON.parse(sessionStorage.getItem('user_data'))
       console.log(user_data)
       if (user_data !== null && user_data.image_id === this.original_id) {
@@ -879,11 +885,10 @@ export default {
           .receive {
             // margin-top: 140px;
             .van-button {
-              border-radius: 16px;
-              // border: 2px solid rgba(62, 151, 255, 1);
-              width: 310px;
-              height: 120px;
-              font-size: 30px;
+              border-radius: 2.133vw;
+              width: 41.333vw;
+              height: 16vw;
+              font-size: 4vw;
               font-weight: 400;
               color: #fff;
             }
@@ -907,20 +912,21 @@ export default {
       display: block;
       background-color: #04032b;
       width: 100%;
-      height: 90%;
+      height: 96%;
       position: absolute;
       top: 320px;
       right: 0;
     }
     // 商务合作
     .BusinessCooperation {
-      margin-top: 30px;
+      margin-top: 60px;
       position: relative;
       z-index: 10;
       p {
         width: 200px;
         height: 90px;
         margin: 0 auto;
+        display: inline-block;
         img {
           width: 100%;
           margin: 0 auto;
@@ -931,20 +937,15 @@ export default {
 
   //   截图截图
   .test_img {
-    // position: relative;
-    // margin-top: 134vw;
     position: absolute;
     z-index: 1;
-    // background: url("../../assets/images02/photograph/bg_color.png") no-repeat;
-    // background-size: 100% 100%;
     top: 0;
     // top: 448vw;
-    background-color: #04032b;
+    background-color: #00124d;
+    padding: 0 0 12px 0;
   }
   .html2_cavars {
-    background-color: #04032b;
-    // margin-top: 134vw;
-    // display: none;
+    background-color: #00124d;
     .top {
       z-index: 3;
       .hand-img {
@@ -1003,7 +1004,7 @@ export default {
           width: 320px;
           height: 78px;
           position: absolute;
-          top: 30px;
+          margin-top: 20px;
           left: 50%;
           margin-left: -160px;
         }

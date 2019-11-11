@@ -1,84 +1,91 @@
 import loadImage from 'blueimp-load-image'
 import EXIF from 'exif-js'
+import {
+  resolve,
+  reject
+} from '_any-promise@1.3.0@any-promise'
 export default {
   methods: {
     // 1 获取 file 图片的 源信息
     getImgExif(file) {
-      const this_ = this
-      let file_img = file
-      const top_img = this_.$refs.top_img
-      const canvas_top_img = this_.$refs.canvas_top_img
-      console.log(top_img, canvas_top_img)
-      if (typeof file !== "string") {
-        file_img = file.file
-        this.imgPosition()
-      } else {
-        file_img = this_.$refs.top_img
-        setTimeout(()=> {
-          // this.imgPosition()
-        },1000)
-        
-      }
+      return new Promise((resolve, reject) => {
 
-      // 读取img 中的exif 信息  被旋转   Orientation 对应如下
-      /*
-          0°	        1
-          顺时针90°	  6
-          逆时针90°	  8
-          180°	      3
-          .imgRotate {
-            transform: rotate(-90deg);
-          }
-        case 6:
-        top_img.style.transform = 'rotate(90deg)'
-        break;
-      */
-      setTimeout(function () {
-        try {
-          EXIF.getData(file_img, function () {
-            console.log(EXIF.getAllTags(this))
-            let Orientation = EXIF.getTag(this, 'Orientation')
-            this_.Orientation = Orientation
-            console.log("exif" + Orientation)
-            switch (Orientation) {
-              case 8:
-                top_img.style.transform = 'rotate(-90deg)'
-                canvas_top_img.style.transform = 'rotate(-90deg)'
-                break;
-              case 3:
-                top_img.style.transform = 'rotate(180deg)'
-                break;
-              default:
-                break;
-            }
-          })
-        } catch (error) {
-          console.log('图片没有EXIF信息')
+
+        const this_ = this
+        let file_img = file
+        const top_img = this_.$refs.top_img
+        const canvas_top_img = this_.$refs.canvas_top_img
+        console.log(top_img, canvas_top_img)
+        if (typeof file !== "string") {
+          file_img = file.file
+          this.imgPosition()
+        } else {
+          file_img = this_.$refs.top_img
+          setTimeout(() => {
+            // this.imgPosition()
+          }, 1000)
         }
-      }, 100)
 
-      loadImage(
-        file_img,
-        function (img, data) {
-          // console.log(data)
+        // 读取img 中的exif 信息  被旋转   Orientation 对应如下
+        /*
+            0°	        1
+            顺时针90°	  6
+            逆时针90°	  8
+            180°	      3
+            .imgRotate {
+              transform: rotate(-90deg);
+            }
+          case 6:
+          top_img.style.transform = 'rotate(90deg)'
+          break;
+        */
+        setTimeout(function () {
           try {
-            if (data.hasOwnProperty('exif')) {
-              console.log(data.exif)
-              var orientation = data.exif.get('Orientation')
-              console.log("loadImage" + orientation)
-              if (orientation === 1) {
-                // this_.isRotate = true
+            EXIF.getData(file_img, function () {
+              console.log(EXIF.getAllTags(this))
+              let Orientation = EXIF.getTag(this, 'Orientation')
+              this_.Orientation = Orientation
+              console.log("exif" + Orientation)
+              switch (Orientation) {
+                case 8:
+                  top_img.style.transform = 'rotate(-90deg)'
+                  canvas_top_img.style.transform = 'rotate(-90deg)'
+                  break;
+                case 3:
+                  top_img.style.transform = 'rotate(180deg)'
+                  break;
+                default:
+                  break;
               }
-            }
+              resolve(Orientation)
+            })
           } catch (error) {
-            console.log(error)
+            console.log('图片没有EXIF信息')
           }
-        }, {
-          meta: true
-        }
-      )
-        
-      
+        }, 100)
+
+        loadImage(
+          file_img,
+          function (img, data) {
+            // console.log(data)
+            try {
+              if (data.hasOwnProperty('exif')) {
+                console.log(data.exif)
+                var orientation = data.exif.get('Orientation')
+                console.log("loadImage" + orientation)
+                if (orientation === 1) {
+                  // this_.isRotate = true
+                }
+              }
+            } catch (error) {
+              console.log(error)
+            }
+          }, {
+            meta: true
+          }
+        )
+
+      })
     },
     imgPosition() {
       setTimeout(() => {

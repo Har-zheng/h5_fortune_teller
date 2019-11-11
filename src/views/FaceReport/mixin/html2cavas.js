@@ -86,7 +86,7 @@ export default {
           cos.putObject({
             Bucket: data.bucket,
             Region: data.region,
-            Key: `h5/ai/beauty/images/${new Date().getTime()}_jietu_${file_data.name}.png`,
+            Key: `h5/ai/beauty/shore/${new Date().getTime()}_jietu_${file_data.name}.png`,
             Body: file_data
           }, function (err, data) {
             if (data) {

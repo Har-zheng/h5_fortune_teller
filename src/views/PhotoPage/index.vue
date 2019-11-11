@@ -37,21 +37,31 @@
       <BaseRouterTransition>
         <div class="need-confirm" v-show="!isConfirm">
           <div class="need-confirm-content">
-            <p>
+            <div class="p">
               头部姿势：
-              <span>正面</span>
-              <img :src="tip_img.correct" alt />
-            </p>
-            <p>
-              左眼状态：
-              <span>睁眼，未戴眼镜</span>
-              <img :src="tip_img.correct" alt />
-            </p>
-            <p>
-              右眼状态：
-              <span>睁眼，未戴眼镜</span>
-              <img :src="tip_img.correct" alt />
-            </p>
+              <span>{{ glass === 'default'? isGlass[glass]: isheadpose }}</span>
+              <div class="img_with">
+                <img
+                  :src="isheadpose === '正面'? tip_img.correct: tip_img.warning"
+                  alt
+                  v-show="isLoading"
+                />
+              </div>
+
+              <i v-show="!isLoading" class="active_" alt />
+            </div>
+            <div class="p">
+              眼部状态：
+              <span>{{isGlass[glass] }}</span>
+              <div class="img_with">
+                <img
+                  :src="glass === 'None'? tip_img.correct: tip_img.warning"
+                  alt
+                  v-show="isLoading"
+                />
+              </div>
+              <i v-show="!isLoading" class="active_" alt />
+            </div>
           </div>
         </div>
       </BaseRouterTransition>
@@ -105,7 +115,19 @@ export default {
       file: null,
       isRotate: false,
       dataFileZip: null,
-      Orientation: ''
+      Orientation: '',
+      //上传的状态记录
+      isUploadSuccess: '',
+      glass: 'default',
+      isGlass: {
+        default: '正在读取信息...',
+        None: '未佩戴眼镜',
+        Dark: '佩戴墨镜',
+        Normal: '佩戴普通眼镜'
+      },
+      isheadpose: '',
+      isLoading: false,
+      headpose: {}
     }
   },
   mixins: [imgExif, imgZip],
@@ -114,8 +136,26 @@ export default {
   },
   computed: {
     ...mapState({
-      parmes_url: state => state.app.save_url
+      parmes_url: state => state.app.save_url,
+      Beauty_info: state => state.app.Beauty_info,
+
     })
+  },
+  watch: {
+    glass: {
+      handler(newVal) {
+        this.isLoading = !this.isLoading
+      }
+    },
+    headpose: {
+      handler(newVal) {
+        if (-5 <= this.headpose['pitch_angle'] <= 5 && -5 <= this.headpose['roll_angle'] <= 5 && -5 <= this.headpose['yaw_angle'] <= 5) {
+          this.isheadpose = '正面'
+        } else {
+          this.isheadpose = '头部姿态不符合'
+        }
+      }
+    }
   },
   methods: {
     ...mapActions([
@@ -131,67 +171,90 @@ export default {
       this.ConfirmUpload(file)
     },
     ConfirmUpload(file) {
-      console.log(file)
+      console.log("加载图片" + file)
       this.photo_img = file.content
       this.isTitle = '确认照片'
       this.isConfirm = false
-      this.getImgExif(file)
+      this.getImgExif(file).then(orien => {
+        this.uploadImg(this.file, this.Orientation).then(res => {
+          this.dataFileZip = res
+          console.log(this.dataFileZip)
+        })
+
+        imgCosupload({ version: 1 }).then(res => {
+          const data = res.data
+          console.log(data)
+          let cos = new COS({
+            getAuthorization: function (options, callback) {
+              // 异步获取临时密钥
+              callback({
+                TmpSecretId: data.credentials.tmpSecretId,
+                TmpSecretKey: data.credentials.tmpSecretKey,
+                XCosSecurityToken: data.credentials.sessionToken,
+                ExpiredTime: data.expiredTime
+              })
+            }
+          })
+          var file_data = this.dataFileZip
+          var this_ = this
+          if (!file_data) return
+          cos.putObject({
+            Bucket: data.bucket,
+            Region: data.region,
+            Key: `h5/ai/beauty/images/${new Date().getTime()}_` + file_data.file.name,
+            Body: file_data.file
+          }, function (err, data) {
+            if (data) {
+              this_.img_success(data, this_, file_data.content)
+            }
+            console.log(err || data)
+          })
+        })
+      })
+
+
+
 
     },
     // 确认 上传
     handleBtnConfirm() {
       console.log('上传')
-      this.$router.push({ name: 'analysisnew' })
-      // this.$router.push({ name: 'analysisnew' })
-      // console.log(imgCosupload)
-      // 上传图片前先进行图片压缩操作
-      this.uploadImg(this.file, this.Orientation).then(res => {
-        this.dataFileZip = res
-        console.log(this.dataFileZip)
-      })
-
-      // 自定义加载图标
-      // const Toast1 = Toast.loading({
-      //   duration: 0, // 持续展示 toast
-      //   message: '图片正在上传...',
-      //   forbidClick: true,
-      //   loadingType: 'spinner'
-      // });
-      imgCosupload({ version: 1 }).then(res => {
-        const data = res.data
-        console.log(data)
-        let cos = new COS({
-          getAuthorization: function (options, callback) {
-            // 异步获取临时密钥
-            callback({
-              TmpSecretId: data.credentials.tmpSecretId,
-              TmpSecretKey: data.credentials.tmpSecretKey,
-              XCosSecurityToken: data.credentials.sessionToken,
-              ExpiredTime: data.expiredTime
-            })
-          }
-        })
-        var file_data = this.dataFileZip
-        var this_ = this
-        if (!file_data) return
-        cos.putObject({
-          Bucket: data.bucket,
-          Region: data.region,
-          Key: `h5/ai/beauty/images/${new Date().getTime()}_` + file_data.file.name,
-          Body: file_data.file
-        }, function (err, data) {
-          if (data) {
-            this_.img_success(data, this_, file_data.content)
-          }
-          console.log(err || data)
-        })
-      })
+      console.log(this.isUploadSuccess)
+      const this_ = this
+      switch (this.isUploadSuccess) {
+        case '':
+          this.$router.push({ name: 'analysisnew' })
+          break;
+        case 'success':
+          this.$router.push({ name: 'analysisnew' })
+          setTimeout(() => {
+            this_.set_beauty_info(true)
+          }, 8000)
+          break;
+        case 'fail':
+          Dialog.alert({
+            message: '图片上传失败!请重试'
+          }).then(() => {
+            this.$router.push({ name: 'PhotoPage' })
+          });
+          break;
+        case 'timeout':
+          Dialog.alert({
+            message: '图片上传超时!请重试'
+          }).then(() => {
+            this.$router.push({ name: 'PhotoPage' })
+          });
+          break;
+        default:
+          throw ('未知错误!')
+          break;
+      }
     },
     // 上传成功后 通知url到后台
     img_success(data, this_, imgContent) {
       const image = comm_fun.img_location(data)
       // "version": 1, "data": {"image": "http://domain.jpg"}
-      const { channel_id, instance_id, client, open_id } = this_.parmes_url
+      const { channel_id, instance_id, client = 2, open_id } = this_.parmes_url
       console.log(this_.parmes_url)
       var parmes_data = {
         version: 1,
@@ -202,17 +265,16 @@ export default {
           client,
         }
       }
+      // let url = '/api/ai/beauty'
       if (open_id !== undefined) {
         parmes_data.data['open_id'] = open_id
       }
-
       ImgUrlBeauty(parmes_data).then(res => {
         console.log(res)
         // Toast1.clear();
         if (res.code === 0) {
           let { instance, original_id, result, user_channel_id } = res.data
-          // this.$router.push({ name: 'analysisnew' })
-          this.set_beauty_info(true)
+
           this.isReload({
             parmes_data: parmes_data.data,
             instance,
@@ -221,21 +283,20 @@ export default {
             imgContent,
             user_channel_id
           })
+
+          this.headpose = result.headpose
+          console.log('headpose' + JSON.stringify(this.headpose))
+          this.glass = result.glass
+          this.isUploadSuccess = 'success'
+          this.set_beauty_info(!this.Beauty_info)
         } else {
+          this.isUploadSuccess = 'fail'
           alert(JSON.stringify(res))
-          Dialog.alert({
-            message: '图片上传失败!请重试'
-          }).then(() => {
-            this.$router.push({ name: 'PhotoPage' })
-          });
         }
       }).catch(error => {
         // Toast1.clear();
-        Dialog.alert({
-          message: '图片上传超时!请重试'
-        }).then(() => {
-          this.$router.push({ name: 'PhotoPage' })
-        });
+        this.isUploadSuccess = 'timeout'
+
       })
     },
     // 用户刷新储存
@@ -252,6 +313,8 @@ export default {
       top_img.style.transform = 'rotate(0deg)'
       this.isConfirm = true
       this.isRotate = false
+      // 面貌的重置
+      this.glass = 'default'
       this.photo_img = require('../../assets/images02/photograph/touxiang.png')
     }
   }
@@ -381,27 +444,67 @@ export default {
   }
   .need-confirm {
     width: 585px;
-    height: 253px !important;
+    height: 180px !important;
     // background: url("../../assets/images/photograph/confirmjuxing.png")
     //   no-repeat 100%;
     background-size: 100% 100%;
     margin-top: -43px;
     .need-confirm-content {
       padding: 46px 124px 45px 91px;
-      p {
+
+      .p {
+        position: relative;
         text-align: left;
         font-size: 25px;
         font-weight: 400;
         line-height: 24px;
         color: #008dff;
         margin-bottom: 45px;
+        .img_with {
+          display: inline-block;
+          position: absolute;
+          right: 0;
+          width: 22px;
+          height: 22px;
+          margin: 0 auto;
+        }
         span {
           color: #fff;
         }
         img {
-          width: 22px;
-          height: 22px;
-          float: right;
+          width: 100%;
+          height: 100%;
+          margin: 0 auto;
+        }
+      }
+      .active_ {
+        display: inline-block;
+        width: 30px;
+        height: 30px;
+        animation: rotatecss 1.2s linear infinite;
+        background: url("../../assets/images/saomiao/loading.png") no-repeat;
+        background-size: 100% 100%;
+        float: right;
+      }
+      @keyframes rotatecss {
+        0% {
+          transform: rotate(0deg);
+        }
+
+        25% {
+          transform: rotate(90deg);
+        }
+
+        50% {
+          transform: rotate(180deg);
+        }
+
+        75% {
+          transform: rotate(270deg);
+        }
+
+        100% {
+          transform: rotate(360deg);
         }
       }
     }

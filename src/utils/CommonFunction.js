@@ -1,4 +1,7 @@
 import $ from 'jquery'
+import {
+  get
+} from 'http'
 const wx = require('weixin-js-sdk')
 
 function img_location(data) {
@@ -60,9 +63,19 @@ function initWxShare() {
         alert(`${JSON.stringify(res)}错误`);
       },
     });
+
     function weixin_wechat(result) {
       console.log(result)
-      const { channel_id, instance_id, client } = GetRequestUrl()
+      var {
+        channel_id,
+        instance_id
+      } = GetRequestUrl()
+      if (channel_id === undefined) {
+        var {
+          channel_id,
+          instance_id
+        } = JSON.parse(sessionStorage.getItem('GetRequestUrl'))
+      }
       wx.config({
         debug: false, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
         appId: result.appId, // 必填，公众号的唯一标识
@@ -83,7 +96,7 @@ function initWxShare() {
           title: '海洋鱼类图鉴', // 分享标题
           desc: '测！你能否统领这片海洋', // 分享描述
           // http://report-dev.myreal3d.com/
-          link: `http://h5.myreal3d.com/fortune-teller/#/bootpage?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: `https://wechat-api.myreal3d.com/${channel_id}/ai/beauty?instance_id=${instance_id}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
             // 设置成功
@@ -96,7 +109,7 @@ function initWxShare() {
         wx.onMenuShareAppMessage({
           title: '海洋鱼类图鉴', // 分享标题
           desc: '测！你能否统领这片海洋', // 分享描述
-          link: `http://h5.myreal3d.com/fortune-teller/#/bootpage?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: `https://wechat-api.myreal3d.com/${channel_id}/ai/beauty?instance_id=${instance_id}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
             // 设置成功
@@ -109,7 +122,7 @@ function initWxShare() {
         wx.onMenuShareQQ({
           title: '海洋鱼类图鉴', // 分享标题
           desc: '测！你能否统领这片海洋', // 分享描述
-          link: `http://h5.myreal3d.com/fortune-teller/#/bootpage?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: `https://wechat-api.myreal3d.com/${channel_id}/ai/beauty?instance_id=${instance_id}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
             // 用户确认分享后执行的回调函数
@@ -123,7 +136,7 @@ function initWxShare() {
         wx.onMenuShareQZone({
           title: '海洋鱼类图鉴', // 分享标题
           desc: '测！你能否统领这片海洋', // 分享描述
-          link: `http://h5.myreal3d.com/fortune-teller/#/bootpage?channel_id=${channel_id}&instance_id=${instance_id}&client=${client}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
+          link: `https://wechat-api.myreal3d.com/${channel_id}/ai/beauty?instance_id=${instance_id}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
             // 用户确认分享后执行的回调函数
