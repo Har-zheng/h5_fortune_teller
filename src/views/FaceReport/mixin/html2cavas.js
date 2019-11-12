@@ -25,12 +25,12 @@ export default {
       const w = targetDom.clientWidth;
       const h = targetDom.clientHeight;
       // 将canvas画布放大若干倍，然后盛放在较小的容器内，就显得不模糊了
-      canvas2.width = w * 2;
-      canvas2.height = h * 2;
+      canvas2.width = w * 3;
+      canvas2.height = h * 3;
       canvas2.style.width = `${targetDom.clientWidth/4}px`;
       canvas2.style.height = `${targetDom.clientHeight*2}px`;
       const context = canvas2.getContext('2d');
-      context.scale(4, 4);
+      context.scale(6, 6);
       // 记录bug 问题   html写入canvas时位置要重新防止
       // context.translate(0, 0)
       html2canvas(targetDom, {

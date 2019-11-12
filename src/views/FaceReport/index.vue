@@ -107,17 +107,17 @@
     </div>
     <div class="test_img">
       <div class="html2_cavars" ref="html2_cavas" id="con">
-        <div class="top">
+        <!-- <div class="top">
           <img class="top_img" crossorigin="anonymous" :src="top_img" alt />
-          <!-- <div class="hand-img">
+          <div class="hand-img">
             <i class="icon_yuan"></i>
             <div class="img-radio">
               <img crossorigin="anonymous" ref="canvas_top_img" :src="parmes_data_img" alt />
             </div>
-          </div>-->
+          </div>
           <i class="redio"></i>
-          <!-- <i class="icon"></i> -->
-        </div>
+          <i class="icon"></i>
+        </div> -->
         <div class="container">
           <div class="title">
             <div class="bootm_bg">
@@ -134,14 +134,7 @@
             <!-- <p>{{ personal_type.title }}</p> -->
           </div>
           <div class="assessment">
-            <div class="info">
-              <i class="icon"></i>
-              <div class="text">
-                <p class="text-title">综合评估</p>
-                <span>{{ personal_type.describe }}</span>
-              </div>
-            </div>
-            <div class="info">
+            <!-- <div class="info">
               <i class="icon shore_footer">
                 <div class="code">
                   <i></i>
@@ -161,7 +154,7 @@
                 <div class="tit_bg"></div>
                 <div class="tit_bg tit_bg2"></div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -941,12 +934,16 @@ export default {
     position: absolute;
     z-index: 1;
     top: 0;
-    top: 448vw;
+    top: 500vw;
     background-color: #00124d;
     padding: 0 0 12px 0;
+    width: 100%;
   }
   .html2_cavars {
-    background-color: #00124d;
+    background: url('../../assets/images02/shore/001-1.jpg') no-repeat;
+    background-size: 100%;
+    width: 100%;
+    height: 1334px;
     .top {
       z-index: 3;
       .hand-img {
@@ -985,8 +982,8 @@ export default {
     .container {
       margin-top: -130px;
       height: 1010px;
-      background: url("../../assets/images02/photograph/beijing.png") no-repeat;
-      background-size: 100%;
+      background: none;
+      // background-size: 100%;
       z-index: 4;
       .title {
         text-align: center;
