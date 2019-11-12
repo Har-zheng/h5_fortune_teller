@@ -23,7 +23,17 @@ module.exports = {
       .set('_c', resolve('src/components'))
   },
 
-  // configureWebpack: () => {},
+  // configureWebpack: config => {
+  //   if (process.env.NODE_ENV === 'production') {
+  //     /**
+  //         warnings: false,
+  //         drop_console: true,
+  //         drop_debugger: true,
+  //         pure_funcs: ['console.log']
+  //      */
+  //     config.optimization.minimizer[0].options.terserOptions.compress.drop_console = true
+  //   }
+  // },
   // vue-loader 配置项
   // https://vue-loader.vuejs.org/en/options.html
   // vueLoader: {},

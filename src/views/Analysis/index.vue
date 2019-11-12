@@ -294,7 +294,7 @@ export default {
     text-align: center;
     margin-bottom: 36px;
     .icon {
-      display: inline-block;
+      display: block;
       width: 52px;
       height: 56px;
       background: url("../../assets/images02/photograph/ic_bg3.png") no-repeat

@@ -272,7 +272,7 @@ export default {
     handlegetCode() {
       if (this.number.length !== 11) {
         Dialog.alert({
-          message: '请输入是11位手机号!'
+          message: '请输入11位手机号!'
         }).then(() => {
           // on close
         });
@@ -538,6 +538,7 @@ export default {
         color: #001a56;
         line-height: 172x;
         background: linear-gradient(0deg, #00a1fc 0%, #2c44d4 100%);
+        background-clip: text;
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
       }
@@ -940,7 +941,7 @@ export default {
     position: absolute;
     z-index: 1;
     top: 0;
-    // top: 448vw;
+    top: 448vw;
     background-color: #00124d;
     padding: 0 0 12px 0;
   }
@@ -1074,8 +1075,6 @@ export default {
             display: inline-block;
             float: none;
           }
-          .icon {
-          }
           .shore_footer {
             display: inline-block;
             // float: none;
@@ -1136,9 +1135,6 @@ export default {
                 width: 100%;
                 margin: 0 auto;
               }
-            }
-            .text-title {
-              // display: inline-block;
             }
             .text-title:after {
               content: none;
