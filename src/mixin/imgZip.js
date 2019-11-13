@@ -1,3 +1,4 @@
+import comm_fun from '../utils/CommonFunction'
 export default {
 
   methods: {
@@ -37,6 +38,9 @@ export default {
             canvas.height = exif_clientHeight * 2
             let x = 0,
               y = 0
+            /* canvasWidth  canvasHeight  img 在canvas 视图的大小 相当于控制img本身的宽高问题 是否等比放在canvas中 截图后是否被拉伸等问题*/
+            let canvasHeight = exif_clientHeight * 2
+            let canvasWidth = exif_clientWidth * 2
 
             console.log(Orientation)
             switch (Orientation) {
@@ -49,11 +53,22 @@ export default {
                 // context.rotate(3 * 90 * Math.PI / 180)
                 break;
               case 6:
-                // 顺时针旋转90度
-                canvas.width = exif_clientHeight * 2
-                canvas.height = exif_clientWidth * 2
-                context.rotate(90 * Math.PI / 180)
-                y = -exif_clientHeight * 2
+                if (comm_fun.AndroisIos()) {
+                  // 顺时针旋转90度
+                  canvas.width = exif_clientWidth * 2
+                  canvas.height = exif_clientHeight * 2
+                  canvasWidth = exif_clientHeight * 2
+                  canvasHeight = exif_clientWidth * 2
+                  context.rotate(90 * Math.PI / 180)
+                  y = -canvas.width
+                } else {
+                  canvas.width = exif_clientHeight * 2
+                  canvas.height = exif_clientWidth * 2
+                  canvasWidth = exif_clientWidth * 2
+                  canvasHeight = exif_clientHeight * 2
+                  context.rotate(90 * Math.PI / 180)
+                  y = -canvas.width
+                }
                 break;
               case 3:
                 // 顺时针旋转180度
@@ -65,8 +80,10 @@ export default {
                 break;
             }
             /* drawImage画布绘制的方法。(0,0)表示以Canvas画布左上角为起点，400，300是将图片按给定的像素进行缩小。
-            如果不指定缩小的像素图片将以图片原始大小进行绘制，图片像素如果大于画布将会从左上角开始按画布大小部分绘制图片，最后的图片就是张局部图。*/
-            context.drawImage(img, x, y, exif_clientWidth * 2, exif_clientHeight * 2)
+            如果不指定缩小的像素图片将以图片原始大小进行绘制，图片像素如果大于画布将会从左上角开始按画布大小部分绘制图片，最后的图片就是张局部图。
+            x 和y 控制img 在画布中 移动的位置 
+            */
+            context.drawImage(img, x, y, canvasWidth, canvasHeight)
             // 将绘制完成的图片重新转化为base64编码，file.file.type为图片类型，0.92为默认压缩质量
             file.content = canvas.toDataURL(file.file.type, 0.92)
             // console.log(file)

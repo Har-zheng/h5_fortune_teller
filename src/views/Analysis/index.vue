@@ -96,15 +96,15 @@ import { img_location } from '../../utils/CommonFunction'
 import imgExif from '../../mixin/imgExif'
 import { wxgetreport } from '../../api/app'
 // const h001 = require('../../assets/images02/haiwang/001.jpg')
-const h001 = require('../../assets/images02/haiwang/test@2x.jpg')
-const h001_1 = require('../../assets/images02/haiwang/001-1.jpg')
-const h002 = require('../../assets/images02/haiwang/002.jpg')
-const h003 = require('../../assets/images02/haiwang/003.jpg')
-const h004 = require('../../assets/images02/haiwang/004.jpg')
-const h005 = require('../../assets/images02/haiwang/005.jpg')
-const h006 = require('../../assets/images02/haiwang/006.jpg')
-const h007 = require('../../assets/images02/haiwang/007.jpg')
-const h008 = require('../../assets/images02/haiwang/008.jpg')
+const h001 = require('../../assets/images02/haiwang_swper/001.jpg')
+const h001_1 = require('../../assets/images02/haiwang_swper/001-1.jpg')
+const h002 = require('../../assets/images02/haiwang_swper/002.jpg')
+const h003 = require('../../assets/images02/haiwang_swper/003.jpg')
+const h004 = require('../../assets/images02/haiwang_swper/004.jpg')
+const h005 = require('../../assets/images02/haiwang_swper/005.jpg')
+const h006 = require('../../assets/images02/haiwang_swper/006.jpg')
+const h007 = require('../../assets/images02/haiwang_swper/007.jpg')
+const h008 = require('../../assets/images02/haiwang_swper/008.jpg')
 export default {
   mixins: [imgExif],
   data() {

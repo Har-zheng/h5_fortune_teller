@@ -171,9 +171,22 @@ function onbeforeunloadEnvt() //author: meizz
     alert("是刷新而非关闭");
   }
 }
+// 判断ios 还是安卓 或者其他
+function AndroisIos(){
+  let u = navigator.userAgent;
+  let isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //g
+  let isIOS = !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/); //ios终端
+  if (isAndroid) {
+    return true;
+  } else if (isIOS) {
+    return false;
+  }
+  return '其他'
+}
 export default {
   img_location,
   GetRequestUrl,
   initWxShare,
-  onbeforeunloadEnvt
+  onbeforeunloadEnvt,
+  AndroisIos
 }

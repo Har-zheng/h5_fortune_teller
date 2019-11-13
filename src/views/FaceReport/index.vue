@@ -1,113 +1,121 @@
 <template>
   <div class="report">
-    <div class="top">
-      <img class="top_img" :src="top_img" alt />
-      <p class="line">
-        <span>WHO AM I</span>
-      </p>
-      <i class="redio"></i>
-      <i class="icon"></i>
-    </div>
-    <div class="container">
-      <div class="title">
-        <i></i>
-        <p>{{ personal_type.title }}</p>
+    <div class="report_content">
+      <div class="top">
+        <img class="top_img" :src="top_img" alt />
+        <!-- <p class="line">
+          <span>WHO AM I</span>
+        </p> -->
+        <!-- <i class="redio"></i> -->
+        <i class="icon"></i>
       </div>
-      <div class="assessment">
-        <div class="info">
-          <i class="icon"></i>
-          <div class="text">
-            <p class="text-title">综合评估</p>
-            <span>{{ personal_type.describe }}</span>
-          </div>
-        </div>
-        <div class="share_btn">
-          <div id="share_img">
-            <img :src="screenShotImg" id="shore_img_src" alt />
-          </div>
-          <van-button class="btn_photo_bg" @click="saveshare">长按保存分享</van-button>
-        </div>
-        <p class="a_">
-          HTTP://WWW.MYREAL3D.COM
-          <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
-        </p>
-        <p class="middle-title"></p>
-      </div>
-      <div class="footer-content">
-        <div class="top" :style="{ 'z-index': 99}">
-          <div class="hand-img">
-            <i class="icon_yuan"></i>
-            <div class="img-radio" ref="img_Head">
-              <img ref="top_img" :src="parmes_data_img" alt />
+      <div class="container">
+        <!-- <div class="title">
+          <i></i>
+          <p>{{ personal_type.title }}</p>
+        </div> -->
+        <div class="assessment">
+          <div class="info">
+            <i class="icon"></i>
+            <div class="text">
+              <p class="text-title">综合评估</p>
+              <span>{{ personal_type.describe }}</span>
             </div>
+            <div class="jiantou"></div>
           </div>
-          <p class="part_title">部位分析</p>
-          <p class="item_p">
-            <span class="title_span">{{ head_position_all[0].full_name }}</span>
-            <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span>
+          <div class="share_btn">
+            <div id="share_img">
+              <img :src="screenShotImg" id="shore_img_src" alt />
+            </div>
+            <van-button class="btn_photo_bg" @click="saveshare">长按保存分享</van-button>
+          </div>
+          <p class="tip_btn"> 
+               <span>保存图片分享给朋友</span>  
+               <span>
+                 测测TA是这片海域的哪条鱼?
+               </span>
           </p>
-        </div>
-        <div
-          class="footer-middle"
-          v-for="(item,index) in  head_position_new"
-          :key="index"
-          :style="{ 'z-index': head_position_new.length-index }"
-        >
-          <div class="bg_img">
-            <p class="item_p">
-              <span class="title_span">{{ item.full_name }}</span>
-              <span class="title_text">{{ item.explanation['D'] }}</span>
-            </p>
-          </div>
-        </div>
-
-        <div class="user_info" v-show="!isUser_id">
-          <p class="p1">鼻基底、下颌、皱纹... ...</p>
-          <p class="p2">更多面部详细参数点击获取</p>
-          <div class="from">
-            <p class="from_p">
-              <label for="name">昵称:</label>
-              <input @blur="ios_blur" type="text" v-model="name" />
-            </p>
-            <p class="from_p">
-              <label for="number">电话:</label>
-              <input type="number" @blur="ios_blur" v-model="number" />
-            </p>
-            <p class="from_p from_code">
-              <input type="number" v-model="code_num" @blur="ios_blur" placeholder="填写验证码" />
-              <button @click="handlegetCode">{{ btn_text }}</button>
-            </p>
-            <div class="receive">
-              <van-button class="btn_photo_bg" @click="handleSubmitInfo">确认提交</van-button>
-            </div>
-          </div>
-        </div>
-        <div class="footer" v-show="isUser_id">
           <p class="a_">
             HTTP://WWW.MYREAL3D.COM
             <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
           </p>
-          <div class="code">
-            <i></i>
-            <img src="../../assets/images02/photograph/code.png" alt />
-          </div>
-          <p class="QR_code">长按识别二维码</p>
-          <div class="footer_img">
-            <img :src="qr_code_img" alt />
-          </div>
+          <p class="middle-title"></p>
         </div>
-        <div class="BusinessCooperation">
-          <router-link :to="'buscoop'">
-            <p>
-              <img src="../../assets/images02/photograph/BusinessCooperation.png" alt />
+        <div class="footer-content">
+          <div class="top" :style="{ 'z-index': 99}">
+            <div class="hand-img">
+              <i class="icon_yuan"></i>
+              <div class="img-radio" ref="img_Head">
+                <img ref="top_img" :src="parmes_data_img" alt />
+              </div>
+            </div>
+            <p class="part_title">部位分析</p>
+            <p class="item_p">
+              <span class="title_span">{{ head_position_all[0].full_name }}</span>
+              <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span>
             </p>
-          </router-link>
+          </div>
+          <div
+            class="footer-middle"
+            v-for="(item,index) in  head_position_new"
+            :key="index"
+            :style="{ 'z-index': head_position_new.length-index }"
+          >
+            <div class="bg_img">
+              <p class="item_p">
+                <span class="title_span">{{ item.full_name }}</span>
+                <span class="title_text">{{ item.explanation['D'] }}</span>
+              </p>
+            </div>
+          </div>
+
+          <div class="user_info" v-show="!isUser_id">
+            <p class="p1">鼻基底、下颌、皱纹... ...</p>
+            <p class="p2">更多面部详细参数点击获取</p>
+            <div class="from">
+              <p class="from_p">
+                <label for="name">昵称:</label>
+                <input @blur="ios_blur" type="text" v-model="name" />
+              </p>
+              <p class="from_p">
+                <label for="number">电话:</label>
+                <input type="number" @blur="ios_blur" v-model="number" />
+              </p>
+              <p class="from_p from_code">
+                <input type="number" v-model="code_num" @blur="ios_blur" placeholder="填写验证码" />
+                <button @click="handlegetCode">{{ btn_text }}</button>
+              </p>
+              <div class="receive">
+                <van-button class="btn_photo_bg" @click="handleSubmitInfo">确认提交</van-button>
+              </div>
+            </div>
+          </div>
+          <div class="footer" v-show="isUser_id">
+            <p class="a_">
+              HTTP://WWW.MYREAL3D.COM
+              <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
+            </p>
+            <div class="code">
+              <i></i>
+              <img src="../../assets/images02/photograph/code.png" alt />
+            </div>
+            <p class="QR_code">长按识别二维码</p>
+            <div class="footer_img">
+              <img :src="qr_code_img" alt />
+            </div>
+          </div>
+          <div class="BusinessCooperation">
+            <router-link :to="'buscoop'">
+              <p>
+                <img src="../../assets/images02/photograph/BusinessCooperation.png" alt />
+              </p>
+            </router-link>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="test_img">
-      <div class="html2_cavars" ref="html2_cavas" id="con">
-        <!-- <div class="top">
+      <div class="test_img">
+        <div class="html2_cavars" :class="[isActive_back]" ref="html2_cavars" id="con">
+          <!-- <div class="top">
           <img class="top_img" crossorigin="anonymous" :src="top_img" alt />
           <div class="hand-img">
             <i class="icon_yuan"></i>
@@ -117,47 +125,11 @@
           </div>
           <i class="redio"></i>
           <i class="icon"></i>
-        </div> -->
-        <div class="container">
-          <div class="title">
-            <div class="bootm_bg">
-              <span></span>
-              <span></span>
-              <span>
-                <!-- <strong>{{ score }}</strong>
-                <div class="div1">分</div>
-                <div class="div2">颜值魅力值</div>-->
-              </span>
-            </div>
-            <i></i>
-            <span class="name_title">{{ personal_type.title }}</span>
-            <!-- <p>{{ personal_type.title }}</p> -->
-          </div>
-          <div class="assessment">
-            <!-- <div class="info">
-              <i class="icon shore_footer">
-                <div class="code">
-                  <i></i>
-                  <img crossorigin="anonymous" src="../../assets/images02/photograph/code.png" alt />
-                </div>
-                <p class="QR_code">长按识别二维码</p>
-              </i>
-              <div class="text shore_footer_text">
-                <div class="text-title">
-                  <div class="codetest">
-                    <img src="../../assets/images02/photograph/codetest.png" alt />
-                  </div>
-                </div>
-                <div class="text-title-login">
-                  <img src="../../assets/images02/photograph/logo2.png" alt />
-                </div>
-                <div class="tit_bg"></div>
-                <div class="tit_bg tit_bg2"></div>
-              </div>
-            </div> -->
-          </div>
+          </div>-->
+          <div class="seaking_code"></div>
         </div>
       </div>
+      <div id="qrcode" v-show="false"></div>
     </div>
   </div>
 </template>
@@ -226,7 +198,8 @@ export default {
       name: '',
       number: '',
       code_num: '',
-      isSubmit: false
+      isSubmit: false,
+      isActive_back: ''
     }
   },
   computed: {
@@ -249,6 +222,7 @@ export default {
       parmes_data: state => state.app.app.parmes_data,
       score: state => state.app.app.result.score,
       user_channel_id: state => state.app.app.user_channel_id,
+      save_url: state => state.app.save_url
     })
   },
   created() {
@@ -256,6 +230,7 @@ export default {
   },
   mounted() {
     this.getImgExif(this.parmes_data_img)
+    this.isImage()
   },
   methods: {
     // 失去焦点
@@ -351,7 +326,7 @@ export default {
       this.type_num = this.level
 
 
-      this.isImage()
+
       axios.get('./config.json').then(res => {
         const data = res.data
         // map filter find forEach
@@ -398,8 +373,6 @@ export default {
         for (let i = 0; i < 3; i++) {
           this.head_position[i] = copy_all[i]
         }
-        console.log(this.head_position)
-        this.head_position[2].explanation['D'] = '...... .......'
       }
     },
     // bg
@@ -410,40 +383,58 @@ export default {
       switch (this.type_num) {
         case 0:
           this.top_img = h001
+          this.draw_canvas(1)
+          // this.isActive_back = 'isActive_001'
           break;
         case 1:
           this.top_img = h002
+          this.draw_canvas(2)
+          this.isActive_back = 'isActive_002'
           break;
         case 2:
           this.top_img = h003
+          this.draw_canvas(3)
+          this.isActive_back = 'isActive_003'
           break;
         case 3:
           this.top_img = h004
+          this.draw_canvas(4)
+          this.isActive_back = 'isActive_004'
           break;
         case 4:
           this.top_img = h005
+           this.draw_canvas(5)
+          this.isActive_back = 'isActive_005'
           break;
         case 5:
           this.top_img = h006
+           this.draw_canvas(6)
+          this.isActive_back = 'isActive_006'
           break;
         case 6:
           this.top_img = h007
+           this.draw_canvas(7)
+          this.isActive_back = 'isActive_007'
           break;
         case 7:
           this.top_img = h008
+           this.draw_canvas(8)
+          this.isActive_back = 'isActive_008'
           break;
         default:
           break;
       }
       if (this.gender === "Female" && this.type_num === 0) {
         this.top_img = h001_1
+        this.draw_canvas(9)
+        this.isActive_back = 'isActive_001-1'
       }
     }
   }
 }
 </script>
 <style lang="scss" scoped>
-.report {
+.report_content {
   font-family: Niagara Solid;
   font-weight: 400;
   color: #fff;
@@ -451,9 +442,11 @@ export default {
   // overflow: scroll !important;
   z-index: 1;
   position: relative;
+  overflow: hidden;
+  padding-bottom: 46px;
   .top {
     position: relative;
-    z-index: 3;
+    z-index: 1;
     .top_img {
       width: 100%;
       z-index: 1;
@@ -491,11 +484,11 @@ export default {
       z-index: 1;
     }
     .icon {
-      background: url("../../assets/images02/photograph/LOGO_cc.png") no-repeat;
+      background: url("../../assets/images02/photograph/LOGO_new.png") no-repeat;
       background-size: 100%;
       display: block;
-      width: 80px;
-      height: 80px;
+      width: 141px;
+      height: 127px;
       position: absolute;
       top: 37px;
       left: 35px;
@@ -504,8 +497,9 @@ export default {
   .container {
     background: url("../../assets/images02/photograph/beijing002.jpg") no-repeat;
     background-size: 100%;
-    height: 1700px;
-    margin-top: -6px;
+    background-position-y: -300px; 
+    // height: 1700px;
+    margin-top: -310px;
     position: relative;
     z-index: 2;
     .title {
@@ -539,12 +533,14 @@ export default {
     }
     .assessment {
       .info {
+        position: relative;
         margin: 0 auto;
-        background: url("../../assets/images02/photograph/shuoming_kuang.png")
-          no-repeat;
-        background-size: 100%;
+        background: #030329;
+        // background-size: 100%;
         width: 718px;
-        height: 479px;
+        border-radius:  0 36px 36px 36px;
+        margin-bottom: 30px;
+        // height: 479px;
         .icon {
           display: block;
           width: 35px;
@@ -556,7 +552,7 @@ export default {
           float: left;
         }
         .text {
-          float: left;
+          display: inline-block;
           margin: 30px 23px 47px 0;
           width: 598px;
           .text-title {
@@ -582,10 +578,33 @@ export default {
             text-align: left;
           }
         }
+        .jiantou{
+          display: inline-block;
+          position: absolute;
+          width: 37px;
+          height: 27px;
+          background: url('../../assets/images02/photograph/xiala.png') no-repeat;
+          background-size: 100%;
+          left: 50%;
+          margin-left: -18px;
+          bottom: 20px;
+          animation: jantou_frame 1.2s infinite;
+        }
+        @keyframes jantou_frame {
+          0% {
+            bottom:  4vw;;
+          }
+          100%{
+            bottom:  0vw;
+          }
+          // 100% {
+          //   bottom:  6vw;
+          // }
+        }
       }
       .share_btn {
         width: 292px;
-        height: 102px;
+        // height: 102px;
         position: relative;
         display: inline-block;
         margin-top: -40px;
@@ -620,6 +639,18 @@ export default {
         background-size: 100%;
         color: #e6eeff;
       }
+      .tip_btn{
+        clear: both;
+        color: #0178ce;
+        font-size: 30px;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 20px;
+        span{
+          margin-bottom: 8px; 
+          display: block;
+        }
+      }
       .a_ {
         margin-top: 50px;
         font-size: 14px;
@@ -631,7 +662,7 @@ export default {
         background: url("../../assets/images02/photograph/wanmei.png") no-repeat;
         width: 508px;
         background-size: 100%;
-        height: 120px;
+        height: 130px;
       }
     }
     .footer-content {
@@ -937,280 +968,65 @@ export default {
     top: 500vw;
     background-color: #00124d;
     padding: 0 0 12px 0;
-    width: 100%;
+    width: 1500px;
   }
+  // .isActive_back {
+  //   background: url("../../assets/images02/shore/001.jpg") no-repeat;
+  //   background-size: 100%;
+  //   width: 1500px;
+  //   height: 2668px;
+  // }
   .html2_cavars {
-    background: url('../../assets/images02/shore/001-1.jpg') no-repeat;
+    background: url("../../assets/images02/shore/001-1.jpg") no-repeat;
     background-size: 100%;
-    width: 100%;
-    height: 1334px;
-    .top {
-      z-index: 3;
-      .hand-img {
-        margin-top: -220px;
-        text-align: center;
-        position: relative;
-        top: 80px;
-        z-index: 3;
-        .img-radio {
-          width: 220px;
-          height: 220px;
-          overflow: hidden;
-          display: inline-block;
-          border-radius: 50%;
-          img {
-            width: 100%;
-            text-align: center;
-            margin: 0 auto;
-          }
-        }
-        .icon_yuan {
-          position: absolute;
-          left: 50%;
-          margin-left: -115px;
-          text-align: center;
-          display: inline-block;
-          width: 230px;
-          height: 230px;
-          z-index: 3;
-          background: url("../../assets/images02/photograph/tx_yuan.png")
-            no-repeat;
-          background-size: 100%;
-        }
-      }
+    width: 1500px;
+    height: 2668px;
+    position: relative;
+    .seaking_code {
+      background: url("../../assets/images02/photograph/code.png") no-repeat;
+      background-size: 100%;
+      width: 372px;
+      height: 372px;
+      position: absolute;
+      left: 140px;
+      bottom: 190px;
     }
-    .container {
-      margin-top: -130px;
-      height: 1010px;
-      background: none;
-      // background-size: 100%;
-      z-index: 4;
-      .title {
-        text-align: center;
-        position: relative;
-        // top: 45px;
-        // margin-top: 120px;
-        // padding-top: 56px;
-        top: 140px;
-        margin: 30px 0;
-        margin-top: 20px;
-        i {
-          background: url("../../assets/images02/photograph/kuang.png")
-            no-repeat;
-          background-size: 100%;
-          display: inline-block;
-          width: 320px;
-          height: 78px;
-          position: absolute;
-          margin-top: 20px;
-          left: 50%;
-          margin-left: -160px;
-        }
-        span {
-          display: inline-block;
-          position: relative;
-          top: 12px;
-          text-align: center;
-          font-size: 68px;
-          color: #1594ff;
-          line-height: 172x;
-        }
-        .name_title {
-          top: -90px;
-          color: #fff;
-        }
-        padding-bottom: 78px;
-        .bootm_bg {
-          span {
-            display: inline-block;
-            width: 100px;
-            height: 90px;
-            // background: url("../../assets/images02/photograph/textm3d.png")
-            //   no-repeat;
-            background-size: 100%;
-          }
-          span:nth-child(2) {
-            width: 420px;
-            height: 120px;
-            background: url("../../assets/images02/photograph/whoami.png")
-              no-repeat;
-            background-size: 100%;
-            margin: 0 6px 0 36px;
-          }
-          span:nth-child(3) {
-            width: 140px;
-            height: 90px;
-            background: none;
-            strong {
-              color: #fa6fbe;
-              font-weight: bold;
-              font-size: 80px;
-            }
-            .div1 {
-              display: inline-block;
-              font-size: 18px;
-            }
-            .div2 {
-              font-size: 12px;
-            }
-          }
-        }
-      }
-      .assessment {
-        .info:nth-child(1) {
-          margin-top: 40px;
-        }
-        .info {
-          background: url("../../assets/images02/photograph/shuoming_kuang2.png")
-            no-repeat;
-          min-height: 38.867vw;
-          height: unset;
-          border-radius: 0 30px 30px 30px;
-          margin-bottom: 16px;
-          position: relative;
-          .text {
-            display: inline-block;
-            float: none;
-          }
-          .shore_footer {
-            display: inline-block;
-            // float: none;
-            // margin: 0;
-            .code {
-              position: relative;
-              width: 180px;
-              height: 180px;
-              overflow: hidden;
-              display: inline-block;
-              border-radius: 8px;
-              margin: 0 auto;
-              margin-top: 10px;
-              img {
-                height: 100%;
-                text-align: center;
-                margin: 0 auto;
-              }
-            }
-            background: url("../../assets/images02/photograph/kuang_code.png")
-              no-repeat;
-            background-size: 100%;
-            width: 200px;
-            height: 200px;
-            .QR_code {
-              font-size: 16px;
-              line-height: 16px;
-              margin-top: 18px;
-              color: #636481;
-            }
-            .footer_img {
-              position: relative;
-              width: 375px;
-              height: 98px;
-              // overflow: hidden;
-              display: inline-block;
-              border-radius: 8px;
-              margin: 0 auto;
-              margin-top: 30px;
-              img {
-                height: 100%;
-                text-align: center;
-                margin: 0 auto;
-                position: relative;
-                z-index: 2;
-              }
-            }
-          }
-          .shore_footer_text {
-            width: 420px;
-            position: relative;
-            .codetest {
-              display: inline-block;
-              width: 240px;
-              height: 60px;
-              margin: 0 auto;
-              img {
-                width: 100%;
-                margin: 0 auto;
-              }
-            }
-            .text-title:after {
-              content: none;
-            }
-            .text-title-login {
-              position: absolute;
-              top: 0;
-              right: 0;
-              display: inline-block;
-              width: 140px;
-              height: 60px;
-              img {
-                width: 100%;
-              }
-            }
-            .tit_bg {
-              width: 100%;
-              height: 60px;
-              background: url("../../assets/images02/photograph/001.png")
-                no-repeat;
-              background-size: 100%;
-            }
-            .tit_bg2 {
-              margin-top: 12px;
-              background: url("../../assets/images02/photograph/tip2.png")
-                no-repeat;
-              background-size: 100%;
-            }
-          }
-        }
-        .text_shore {
-          font-size: 36px;
-          font-weight: bold;
-          color: #0498f7;
-          line-height: 160px;
-          span {
-            color: #fa6fbe;
-          }
-        }
-      }
-      .footer-content:after {
-        background: none;
-      }
-      .footer-content {
-        .footer {
-          .code {
-            position: relative;
-            width: 310px;
-            height: 270px;
-            overflow: hidden;
-            display: inline-block;
-            border-radius: 8px;
-            margin: 0 auto;
-            margin-top: 16px;
-            img {
-              height: 100%;
-              text-align: center;
-              margin: 0 auto;
-            }
-          }
-          margin-top: 0;
-          .footer_img {
-            position: relative;
-            width: 310px;
-            height: 90px;
-            overflow: hidden;
-            display: inline-block;
-            border-radius: 8px;
-            margin: 0 auto;
-            margin-top: 16px;
-            img {
-              height: 100%;
-              text-align: center;
-              margin: 0 auto;
-            }
-          }
-        }
-      }
-    }
+  }
+  .isActive_001 {
+    background: url("../../assets/images02/shore/001.jpg") no-repeat;
+    background-size: 100%;
+  }
+  .isActive_001-1 {
+    background: url("../../assets/images02/shore/001-1.jpg") no-repeat;
+    background-size: 100%;
+  }
+  .isActive_002 {
+    background: url("../../assets/images02/shore/002.jpg") no-repeat;
+    background-size: 100%;
+  }
+  .isActive_003 {
+    background: url("../../assets/images02/shore/003.jpg") no-repeat;
+    background-size: 100%;
+  }
+  .isActive_004 {
+    background: url("../../assets/images02/shore/004.jpg") no-repeat;
+    background-size: 100%;
+  }
+  .isActive_005 {
+    background: url("../../assets/images02/shore/005.jpg") no-repeat;
+    background-size: 100%;
+  }
+  .isActive_006 {
+    background: url("../../assets/images02/shore/006.jpg") no-repeat;
+    background-size: 100%;
+  }
+  .isActive_007 {
+    background: url("../../assets/images02/shore/007.jpg") no-repeat;
+    background-size: 100%;
+  }
+  .isActive_008 {
+    background: url("../../assets/images02/shore/008.jpg") no-repeat;
+    background-size: 100%;
   }
 }
 .app--content {

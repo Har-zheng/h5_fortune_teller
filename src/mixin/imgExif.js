@@ -1,9 +1,6 @@
 import loadImage from 'blueimp-load-image'
 import EXIF from 'exif-js'
-import {
-  resolve,
-  reject
-} from '_any-promise@1.3.0@any-promise'
+import comm_fun from '../utils/CommonFunction'
 export default {
   methods: {
     // 1 获取 file 图片的 源信息
@@ -14,8 +11,8 @@ export default {
         const this_ = this
         let file_img = file
         const top_img = this_.$refs.top_img
-        const canvas_top_img = this_.$refs.canvas_top_img
-        console.log(top_img, canvas_top_img)
+        // const canvas_top_img = this_.$refs.canvas_top_img
+        console.log(top_img)
         if (typeof file !== "string") {
           file_img = file.file
           this.imgPosition()
@@ -44,15 +41,27 @@ export default {
             EXIF.getData(file_img, function () {
               console.log(EXIF.getAllTags(this))
               let Orientation = EXIF.getTag(this, 'Orientation')
+            /* const top_img = this.$refs.top_img
+             const top_img_width = top_img.clientWidth
+             const top_img_height = top_img.clientHight
+             if (Orientation === undefined) {
+               top_img.style.width = '100%'
+             }
+             */
               this_.Orientation = Orientation
               console.log("exif" + Orientation)
               switch (Orientation) {
                 case 8:
                   top_img.style.transform = 'rotate(-90deg)'
-                  canvas_top_img.style.transform = 'rotate(-90deg)'
                   break;
                 case 3:
                   top_img.style.transform = 'rotate(180deg)'
+                  break;
+                case 6:
+                  if (comm_fun.AndroisIos()) {
+                    top_img.style.transform = 'rotate(90deg)'
+                    // top_img.style.height = '100%'
+                  }
                   break;
                 default:
                   break;
@@ -91,11 +100,13 @@ export default {
       setTimeout(() => {
         const top_img = this.$refs.top_img
         const img_Head = this.$refs.img_Head
-        const swipe_img = this.$refs.swipe_img
-        const top_img_width = top_img.clientWidth
 
+        const swipe_img = this.$refs.swipe_img
+
+        const top_img_width = top_img.clientWidth
         const img_Head_width = img_Head.clientWidth
-        if (top_img_width > img_Head_width) {
+
+        if (top_img_width >= img_Head_width) {
           top_img.style.position = 'absolute'
           const num_width = top_img_width - img_Head_width
           top_img.style.left = `-${num_width / 2}px`
@@ -119,7 +130,7 @@ export default {
           swipe_img[index].style.marginLeft = `-${swipe_img_width / 2}px`
         })
 
-      }, 100)
+      }, 200)
     }
   }
 }

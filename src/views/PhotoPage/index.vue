@@ -630,7 +630,7 @@ export default {
     margin: 0 auto;
     margin-top: 20px;
     img {
-      height: 100%;
+      width: 100%;
       text-align: center;
       margin: 0 auto;
     }
