@@ -14,7 +14,8 @@
       <div class="img-Head">
         <div class="img-Head-bg" :class="{'ConfirmCss': isConfirm}"></div>
         <div class="ios_bug" ref="img_Head">
-          <img id="imgElement" ref="top_img" radius="6" :src="photo_img" />
+          <!-- <img  :class="isTransform" radius="6" v-if="isConfirm" :src="photo_img_dom" /> -->
+          <img id="imgElement" :class="isTransform" ref="top_img" radius="6" :src="photo_img" />
         </div>
         <!-- <div class="logo" style="margin-top: -10px;">
           <img src="../../assets/images02/photograph/LOGO_cc.png" alt />
@@ -107,6 +108,7 @@ export default {
       title2: '属于哪一种类型?',
       isTitle: '',
       photo_img: require('../../assets/images02/photograph/touxiang.png'),
+      photo_img_dom: require('../../assets/images02/photograph/touxiang.png'),
       isConfirm: true,
       tip_img: {
         correct: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA4CAMAAABwmqASAAAAk1BMVEUAAAADxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwWPcL6XAAAAMHRSTlMA8QX6o03dzunlJh8QCPbWsZQ3KgvtvbacfnJqXllBPjMWx4tvY0guHfOpgnlmU7/6TN/xAAABlUlEQVRIx53W15qCMBQE4NARCypYsGJbuzvv/3T7yeKaclaS/PdDAswJMDtZ3y7X3XmxVXAYApFNsPAATMxznQmepsbBdopKYRo8tvDrYBhcOagFZsF1Dy+lWfCMP4nRa3TwdjIIJjE4Hf3gJgRvox10xxC0tZNTiIa6wQMkS81g2YOk0Gx5CJnmZPtQOK5OcAHCl85gOSD4GskxCKNBc/AOVbzXuM0TsdepVmv76kbph9NlogCyiK5sEAbihZQOXLrk8+/LR/AVkh05SLeqnQ/+UnJfZ+S5lqKSfqjdnBp5nxigIXj0ITvn3lrqUu2hVywj8Bav/UOwV6dvAFFYL7oF76rOUAzZnSiB2vACqlb1toVb6BMVz3wPsrm85Danfxcm6qLiXYb/HsxBS+nKGm9O8uF0k9oS59w+vM9nzsMRh5csKy2JQLuwJrkPSpqzZjeozhnTsfRg++lZO4BUOl2l2OLIZdoSvhS9jDG76N7wD22E2lgvoP74jE7M1MqrTxVzwTP6zWzMAO/IrAywY3Zcv6noP1SEq/OgNc3TAAAAAElFTkSuQmCC',
@@ -127,7 +129,9 @@ export default {
       },
       isheadpose: '',
       isLoading: false,
-      headpose: {}
+      headpose: {},
+      originalWidth_img: '',
+      exif_clientHeight: ''
     }
   },
   mixins: [imgExif, imgZip],
@@ -179,11 +183,8 @@ export default {
         this.uploadImg(this.file, this.Orientation).then(res => {
           this.dataFileZip = res
           console.log(this.dataFileZip)
-        })
-
-        imgCosupload({ version: 1 }).then(res => {
+                  imgCosupload({ version: 1 }).then(res => {
           const data = res.data
-          console.log(data)
           let cos = new COS({
             getAuthorization: function (options, callback) {
               // 异步获取临时密钥
@@ -210,11 +211,8 @@ export default {
             console.log(err || data)
           })
         })
+        })
       })
-
-
-
-
     },
     // 确认 上传
     handleBtnConfirm() {
@@ -316,6 +314,9 @@ export default {
       // 面貌的重置
       this.glass = 'default'
       this.photo_img = require('../../assets/images02/photograph/touxiang.png')
+      // 重置css Transform 动画
+      this.isTransform = ''
+      document.getElementById('imgElement').style = null
     }
   }
 }
@@ -634,19 +635,16 @@ export default {
       text-align: center;
       margin: 0 auto;
     }
-    // margin-top: 10px;
-    // .van-image {
-    //   width: 266px;
-    //   height: 260px;
-    //   .van-image__img {
-    //     height: 260px;
-    //     border-radius: 8px;
-    //     margin-top: 24px;
-    //   }
-    // }
-
     .imgRotate {
       transform: rotate(-90deg);
+    }
+    .activeTransform6{
+      transform:rotate(90deg);
+      height: 100%;
+    }
+    .activeTransform8{
+      transform:rotate(-90deg);
+      height: 100%;
     }
   }
   .ConfirmCss {

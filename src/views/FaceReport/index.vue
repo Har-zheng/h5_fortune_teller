@@ -46,7 +46,7 @@
             <div class="hand-img">
               <i class="icon_yuan"></i>
               <div class="img-radio" ref="img_Head">
-                <img ref="top_img" :src="parmes_data_img" alt />
+                <img ref="img_radio_img" :src="parmes_data_img" alt />
               </div>
             </div>
             <p class="part_title">部位分析</p>
@@ -324,9 +324,6 @@ export default {
     },
     get_all_types() {
       this.type_num = this.level
-
-
-
       axios.get('./config.json').then(res => {
         const data = res.data
         // map filter find forEach
@@ -384,42 +381,34 @@ export default {
         case 0:
           this.top_img = h001
           this.draw_canvas(1)
-          // this.isActive_back = 'isActive_001'
           break;
         case 1:
           this.top_img = h002
           this.draw_canvas(2)
-          this.isActive_back = 'isActive_002'
           break;
         case 2:
           this.top_img = h003
           this.draw_canvas(3)
-          this.isActive_back = 'isActive_003'
           break;
         case 3:
           this.top_img = h004
           this.draw_canvas(4)
-          this.isActive_back = 'isActive_004'
           break;
         case 4:
           this.top_img = h005
            this.draw_canvas(5)
-          this.isActive_back = 'isActive_005'
           break;
         case 5:
           this.top_img = h006
            this.draw_canvas(6)
-          this.isActive_back = 'isActive_006'
           break;
         case 6:
           this.top_img = h007
            this.draw_canvas(7)
-          this.isActive_back = 'isActive_007'
           break;
         case 7:
           this.top_img = h008
            this.draw_canvas(8)
-          this.isActive_back = 'isActive_008'
           break;
         default:
           break;
@@ -427,8 +416,9 @@ export default {
       if (this.gender === "Female" && this.type_num === 0) {
         this.top_img = h001_1
         this.draw_canvas(9)
-        this.isActive_back = 'isActive_001-1'
       }
+      let img_radio_img = this.$refs.img_radio_img
+      console.log(img_radio_img)
     }
   }
 }
