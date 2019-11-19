@@ -101,6 +101,7 @@ import { Toast, Dialog } from 'vant'
 import imgExif from '../../mixin/imgExif'
 import imgZip from '../../mixin/imgZip'
 import axios from 'axios'
+import  vueMixinCom  from '../../mixin/vueMixinCom.js'
 export default {
   data() {
     return {
@@ -134,7 +135,7 @@ export default {
       exif_clientHeight: ''
     }
   },
-  mixins: [imgExif, imgZip],
+  mixins: [imgExif, imgZip,vueMixinCom],
   components: {
     BaseRouterTransition
   },
@@ -206,7 +207,7 @@ export default {
             Body: file_data.file
           }, function (err, data) {
             if (data) {
-              this_.img_success(data, this_, file_data.content)
+              // this_.img_success(data, this_, file_data.content)
             }
             console.log(err || data)
           })
@@ -238,7 +239,7 @@ export default {
           break;
         case 'timeout':
           Dialog.alert({
-            message: '图片上传超时!请重试'
+            message: '图片上传失败,请联系客服!'
           }).then(() => {
             this.$router.push({ name: 'PhotoPage' })
           });
@@ -293,15 +294,10 @@ export default {
         }
       }).catch(error => {
         // Toast1.clear();
+        console.log(error)
         this.isUploadSuccess = 'timeout'
 
       })
-    },
-    // 用户刷新储存
-    isReload(data) {
-      console.log(data)
-      this.set_app(data)
-      sessionStorage.setItem('app', JSON.stringify(data))
     },
     // 重新上传
     handleBtnAgain() {

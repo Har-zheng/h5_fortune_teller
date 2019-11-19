@@ -1,7 +1,4 @@
 import $ from 'jquery'
-import {
-  get
-} from 'http'
 const wx = require('weixin-js-sdk')
 
 function img_location(data) {

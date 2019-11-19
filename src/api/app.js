@@ -53,3 +53,15 @@ export function userBindInfo(data){
     data
   })
 }
+// 判断此用户是否有扫描记录  yes=> 报告详情 no=> 正常开始扫描 /api/ai/beauty/latest
+export function BeautyLatest(data){
+  console.log(data)
+  return request({
+    url: '/api/ai/beauty/latest',
+    method: 'POST',
+    data: {
+      version: 1,
+      data
+    }
+  })
+}

@@ -5,7 +5,7 @@
         <img class="top_img" :src="top_img" alt />
         <!-- <p class="line">
           <span>WHO AM I</span>
-        </p> -->
+        </p>-->
         <!-- <i class="redio"></i> -->
         <i class="icon"></i>
       </div>
@@ -13,7 +13,7 @@
         <!-- <div class="title">
           <i></i>
           <p>{{ personal_type.title }}</p>
-        </div> -->
+        </div>-->
         <div class="assessment">
           <div class="info">
             <i class="icon"></i>
@@ -29,11 +29,9 @@
             </div>
             <van-button class="btn_photo_bg" @click="saveshare">长按保存分享</van-button>
           </div>
-          <p class="tip_btn"> 
-               <span>保存图片分享给朋友</span>  
-               <span>
-                 测测TA是这片海域的哪条鱼?
-               </span>
+          <p class="tip_btn">
+            <span>保存图片分享给朋友</span>
+            <span>测测TA是这片海域的哪条鱼?</span>
           </p>
           <p class="a_">
             HTTP://WWW.MYREAL3D.COM
@@ -46,7 +44,7 @@
             <div class="hand-img">
               <i class="icon_yuan"></i>
               <div class="img-radio" ref="img_Head">
-                <img ref="img_radio_img" :src="parmes_data_img" alt />
+                <img ref="img_radio_img" :src="src_image" alt />
               </div>
             </div>
             <p class="part_title">部位分析</p>
@@ -91,6 +89,7 @@
             </div>
           </div>
           <div class="footer" v-show="isUser_id">
+            <van-button type="info" @click="hanleBtnRetest">重测一次</van-button>
             <p class="a_">
               HTTP://WWW.MYREAL3D.COM
               <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
@@ -199,7 +198,8 @@ export default {
       number: '',
       code_num: '',
       isSubmit: false,
-      isActive_back: ''
+      isActive_back: '',
+      src_image: ''
     }
   },
   computed: {
@@ -213,7 +213,7 @@ export default {
       })
     },
     ...mapState({
-      parmes_data_img: state => state.app.app.parmes_data.image,
+      image: state => state.app.app.image,
       customized_features: state => state.app.app.instance.customized_features,
       level: state => state.app.app.result.level,
       gender: state => state.app.app.result.gender,
@@ -229,7 +229,16 @@ export default {
     this.get_all_types()
   },
   mounted() {
-    this.getImgExif(this.parmes_data_img)
+    // 当微信用户已扫描 直接进入道报告详情时 头像img需要后台返回了
+    console.log(this.image)
+    if (this.image !== undefined) {
+      this.src_image = this.image
+    } else {
+      this.src_image = this.parmes_data.image
+    }
+    setTimeout(() => {
+      this.getImgExif(this.src_image)
+    }, 10)
     this.isImage()
   },
   methods: {
@@ -396,19 +405,19 @@ export default {
           break;
         case 4:
           this.top_img = h005
-           this.draw_canvas(5)
+          this.draw_canvas(5)
           break;
         case 5:
           this.top_img = h006
-           this.draw_canvas(6)
+          this.draw_canvas(6)
           break;
         case 6:
           this.top_img = h007
-           this.draw_canvas(7)
+          this.draw_canvas(7)
           break;
         case 7:
           this.top_img = h008
-           this.draw_canvas(8)
+          this.draw_canvas(8)
           break;
         default:
           break;
@@ -419,6 +428,10 @@ export default {
       }
       let img_radio_img = this.$refs.img_radio_img
       console.log(img_radio_img)
+    },
+    // 重新测
+    hanleBtnRetest() {
+      this.$router.push({ name: 'PhotoPage' })
     }
   }
 }
@@ -487,7 +500,7 @@ export default {
   .container {
     background: url("../../assets/images02/photograph/beijing002.jpg") no-repeat;
     background-size: 100%;
-    background-position-y: -300px; 
+    background-position-y: -300px;
     // height: 1700px;
     margin-top: -310px;
     position: relative;
@@ -528,7 +541,7 @@ export default {
         background: #030329;
         // background-size: 100%;
         width: 718px;
-        border-radius:  0 36px 36px 36px;
+        border-radius: 0 36px 36px 36px;
         margin-bottom: 30px;
         // height: 479px;
         .icon {
@@ -568,12 +581,13 @@ export default {
             text-align: left;
           }
         }
-        .jiantou{
+        .jiantou {
           display: inline-block;
           position: absolute;
           width: 37px;
           height: 27px;
-          background: url('../../assets/images02/photograph/xiala.png') no-repeat;
+          background: url("../../assets/images02/photograph/xiala.png")
+            no-repeat;
           background-size: 100%;
           left: 50%;
           margin-left: -18px;
@@ -582,10 +596,10 @@ export default {
         }
         @keyframes jantou_frame {
           0% {
-            bottom:  4vw;;
+            bottom: 4vw;
           }
-          100%{
-            bottom:  0vw;
+          100% {
+            bottom: 0vw;
           }
           // 100% {
           //   bottom:  6vw;
@@ -629,15 +643,15 @@ export default {
         background-size: 100%;
         color: #e6eeff;
       }
-      .tip_btn{
+      .tip_btn {
         clear: both;
         color: #0178ce;
         font-size: 30px;
         text-align: center;
         font-weight: bold;
         margin-top: 20px;
-        span{
-          margin-bottom: 8px; 
+        span {
+          margin-bottom: 8px;
           display: block;
         }
       }

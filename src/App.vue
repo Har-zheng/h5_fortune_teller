@@ -6,34 +6,89 @@
 <script>
 import comm_fun from './utils/CommonFunction'
 import { mapActions } from 'vuex'
-import { wxgetreport } from './api/app'
+import { BeautyLatest } from './api/app'
+import vueMixinCom from './mixin/vueMixinCom'
 export default {
+  mixins: [vueMixinCom],
+  data() {
+    return {
+      _beforeUnload_time: null,
+      once: true
+    }
+  },
   created() {
+  },
+  mounted() {
+    console.log(comm_fun.GetRequestUrl())
+    // 初始化 用户刷新时
+    let GetRequestUrl_parmes = comm_fun.GetRequestUrl()
+    let GetRequestUrl = JSON.stringify(GetRequestUrl_parmes)
+    if (GetRequestUrl !== "{}") {
+      sessionStorage.setItem('GetRequestUrl', GetRequestUrl)
+    } else {
+      GetRequestUrl_parmes = JSON.parse(sessionStorage.getItem('GetRequestUrl'))
+    }
+    this.save_url(GetRequestUrl_parmes)
+    // 判断是否第一次进入页面 只执行一次函数
+    let session_once =  JSON.parse(sessionStorage.getItem('once')) 
+    console.log(session_once)
+    if(session_once === null && this.once){
+      this.once = false
+      this.isBeautyLatest(GetRequestUrl_parmes)
+      sessionStorage.setItem('once', this.once)
+    }
+    const app = sessionStorage.getItem('app')
+    if (app !== null) {
+      this.set_app(JSON.parse(app))
+    }
+    comm_fun.initWxShare()
+    // 需要知道 当前用户是刷新还是关闭
+    window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    window.addEventListener('unload', e => this.unloadHandler(e))
   },
   methods: {
     ...mapActions([
       'save_url',
       'set_app'
     ]),
+    isBeautyLatest(RequestUrl) {
+      BeautyLatest(RequestUrl).then(res => {
+        if (res.code === 0) {
+          let { instance, original_id, result, user_channel_id, image } = res.data
+          this.isReload({
+            instance,
+            original_id,
+            result,
+            user_channel_id,
+            image
+          })
+          const app = sessionStorage.getItem('app')
+          this.set_app(JSON.parse(app))
+          this.$router.push({ name: 'facereport' })
+        }
+        // let 
+      })
+    },
+    beforeunloadHandler(e) {
+      this._beforeUnload_time = new Date().getTime();
+    },
+    unloadHandler(e) {
+      console.log(e)
+      this._gap_time = new Date().getTime() - this._beforeUnload_time;
+      console.log(this._gap_time)
+      //判断是窗口关闭还是刷新
+      if (this._gap_time <= 5) {  // 小于5毫秒的状态被认为是关闭页面了
+        //如果是登录状态，关闭窗口前，移除用户
+        console.log(_gap_time)
+        sessionStorage.removeItem("GetRequestUrl");
+        sessionStorage.removeItem("app");
+        sessionStorage.removeItem('once')
+      }
+    }
   },
-  mounted() {
-    console.log(comm_fun.GetRequestUrl())
-    // 初始化 用户刷新时
-    const GetRequestUrl = JSON.stringify(comm_fun.GetRequestUrl())
-    if (GetRequestUrl !== "{}") {
-      sessionStorage.setItem('GetRequestUrl', GetRequestUrl)
-      this.save_url(comm_fun.GetRequestUrl())
-    } else {
-      const GetRequestUrl_GET = JSON.parse(sessionStorage.getItem('GetRequestUrl'))
-      this.save_url(GetRequestUrl_GET)
-    }
-    const app = sessionStorage.getItem('app')
-    if(app !== null){
-      this.set_app(JSON.parse(app))
-    }
-    comm_fun.initWxShare()
-    // comm_fun.onbeforeunloadEnvt()
-    // 判断是否绑定手机号
+  destroyed() {
+    window.addEventListener('beforeunload', e => this.beforeunloadHandler(e))
+    window.addEventListener('unload', e => this.unloadHandler(e))
   }
 }
 </script>

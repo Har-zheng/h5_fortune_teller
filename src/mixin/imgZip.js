@@ -7,7 +7,7 @@ export default {
     uploadImg(file, Orientation) {
       return new Promise((resolve, reject) => {
         const imgElement = this.$refs.top_img
-        
+
         loadImage(
           imgElement.src,
           function (img, data) {
@@ -32,9 +32,11 @@ export default {
             originalHeight,
             originalWidth
           } = data
-          exif_clientWidth = originalWidth / 3
-          exif_clientHeight = originalHeight / 3
-
+          
+          // 计算长宽比
+          let than = originalHeight / originalWidth
+          exif_clientWidth = 500
+          exif_clientHeight = 500 * than
           // 大于500k的jpeg和png图片都缩小像素上传
           if (/\/(?:jpeg|png)/i.test(file.file.type) && file.file.size > 500000) {
             // 创建Canvas对象(画布)
@@ -103,7 +105,7 @@ export default {
               */
               context.drawImage(img, x, y, canvasWidth, canvasHeight)
               // 将绘制完成的图片重新转化为base64编码，file.file.type为图片类型，0.92为默认压缩质量
-              file.content = canvas.toDataURL(file.file.type, 0.3)
+              file.content = canvas.toDataURL(file.file.type, 0.5)
               // console.log(file)
               function dataURLtoFile(dataurl, filename) {
                 var arr = dataurl.split(','),
