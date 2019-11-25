@@ -207,7 +207,7 @@ export default {
             Body: file_data.file
           }, function (err, data) {
             if (data) {
-              // this_.img_success(data, this_, file_data.content)
+              this_.img_success(data, this_, file_data.content)
             }
             console.log(err || data)
           })

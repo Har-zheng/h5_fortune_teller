@@ -52,7 +52,10 @@ export default {
       'set_app'
     ]),
     isBeautyLatest(RequestUrl) {
-      BeautyLatest(RequestUrl).then(res => {
+      const copy_RequestUrl = JSON.parse(JSON.stringify(RequestUrl))
+      copy_RequestUrl.client = 2
+      // Object.assign({client: 2})
+      BeautyLatest(copy_RequestUrl).then(res => {
         if (res.code === 0) {
           let { instance, original_id, result, user_channel_id, image } = res.data
           this.isReload({
@@ -78,7 +81,7 @@ export default {
       console.log(this._gap_time)
       //判断是窗口关闭还是刷新
       if (this._gap_time <= 5) {  // 小于5毫秒的状态被认为是关闭页面了
-        //如果是登录状态，关闭窗口前，移除用户
+        //如果是登录状态，关闭窗口前，移除用户信息
         console.log(_gap_time)
         sessionStorage.removeItem("GetRequestUrl");
         sessionStorage.removeItem("app");
