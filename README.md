@@ -47,6 +47,7 @@ See [Configuration Reference](https://cli.vuejs.org/config/).
   "mediaQuery": false
 },
 ```
+### 合并图片  利用canvas 合并  
 
 
 
