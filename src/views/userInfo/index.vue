@@ -29,10 +29,7 @@
             <input type="number" v-model="number" />
           </p>
           <div class="receive">
-            <van-button
-              class="btn_photo_bg"
-              @click="handleSubmitInfo"
-            >确认提交</van-button>
+            <van-button class="btn_photo_bg" @click="handleSubmitInfo">确认提交</van-button>
           </div>
         </div>
       </BaseRouterTransition>
@@ -197,7 +194,9 @@ export default {
       }
       .btn_photo_bg {
         border: none;
+        width: 60%;
         margin-top: 38px;
+        font-size: 36px;
         background: url("../../assets/images02/photograph/tijiaoanniu.png")
           no-repeat center;
         background-size: 100%;

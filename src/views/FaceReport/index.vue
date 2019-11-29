@@ -3,57 +3,67 @@
     <div class="report_content">
       <div class="top">
         <img class="top_img" :src="top_img" alt />
-        <!-- <p class="line">
-          <span>WHO AM I</span>
-        </p>-->
-        <!-- <i class="redio"></i> -->
-        <i class="icon"></i>
+        <span class="score">{{ '80%'}}</span>
       </div>
       <div class="container">
-        <!-- <div class="title">
-          <i></i>
-          <p>{{ personal_type.title }}</p>
-        </div>-->
         <div class="assessment">
-          <div class="info">
-            <i class="icon"></i>
-            <div class="text">
-              <p class="text-title">综合评估</p>
-              <span>{{ personal_type.describe }}</span>
-            </div>
-            <div class="jiantou"></div>
+          <div class="title-text">
+            <p>
+              你们最相似的
+              <span>相貌特征</span>: 方脸
+            </p>
+            <p>
+              你们最相似的
+              <span>气质特征</span>: 英气
+            </p>
           </div>
           <div class="share_btn">
             <div id="share_img">
               <img :src="screenShotImg" id="shore_img_src" alt />
             </div>
-            <van-button class="btn_photo_bg" @click="saveshare">长按保存分享</van-button>
+            <van-button class="btn_photo_bg" @click="saveshare"></van-button>
           </div>
-          <p class="tip_btn">
-            <span>保存图片分享给朋友</span>
-            <span>测测TA是这片海域的哪条鱼?</span>
-          </p>
-          <p class="a_">
-            HTTP://WWW.MYREAL3D.COM
-            <br />BRAND 3D VIRTUAL FACIAL TREATMENT PLANNER
-          </p>
-          <p class="middle-title"></p>
         </div>
         <div class="footer-content">
           <div class="top" :style="{ 'z-index': 99}">
+            <div class="analysis_result">
+              <img src="../../assets/images02/v2/analysis_result.png" />
+            </div>
             <div class="hand-img">
               <i class="icon_yuan"></i>
               <div class="img-radio" ref="img_Head">
                 <img ref="img_radio_img" :src="src_image" alt />
               </div>
             </div>
-            <p class="part_title">部位分析</p>
-            <p class="item_p">
-              <span class="title_span">{{ head_position_all[0].full_name }}</span>
-              <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span>
-            </p>
+
+            <div class="part_item">
+              <div
+                class="item_list"
+                v-for="(item,index) in  head_position_new"
+                :class="{ 'img_active': img_num === index, 'depreciate':item.is_defect === -1,  'isDepreciate': (item.is_defect === -1 &&  img_num === index ) }"
+                @click="handlePart(item,index)"
+                :key="index"
+              >
+                <span class="title">{{ item.full_name }}</span>
+                <span class="parts">{{ item.is_defect !== -1? '部位 分析': '面部 问题'}}</span>
+              </div>
+            </div>
+            <div class="content">
+              <p class="part_title">部位分析</p>
+              <p class="item_p">
+                <span class="title_span">{{ head_position_all[img_num].explanation['D'] }}</span>
+                <!-- <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span> -->
+              </p>
+            </div>
+            <div class="content">
+              <p class="part_title">解决方案</p>
+              <p class="item_p">
+                <span class="title_span">{{ head_position_all[img_num].explanation['D'] }}</span>
+                <!-- <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span> -->
+              </p>
+            </div>
           </div>
-          <div
+          <!-- <div
             class="footer-middle"
             v-for="(item,index) in  head_position_new"
             :key="index"
@@ -65,10 +75,23 @@
                 <span class="title_text">{{ item.explanation['D'] }}</span>
               </p>
             </div>
-          </div>
-
-          <div class="user_info" v-show="!isUser_id">
-            <p class="p1">鼻基底、下颌、皱纹... ...</p>
+          </div>-->
+          <div class="user_info">
+            <div class="icon_img">
+              <img class="sign" src="../../assets/images02/v2/sign.png" alt />
+              <img class="fuhao" src="../../assets/images02/v2/fuhao.png" alt />
+              <span>
+                星
+                <br />和
+              </span>
+            </div>
+            <div class="content">
+              <p>恭喜你，请保持住你的最佳状态~可到店领取深度保湿补水面部护理一次(价值1000元)</p>
+              <p>客服将在7个工作日内致电与您联系，感谢您的参与!</p>
+              <p>本次服务体验由星和医美提供</p>
+            </div>
+            <div class="bth_register" @click="hanleBtnRegister"></div>
+            <!-- <p class="p1">鼻基底、下颌、皱纹... ...</p>
             <p class="p2">更多面部详细参数点击获取</p>
             <div class="from">
               <p class="from_p">
@@ -86,9 +109,9 @@
               <div class="receive">
                 <van-button class="btn_photo_bg" @click="handleSubmitInfo">确认提交</van-button>
               </div>
-            </div>
+            </div>-->
           </div>
-          <div class="footer" v-show="isUser_id">
+          <!-- <div class="footer" v-show="isUser_id">
             <van-button type="info" @click="hanleBtnRetest">重测一次</van-button>
             <p class="a_">
               HTTP://WWW.MYREAL3D.COM
@@ -102,7 +125,7 @@
             <div class="footer_img">
               <img :src="qr_code_img" alt />
             </div>
-          </div>
+          </div> -->
           <div class="BusinessCooperation">
             <router-link :to="'buscoop'">
               <p>
@@ -112,20 +135,27 @@
           </div>
         </div>
       </div>
-      <div class="test_img">
-        <div class="html2_cavars" :class="[isActive_back]" ref="html2_cavars" id="con">
-          <!-- <div class="top">
-          <img class="top_img" crossorigin="anonymous" :src="top_img" alt />
-          <div class="hand-img">
-            <i class="icon_yuan"></i>
-            <div class="img-radio">
-              <img crossorigin="anonymous" ref="canvas_top_img" :src="parmes_data_img" alt />
+      <div class="test_img" id="con">
+        <div class="html2_cavars" :class="[isActive_back]" ref="html2_cavars" >
+          <span class="score">{{ '80%'}}</span>
+          <div class="assessment">
+            <div class="title-text">
+              <i class="before"></i>
+              <p>
+                你们最相似的
+                <span>相貌特征</span>: 方脸
+              </p>
+              <p>
+                你们最相似的
+                <span>气质特征</span>: 英气
+              </p>
+              <i class="after"></i>
             </div>
           </div>
-          <i class="redio"></i>
-          <i class="icon"></i>
-          </div>-->
-          <div class="seaking_code"></div>
+          <div class="seaking_code">
+            <p>长按识别二维码</p>
+            <div class="bg_font"></div>
+          </div>
         </div>
       </div>
       <div id="qrcode" v-show="false"></div>
@@ -137,15 +167,14 @@ import { All_Types_Data, getSendCode, userBindInfo } from '../../api/app'
 import { mapState } from 'vuex'
 import axios from 'axios'
 import { Dialog } from 'vant'
-const h001 = require('../../assets/images02/haiwang/001.jpg')
-const h001_1 = require('../../assets/images02/haiwang/001-1.jpg')
-const h002 = require('../../assets/images02/haiwang/002.jpg')
-const h003 = require('../../assets/images02/haiwang/003.jpg')
-const h004 = require('../../assets/images02/haiwang/004.jpg')
-const h005 = require('../../assets/images02/haiwang/005.jpg')
-const h006 = require('../../assets/images02/haiwang/006.jpg')
-const h007 = require('../../assets/images02/haiwang/007.jpg')
-const h008 = require('../../assets/images02/haiwang/008.jpg')
+const h001 = require('../../assets/images02/v2/people/001.jpg')
+const h002 = require('../../assets/images02/v2/people/002.jpg')
+const h003 = require('../../assets/images02/v2/people/003.jpg')
+const h004 = require('../../assets/images02/v2/people/004.jpg')
+const h005 = require('../../assets/images02/v2/people/005.jpg')
+const h006 = require('../../assets/images02/v2/people/006.jpg')
+const h007 = require('../../assets/images02/v2/people/007.jpg')
+const h008 = require('../../assets/images02/v2/people/008.jpg')
 import html2cavas from './mixin/html2cavas'
 import imgExif from '../../mixin/imgExif'
 import { log } from 'util'
@@ -186,7 +215,7 @@ export default {
         }
       ],
       overview: '你的长相就是人们口中传颂的海王鼻基底挺拔的你是个自信有想法且有征服欲望的人，两颞饱满让你有敏捷的思维，更好的理清和把控两性关系，眼睛下方的卧蚕让你更加迷人，大多数异性见了你都会被你的双眼深深吸引，你知道你自己有多么迷人，并且持续的散发着魅力，感情中你能够占据主导地位，拥有着号令整个海洋的潜力。你的目标不是一片小小的鱼塘，而是广阔的星辰大海。',
-      top_img: require('../../assets/images02/photograph/timg01.jpg'),
+      top_img: require('../../assets/images02/v2/people/001.jpg'),
       attribute: '海王',
       qr_code_img: require('../../assets/images02/photograph/more_report.png'),
       qr_code_shore_img: require('../../assets/images02/photograph/start_test.png'),
@@ -199,7 +228,8 @@ export default {
       code_num: '',
       isSubmit: false,
       isActive_back: '',
-      src_image: ''
+      src_image: '',
+      img_num: 0
     }
   },
   computed: {
@@ -376,7 +406,7 @@ export default {
         this.isUser_id = true
         this.head_position = copy_all
       } else if (copy_all.length >= 3) {
-        for (let i = 0; i < 3; i++) {
+        for (let i = 0; i < 9; i++) {
           this.head_position[i] = copy_all[i]
         }
       }
@@ -389,42 +419,42 @@ export default {
       switch (this.type_num) {
         case 0:
           this.top_img = h001
-          this.draw_canvas(1)
+          // this.draw_canvas(1)
           break;
         case 1:
           this.top_img = h002
-          this.draw_canvas(2)
+          // this.draw_canvas(2)
           break;
         case 2:
           this.top_img = h003
-          this.draw_canvas(3)
+          // this.draw_canvas(3)
           break;
         case 3:
           this.top_img = h004
-          this.draw_canvas(4)
+          // this.draw_canvas(4)
           break;
         case 4:
           this.top_img = h005
-          this.draw_canvas(5)
+          // this.draw_canvas(5)
           break;
         case 5:
           this.top_img = h006
-          this.draw_canvas(6)
+          // this.draw_canvas(6)
           break;
         case 6:
           this.top_img = h007
-          this.draw_canvas(7)
+          // this.draw_canvas(7)
           break;
         case 7:
           this.top_img = h008
-          this.draw_canvas(8)
+          // this.draw_canvas(8)
           break;
         default:
           break;
       }
       if (this.gender === "Female" && this.type_num === 0) {
         this.top_img = h001_1
-        this.draw_canvas(9)
+        // this.draw_canvas(9)
       }
       let img_radio_img = this.$refs.img_radio_img
       console.log(img_radio_img)
@@ -432,6 +462,14 @@ export default {
     // 重新测
     hanleBtnRetest() {
       this.$router.push({ name: 'PhotoPage' })
+    },
+    // 申请注册
+    hanleBtnRegister() {
+      this.$router.push({ name: 'userInfo' })
+    },
+    // 点击部位
+    handlePart(item, index) {
+      this.img_num = index
     }
   }
 }
@@ -441,7 +479,6 @@ export default {
   font-family: Niagara Solid;
   font-weight: 400;
   color: #fff;
-  background-color: #04032b;
   // overflow: scroll !important;
   z-index: 1;
   position: relative;
@@ -453,6 +490,15 @@ export default {
     .top_img {
       width: 100%;
       z-index: 1;
+    }
+    .score {
+      position: absolute;
+      top: 476px;
+      right: 89px;
+      color: #947540;
+      font-size: 42px;
+      font-weight: 800;
+      letter-spacing: 6px;
     }
     .line {
       position: absolute;
@@ -498,11 +544,11 @@ export default {
     }
   }
   .container {
-    background: url("../../assets/images02/photograph/beijing002.jpg") no-repeat;
+    background: url("../../assets/images02/v2/beijing002.jpg") no-repeat;
     background-size: 100%;
-    background-position-y: -300px;
+    background-position-y: -60px;
     // height: 1700px;
-    margin-top: -310px;
+    margin-top: -150px;
     position: relative;
     z-index: 2;
     .title {
@@ -606,15 +652,29 @@ export default {
           // }
         }
       }
+      // 文字
+      .title-text {
+        margin: 0 auto;
+        position: relative;
+        p {
+          color: #000;
+          font-weight: 800;
+          font-size: 36px;
+          margin-bottom: 12px;
+        }
+        span {
+          color: #947540;
+        }
+      }
       .share_btn {
-        width: 292px;
+        width: 375px;
         // height: 102px;
         position: relative;
         display: inline-block;
         margin-top: -40px;
         #share_img {
           z-index: 2;
-          width: 292px;
+          width: 375px;
           height: 102px;
           position: relative;
           margin-top: -80px;
@@ -634,12 +694,11 @@ export default {
         z-index: 1;
         clear: both;
         border: none;
-        margin-top: 55px;
-        width: 292px;
+        margin-top: 32px;
+        width: 375px;
         height: 102px;
         font-size: 30px;
-        background: url("../../assets/images02/photograph/tijiaoanniu.png")
-          no-repeat center;
+        background: url("../../assets/images02/v2/save.png") no-repeat center;
         background-size: 100%;
         color: #e6eeff;
       }
@@ -671,30 +730,36 @@ export default {
     }
     .footer-content {
       clear: both;
-      padding: 0 17px;
+      padding: 0;
       position: relative;
       .top {
-        background: url("../../assets/images02/photograph/buwei_01.png")
-          no-repeat;
+        background: url("../../assets/images02/v2/scroll.png") no-repeat;
         background-size: 100%;
-        height: 477px;
+        height: 1500px;
         margin: 0 auto;
-        background-position-y: 115px;
-        padding: 0 59px 0 37px;
+        // background-position-y: 0;
+        margin-top: 60px;
+        padding: 76px 59px 0 37px;
         position: relative;
         z-index: 99;
+        .analysis_result {
+          height: 48px;
+          img {
+            height: 100%;
+          }
+        }
         .hand-img {
           margin-top: 40px;
           text-align: center;
           position: relative;
           .img-radio {
-            width: 220px;
-            height: 220px;
+            width: 560px;
+            height: 570px;
             overflow: hidden;
             display: inline-block;
             border-radius: 50%;
             position: relative;
-            img {
+            margin: 2.333vw 0 0 3.8vw img {
               width: 100%;
               text-align: center;
               margin: 0 auto;
@@ -702,48 +767,102 @@ export default {
           }
           .icon_yuan {
             position: absolute;
-            left: 50%;
-            margin-left: -115px;
+            left: 0;
+            margin-left: 1px;
             text-align: center;
             display: inline-block;
-            width: 230px;
-            height: 230px;
+            width: 720px;
+            height: 650px;
             z-index: 3;
-            background: url("../../assets/images02/photograph/tx_yuan.png")
-              no-repeat;
+            background: url("../../assets/images02/v2/tx_yuan.png") no-repeat;
             background-size: 100%;
           }
         }
-        .part_title {
-          font-size: 36px;
-          font-weight: 800;
-          line-height: 35px;
-          text-align: left;
+        .content {
+          padding: 69px 23px 0 23px;
+          color: #000;
+          .part_title {
+            font-size: 36px;
+            font-weight: 800;
+            line-height: 35px;
+            text-align: left;
+          }
+          .item_p {
+            margin-top: 26px;
+            font-size: 25px;
+            text-align: left;
+            position: relative;
+            .title_span {
+              display: inline-block;
+              position: absolute;
+              left: 0;
+              font-weight: 400;
+              line-height: 38px;
+              width: 100%;
+            }
+            .title_text {
+              display: inline-block;
+              position: absolute;
+              right: 0;
+              width: 445px;
+              font-size: 24px;
+              font-weight: 400;
+              line-height: 38px;
+            }
+          }
+        }
+
+        .part_item {
+          padding: 0 20px;
+          display: flex;
+          margin-top: 60px;
+          .item_list {
+            width: 58px;
+            height: 306px;
+            margin-right: 15px;
+            background: url("../../assets/images02/v2/label1.png") no-repeat;
+            background-size: 100%;
+            span {
+              display: inline-block;
+              height: 120px;
+              width: 58px;
+              font-size: 30px;
+              word-wrap: break-word;
+              letter-spacing: 0px;
+              color: #000;
+              text-align: center;
+            }
+            .title {
+            }
+            .parts {
+              font-size: 18px;
+              color: #8e743b;
+              width: 29px;
+            }
+          }
+          .img_active {
+            // width: 86px;
+            height: 316px;
+            background: url("../../assets/images02/v2/label1_select.png")
+              no-repeat;
+            background-size: 134%;
+            background-position-x: -9px;
+            position: relative;
+            top: -30px;
+            box-shadow: 15px 0 15px -15px #000;
+          }
+          .depreciate {
+            background: url("../../assets/images02/v2/label2.png") no-repeat;
+            background-size: 100%;
+          }
+          .isDepreciate {
+            background: url("../../assets/images02/v2/label2_select.png")
+              no-repeat;
+            background-size: 105%;
+          }
         }
       }
-      .item_p {
-        margin-top: 40px;
-        font-size: 30px;
-        text-align: left;
-        position: relative;
-        .title_span {
-          display: inline-block;
-          position: absolute;
-          left: 0;
-          font-weight: 800;
-          line-height: 38px;
-          width: 160px;
-        }
-        .title_text {
-          display: inline-block;
-          position: absolute;
-          right: 0;
-          width: 445px;
-          font-size: 24px;
-          font-weight: 400;
-          line-height: 38px;
-        }
-      }
+
       .footer-middle {
         // background: url('../../assets/images02/photograph')
         position: relative;
@@ -842,6 +961,57 @@ export default {
       .user_info {
         position: relative;
         z-index: 8;
+        width: 100%;
+        height: 700px;
+        background: url("../../assets/images02/v2/footer_img.png") no-repeat;
+        background-size: 100%;
+        .icon_img {
+          position: absolute;
+          left: 188px;
+          top: 200px;
+          color: #000;
+          img {
+          }
+          .sign {
+            width: 48px;
+            height: 158px;
+          }
+          .fuhao {
+            width: 14px;
+            display: block;
+            margin: 14px;
+            text-align: center;
+          }
+          span {
+            width: 48px;
+            font-size: 24px;
+            word-wrap: break-word;
+          }
+        }
+        .content {
+          width: 380px;
+          position: absolute;
+          top: 180px;
+          left: 263px;
+          font-size: 26px;
+          line-height: 36px;
+          p {
+            margin-top: 34px;
+          }
+          p:nth-child(1) {
+            margin-top: 0;
+          }
+        }
+        .bth_register {
+          position: absolute;
+          bottom: 0;
+          left: 50%;
+          margin-left: -191px;
+          width: 382px;
+          height: 72px;
+          background: url("../../assets/images02/v2/register.png") no-repeat;
+          background-size: 100%;
+        }
         .p1 {
           font-size: 46px;
           font-weight: bold;
@@ -939,7 +1109,7 @@ export default {
     .footer-content:after {
       content: "";
       display: block;
-      background-color: #04032b;
+      // background-color: #04032b;
       width: 100%;
       height: 96%;
       position: absolute;
@@ -967,12 +1137,14 @@ export default {
   //   截图截图
   .test_img {
     position: absolute;
-    z-index: 1;
+    z-index: 0;
     top: 0;
-    top: 500vw;
-    background-color: #00124d;
+    // top: 560vw;
+    background: url("../../assets/images02/v2/beijing002.jpg") no-repeat;
+    background-size: 100%;
+    background-position-y: -600px;
     padding: 0 0 12px 0;
-    width: 1500px;
+    // width: 1500px;
   }
   // .isActive_back {
   //   background: url("../../assets/images02/shore/001.jpg") no-repeat;
@@ -981,19 +1153,221 @@ export default {
   //   height: 2668px;
   // }
   .html2_cavars {
-    background: url("../../assets/images02/shore/001-1.jpg") no-repeat;
+    background: url("../../assets/images02/v2/people/001.jpg") no-repeat;
     background-size: 100%;
     width: 1500px;
-    height: 2668px;
+    height: 3200px;
     position: relative;
+    .score {
+      position: absolute;
+      top: 952px;
+      right: 180px;
+      color: #947540;
+      font-size: 82px;
+      font-weight: 800;
+      letter-spacing: 12px;
+    }
     .seaking_code {
       background: url("../../assets/images02/photograph/code.png") no-repeat;
-      background-size: 100%;
-      width: 372px;
-      height: 372px;
+      background-size: 100% !important;
+      width: 360px;
+      height: 360px;
       position: absolute;
-      left: 140px;
-      bottom: 190px;
+      left: 50%;
+      margin-left: -180px;
+      bottom: 200px;
+      p {
+        width: 100%;
+        color: #000;
+        position: absolute;
+        font-size: 50px;
+        bottom: -80px;
+        font-weight: bold;
+        left: 0;
+      }
+      .bg_font {
+        background: url("../../assets/images02/v2/font.png") no-repeat;
+        background-size: 100%;
+        width: 888px;
+        height: 136px;
+        position: absolute;
+        left: 50%;
+        margin-left: -444px;
+        bottom: -240px;
+      }
+    }
+    .assessment {
+      position: relative;
+      top: 2260px;
+      .info {
+        position: relative;
+        margin: 0 auto;
+        background: #030329;
+        // background-size: 100%;
+        width: 1436px;
+        border-radius: 0 72px 72px 72px;
+        margin-bottom: 60px;
+        // height: 479px;
+        .icon {
+          display: block;
+          width: 70px;
+          height: 70px;
+          background: url("../../assets/images02/photograph/dialogue.png")
+            no-repeat;
+          background-size: 100%;
+          margin: 60px;
+          float: left;
+        }
+        .text {
+          display: inline-block;
+          margin: 600px 46px 94px 0;
+          width: 1196px;
+          .text-title {
+            font-size: 60px;
+            font-weight: 800;
+            text-align: left;
+            margin-bottom: 40px;
+          }
+          .text-title:after {
+            content: "";
+            display: block;
+            width: 182px;
+            height: 12px;
+            margin-top: 12px;
+            border-radius: 14px;
+            background: #fff;
+          }
+          span {
+            display: inline-block;
+            font-size: 48px;
+            color: #fff;
+            line-height: 70px;
+            text-align: left;
+          }
+        }
+        .jiantou {
+          display: inline-block;
+          position: absolute;
+          width: 37px;
+          height: 27px;
+          background: url("../../assets/images02/photograph/xiala.png")
+            no-repeat;
+          background-size: 100%;
+          left: 50%;
+          margin-left: -18px;
+          bottom: 20px;
+          animation: jantou_frame 1.2s infinite;
+        }
+        @keyframes jantou_frame {
+          0% {
+            bottom: 4vw;
+          }
+          100% {
+            bottom: 0vw;
+          }
+          // 100% {
+          //   bottom:  6vw;
+          // }
+        }
+      }
+      // 文字
+      .title-text {
+        margin: 0 auto;
+        position: relative;
+        p {
+          color: #000;
+          font-weight: 800;
+          font-size: 72px;
+          margin-bottom: 24px;
+        }
+        .before {
+          position: absolute;
+          display: inline-block;
+          width: 1024px;
+          height: 40px;
+          background: url("../../assets/images02/v2/icon_jian.png") no-repeat;
+          background-size: 100%;
+          top: -92px;
+          left: 16%;
+          // margin-left: -500px;
+        }
+        .after {
+          position: absolute;
+          display: inline-block;
+          width: 1024px;
+          height: 40px;
+          background: url("../../assets/images02/v2/icon_jian.png") no-repeat;
+          background-size: 100%;
+          bottom: -90px;
+          left: 16%;
+          // margin-left: -500px;
+          transform: rotate(180deg);
+        }
+        span {
+          color: #947540;
+        }
+      }
+      .share_btn {
+        width: 375px;
+        // height: 102px;
+        position: relative;
+        display: inline-block;
+        margin-top: -40px;
+        #share_img {
+          z-index: 2;
+          width: 375px;
+          height: 102px;
+          position: relative;
+          margin-top: -80px;
+          // position: absolute;
+          top: 165px;
+          // opacity: 0;
+          img {
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            // display: none;
+          }
+        }
+      }
+      .btn_photo_bg {
+        position: relative;
+        z-index: 1;
+        clear: both;
+        border: none;
+        margin-top: 32px;
+        width: 375px;
+        height: 102px;
+        font-size: 30px;
+        background: url("../../assets/images02/v2/save.png") no-repeat center;
+        background-size: 100%;
+        color: #e6eeff;
+      }
+      .tip_btn {
+        clear: both;
+        color: #0178ce;
+        font-size: 30px;
+        text-align: center;
+        font-weight: bold;
+        margin-top: 20px;
+        span {
+          margin-bottom: 8px;
+          display: block;
+        }
+      }
+      .a_ {
+        margin-top: 50px;
+        font-size: 14px;
+        color: #0b3fb3;
+      }
+      .middle-title {
+        margin: 0 auto;
+        margin-top: 56px;
+        background: url("../../assets/images02/photograph/wanmei.png") no-repeat;
+        width: 508px;
+        background-size: 100%;
+        height: 130px;
+      }
     }
   }
   .isActive_001 {

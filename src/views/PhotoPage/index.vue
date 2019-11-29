@@ -1,18 +1,16 @@
 <template>
   <div class="home">
     <div class="bg-img">
-      <div class="ios_bug_style">
+      <!-- <div class="ios_bug_style">
         <img src="../../assets/images02/photograph/LOGO.png" />
-      </div>
+      </div> -->
     </div>
     <div class="conetnt">
       <p class="title">
-        <i class="icon"></i>
-        <span>{{ title }}</span>
-        <span>{{ title2 }}</span>
+        <span></span>
       </p>
       <div class="img-Head">
-        <div class="img-Head-bg" :class="{'ConfirmCss': isConfirm}"></div>
+        <div class="img-Head-bg"></div>
         <div class="ios_bug" ref="img_Head">
           <!-- <img  :class="isTransform" radius="6" v-if="isConfirm" :src="photo_img_dom" /> -->
           <img id="imgElement" :class="isTransform" ref="top_img" radius="6" :src="photo_img" />
@@ -101,14 +99,14 @@ import { Toast, Dialog } from 'vant'
 import imgExif from '../../mixin/imgExif'
 import imgZip from '../../mixin/imgZip'
 import axios from 'axios'
-import  vueMixinCom  from '../../mixin/vueMixinCom.js'
+import vueMixinCom from '../../mixin/vueMixinCom.js'
 export default {
   data() {
     return {
       title: '测测你颜值',
       title2: '属于哪一种类型?',
       isTitle: '',
-      photo_img: require('../../assets/images02/photograph/touxiang.png'),
+      photo_img: require('../../assets/images02/v2/img_hecheng.jpg'),
       photo_img_dom: require('../../assets/images02/photograph/touxiang.png'),
       isConfirm: true,
       tip_img: {
@@ -135,7 +133,7 @@ export default {
       exif_clientHeight: ''
     }
   },
-  mixins: [imgExif, imgZip,vueMixinCom],
+  mixins: [imgExif, imgZip, vueMixinCom],
   components: {
     BaseRouterTransition
   },
@@ -158,6 +156,7 @@ export default {
           this.isheadpose = '正面'
         } else {
           this.isheadpose = '头部姿态不符合'
+          this.tips(this.isheadpose)
         }
       }
     }
@@ -184,34 +183,34 @@ export default {
         this.uploadImg(this.file, this.Orientation).then(res => {
           this.dataFileZip = res
           console.log(this.dataFileZip)
-                  imgCosupload({ version: 1 }).then(res => {
-          const data = res.data
-          let cos = new COS({
-            getAuthorization: function (options, callback) {
-              // 异步获取临时密钥
-              callback({
-                TmpSecretId: data.credentials.tmpSecretId,
-                TmpSecretKey: data.credentials.tmpSecretKey,
-                XCosSecurityToken: data.credentials.sessionToken,
-                ExpiredTime: data.expiredTime
-              })
-            }
+          imgCosupload({ version: 1 }).then(res => {
+            const data = res.data
+            let cos = new COS({
+              getAuthorization: function (options, callback) {
+                // 异步获取临时密钥
+                callback({
+                  TmpSecretId: data.credentials.tmpSecretId,
+                  TmpSecretKey: data.credentials.tmpSecretKey,
+                  XCosSecurityToken: data.credentials.sessionToken,
+                  ExpiredTime: data.expiredTime
+                })
+              }
+            })
+            var file_data = this.dataFileZip
+            var this_ = this
+            if (!file_data) return
+            cos.putObject({
+              Bucket: data.bucket,
+              Region: data.region,
+              Key: `h5/ai/beauty/images/${new Date().getTime()}_` + file_data.file.name,
+              Body: file_data.file
+            }, function (err, data) {
+              if (data) {
+                this_.img_success(data, this_, file_data.content)
+              }
+              console.log(err || data)
+            })
           })
-          var file_data = this.dataFileZip
-          var this_ = this
-          if (!file_data) return
-          cos.putObject({
-            Bucket: data.bucket,
-            Region: data.region,
-            Key: `h5/ai/beauty/images/${new Date().getTime()}_` + file_data.file.name,
-            Body: file_data.file
-          }, function (err, data) {
-            if (data) {
-              this_.img_success(data, this_, file_data.content)
-            }
-            console.log(err || data)
-          })
-        })
         })
       })
     },
@@ -270,10 +269,8 @@ export default {
       }
       ImgUrlBeauty(parmes_data).then(res => {
         console.log(res)
-        // Toast1.clear();
         if (res.code === 0) {
           let { instance, original_id, result, user_channel_id } = res.data
-
           this.isReload({
             parmes_data: parmes_data.data,
             instance,
@@ -282,10 +279,15 @@ export default {
             imgContent,
             user_channel_id
           })
-
-          this.headpose = result.headpose
+          // 读取result参数  红楼梦 男拒绝  gender性别 glass是否佩戴眼镜 headpose 头部状态是否正确
+          const { gender, headpose, glass } = result
+          if (gender !== "Female") {
+            this.tips('这张是男的哦!换成女朋友的来试一试吧!')
+            return;
+          }
+          this.headpose = headpose
           console.log('headpose' + JSON.stringify(this.headpose))
-          this.glass = result.glass
+          this.glass = glass
           this.isUploadSuccess = 'success'
           this.set_beauty_info(!this.Beauty_info)
         } else {
@@ -313,13 +315,21 @@ export default {
       // 重置css Transform 动画
       this.isTransform = ''
       document.getElementById('imgElement').style = null
+    },
+    // loading   提示框
+    tips( message) {
+      Dialog.alert({
+        message
+      }).then(() => {
+        this.handleBtnAgain()
+      });
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .home {
-  background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
+  background: url("../../assets/images02/v2/photo_bg_img.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
   // overflow-y: scroll;
@@ -330,9 +340,8 @@ export default {
   background-color: #001037;
 }
 .bg-img {
-  padding: 32px 20px;
+  padding: 20px 0;
   width: 100%;
-  height: 80px;
   position: relative;
   .ios_bug_style {
     margin: 0 auto;
@@ -351,9 +360,10 @@ export default {
   z-index: 2;
   line-height: 100%;
   // 宽度 计算 710 -减去两个padding值
-  width: 568px;
+  width: 640px;
   height: 100%;
-  background-color: #000018cc;
+  background: url('../../assets/images02/v2/scroll.png') no-repeat;
+  background-size: 100%;
   border-radius: 30px 30px 0px 0px;
   margin: 0 auto;
   padding: 46px 53px 0 53px;
@@ -376,15 +386,11 @@ export default {
       bottom: 10px;
     }
     span {
-      font-size: 36px;
       display: inline-block;
-      line-height: 36px;
-    }
-    span:nth-child(2) {
-      color: #ff71c1;
-    }
-    span:nth-child(3) {
-      color: #4eb0ff;
+      background: url('../../assets/images02/v2/update_img.png') no-repeat;
+      background-size: 100%;
+      width: 362px;
+      height: 48px;
     }
   }
   .tip {
@@ -589,18 +595,18 @@ export default {
 }
 .img-Head {
   width: 310px;
-  height: 310px;
+  height: 604px;
   position: relative;
   // background: url("../../assets/images02/photograph/photo02.png") no-repeat;
   background-size: 100%;
   .img-Head-bg {
     z-index: 2;
-    width: 310px;
-    height: 310px;
+    width: 100%;
+    height: 604px;
     position: absolute;
     left: 50%;
     margin-left: -155px;
-    background: url("../../assets/images02/photograph/photo02.png") no-repeat;
+    background: url("../../assets/images02/v2/tx_yuan.png") no-repeat;
     background-size: 100%;
   }
   //  .img-radio {
@@ -634,12 +640,12 @@ export default {
     .imgRotate {
       transform: rotate(-90deg);
     }
-    .activeTransform6{
-      transform:rotate(90deg);
+    .activeTransform6 {
+      transform: rotate(90deg);
       height: 100%;
     }
-    .activeTransform8{
-      transform:rotate(-90deg);
+    .activeTransform8 {
+      transform: rotate(-90deg);
       height: 100%;
     }
   }

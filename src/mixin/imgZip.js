@@ -7,7 +7,6 @@ export default {
     uploadImg(file, Orientation) {
       return new Promise((resolve, reject) => {
         const imgElement = this.$refs.top_img
-
         loadImage(
           imgElement.src,
           function (img, data) {
@@ -54,6 +53,7 @@ export default {
               // 指定canvas画布大小，该大小为最后生成图片的大小
               canvas.width = exif_clientWidth
               canvas.height = exif_clientHeight
+              // x, y 图片移动位置的问题
               let x = 0,
                 y = 0
               /* canvasWidth  canvasHeight  img 在canvas 视图的大小 相当于控制img本身的宽高问题 是否等比放在canvas中 截图后是否被拉伸等问题*/
