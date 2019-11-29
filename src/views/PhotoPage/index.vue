@@ -21,11 +21,11 @@
       </div>
       <div class="head-icon">
         <p class="title">{{ isTitle }}</p>
-        <p class="icon"></p>
+        <!-- <p class="icon"></p> -->
       </div>
-      <BaseRouterTransition>
+      <!-- <BaseRouterTransition>
         <p class="title tip" v-show="isConfirm">满足以下要求，结果更准确</p>
-      </BaseRouterTransition>
+      </BaseRouterTransition> -->
       <div class="need" v-show="isConfirm">
         <div class="item">正面</div>
         <div class="item">五官清晰</div>
@@ -360,13 +360,13 @@ export default {
   z-index: 2;
   line-height: 100%;
   // 宽度 计算 710 -减去两个padding值
-  width: 640px;
+  width: 740px;
   height: 100%;
   background: url('../../assets/images02/v2/scroll.png') no-repeat;
   background-size: 100%;
   border-radius: 30px 30px 0px 0px;
   margin: 0 auto;
-  padding: 46px 53px 0 53px;
+  padding: 46px 0;
   .title {
     font-size: 30px;
     font-weight: 400;
@@ -594,7 +594,7 @@ export default {
   }
 }
 .img-Head {
-  width: 310px;
+  width: 700px;
   height: 604px;
   position: relative;
   // background: url("../../assets/images02/photograph/photo02.png") no-repeat;
@@ -605,7 +605,7 @@ export default {
     height: 604px;
     position: absolute;
     left: 50%;
-    margin-left: -155px;
+    margin-left: -330px;
     background: url("../../assets/images02/v2/tx_yuan.png") no-repeat;
     background-size: 100%;
   }
@@ -625,8 +625,8 @@ export default {
   .ios_bug {
     z-index: 1;
     position: relative;
-    width: 270px;
-    height: 270px;
+    width: 55 0px;
+    height: 550px;
     overflow: hidden;
     display: inline-block;
     border-radius: 8px;
@@ -636,6 +636,7 @@ export default {
       width: 100%;
       text-align: center;
       margin: 0 auto;
+      border-radius: 50%;
     }
     .imgRotate {
       transform: rotate(-90deg);
