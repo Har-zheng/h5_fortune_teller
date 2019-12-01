@@ -45,7 +45,7 @@ export default {
     }
   },
   created(){
-    if(comm_fun.AndroisIos && comm_fun.isWeixin ){
+    if(comm_fun.AndroisIos && comm_fun.isWeixin){
       this.video_src = this.ts3M
     }else{
       this.video_src = this.mp4 
