@@ -3,11 +3,11 @@
     <div class="bg-img">
       <!-- <div class="ios_bug_style">
         <img src="../../assets/images02/photograph/LOGO.png" />
-      </div> -->
+      </div>-->
     </div>
     <div class="conetnt">
       <p class="title">
-        <span></span>
+        <span :class="{'isTopImg': !isConfirm}"></span>
       </p>
       <div class="img-Head">
         <div class="img-Head-bg"></div>
@@ -20,12 +20,12 @@
         </div>-->
       </div>
       <div class="head-icon">
-        <p class="title">{{ isTitle }}</p>
+        <!-- <p class="title">{{ isTitle }}</p> -->
         <!-- <p class="icon"></p> -->
       </div>
       <!-- <BaseRouterTransition>
         <p class="title tip" v-show="isConfirm">满足以下要求，结果更准确</p>
-      </BaseRouterTransition> -->
+      </BaseRouterTransition>-->
       <div class="need" v-show="isConfirm">
         <div class="item">正面</div>
         <div class="item">五官清晰</div>
@@ -66,9 +66,7 @@
       </BaseRouterTransition>
       <div class="photograph-btn" v-show="isConfirm">
         <van-uploader class="button" :after-read="afterRead">
-          <van-button class="button-div btn_photo_bg" id="btn_photo" type="primary">
-            <van-icon color="#84FF00" size="4vw" name="photograph" />拍照/上传照片
-          </van-button>
+          <van-button class="button-div btn_photo_bg" id="btn_photo" type="primary"></van-button>
         </van-uploader>
         <p>HTTP://WWW.MYREAL3D.COM</p>
       </div>
@@ -80,13 +78,20 @@
               class="button-div btn_photo_bg btn_photo_color"
               @click="handleBtnAgain"
               type="primary"
-            >重新上传</van-button>
-            <van-button class="button-div button-cancel btn_photo_bg" @click="handleBtnConfirm">确认上传</van-button>
+            ></van-button>
+            <van-button class="button-div button-cancel btn_photo_bg" @click="handleBtnConfirm"></van-button>
           </div>
           <p>HTTP://WWW.MYREAL3D.COM</p>
         </div>
       </BaseRouterTransition>
     </div>
+    <van-overlay :show="showOverlay" class="overlay">
+      <div class="wrapper" @click.stop>
+        <div class="block">
+          <div class="brack" @click="handleBtnReturn" ></div>
+        </div>
+      </div>
+    </van-overlay>
   </div>
 </template>
 <script>
@@ -110,8 +115,8 @@ export default {
       photo_img_dom: require('../../assets/images02/photograph/touxiang.png'),
       isConfirm: true,
       tip_img: {
-        correct: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADkAAAA4CAMAAABwmqASAAAAk1BMVEUAAAADxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwUDxwWPcL6XAAAAMHRSTlMA8QX6o03dzunlJh8QCPbWsZQ3KgvtvbacfnJqXllBPjMWx4tvY0guHfOpgnlmU7/6TN/xAAABlUlEQVRIx53W15qCMBQE4NARCypYsGJbuzvv/3T7yeKaclaS/PdDAswJMDtZ3y7X3XmxVXAYApFNsPAATMxznQmepsbBdopKYRo8tvDrYBhcOagFZsF1Dy+lWfCMP4nRa3TwdjIIJjE4Hf3gJgRvox10xxC0tZNTiIa6wQMkS81g2YOk0Gx5CJnmZPtQOK5OcAHCl85gOSD4GskxCKNBc/AOVbzXuM0TsdepVmv76kbph9NlogCyiK5sEAbihZQOXLrk8+/LR/AVkh05SLeqnQ/+UnJfZ+S5lqKSfqjdnBp5nxigIXj0ITvn3lrqUu2hVywj8Bav/UOwV6dvAFFYL7oF76rOUAzZnSiB2vACqlb1toVb6BMVz3wPsrm85Danfxcm6qLiXYb/HsxBS+nKGm9O8uF0k9oS59w+vM9nzsMRh5csKy2JQLuwJrkPSpqzZjeozhnTsfRg++lZO4BUOl2l2OLIZdoSvhS9jDG76N7wD22E2lgvoP74jE7M1MqrTxVzwTP6zWzMAO/IrAywY3Zcv6noP1SEq/OgNc3TAAAAAElFTkSuQmCC',
-        warning: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACwAAAAsCAMAAAApWqozAAAAM1BMVEUAAAD7ZAD6ZAD7ZAD9YwD7ZAD8ZAD5YQD7ZAD7ZAD7ZAD6ZAD7ZAD7ZAD8ZAD7ZAD7ZADc5bCPAAAAEHRSTlMA6gzDN5dwGNC0ot6BWCRIgBgKRwAAAQpJREFUOMu9lNt2hCAMRUmUi4BO/v9rOx2HniG6CH1o91v0cMkWcf8KeyLPk9kkT9JcOsuLPJNd5c3qbFILJzu7yw+72R0hTFaPVT6o42yUjmhrA3lC2xLCYutbMJ8/h5na+KXF0MelzYZVCg+06bDUsTY6Sxrq851dbpW/19Z49OV6q60Rvssgje2afUgDnrGS4tQGHRvqorNBAKnBEpQ2UoeNP2uKd9rQ/4FK6VOvZH/3Cw4HNumoMaIH6IM2A+hLYpKgrYeee96hp9PH+vmKs3G5F6pe8X5vFdpU5zAEDjzUCzJdJ8HegMc3Vb1kUeDe0GRHMg05+QX4m2wWNDgCJ9cXmaD4w/0dXyVhOsjXZsVVAAAAAElFTkSuQmCC',
+        correct: require('../../assets/images02/v2/correct.png'),
+        warning: require('../../assets/images02/v2/waring.png'),
       },
       file: null,
       isRotate: false,
@@ -130,7 +135,8 @@ export default {
       isLoading: false,
       headpose: {},
       originalWidth_img: '',
-      exif_clientHeight: ''
+      exif_clientHeight: '',
+      showOverlay: false
     }
   },
   mixins: [imgExif, imgZip, vueMixinCom],
@@ -282,7 +288,8 @@ export default {
           // 读取result参数  红楼梦 男拒绝  gender性别 glass是否佩戴眼镜 headpose 头部状态是否正确
           const { gender, headpose, glass } = result
           if (gender !== "Female") {
-            this.tips('这张是男的哦!换成女朋友的来试一试吧!')
+            // 提示男生不得扫描(遮罩)
+            this.showOverlay = true
             return;
           }
           this.headpose = headpose
@@ -311,18 +318,23 @@ export default {
       this.isRotate = false
       // 面貌的重置
       this.glass = 'default'
-      this.photo_img = require('../../assets/images02/photograph/touxiang.png')
+      this.photo_img = require('../../assets/images02/v2/img_hecheng.jpg')
       // 重置css Transform 动画
       this.isTransform = ''
       document.getElementById('imgElement').style = null
     },
     // loading   提示框
-    tips( message) {
+    tips(message) {
       Dialog.alert({
         message
       }).then(() => {
         this.handleBtnAgain()
       });
+    },
+    // 返回
+    handleBtnReturn(){
+      this.handleBtnAgain()
+      this.showOverlay = false
     }
   }
 }
@@ -337,7 +349,31 @@ export default {
   overflow: hidden;
   width: 100%;
   color: #fff;
-  background-color: #001037;
+  background-color: #fff;
+  .overlay {
+    z-index: 3 !important;
+  }
+  .wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  }
+  .block {
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    background: url("../../assets/images02/v2/noman.jpg") no-repeat;
+    background-size: 100%;
+    .brack {
+      background: url("../../assets/images02/v2/black.png") no-repeat;
+      background-size: 100%;
+      width: 240px;
+      height: 60px;
+      display: inline-block;
+      margin-top: 1100px;
+    }
+  }
 }
 .bg-img {
   padding: 20px 0;
@@ -362,7 +398,7 @@ export default {
   // 宽度 计算 710 -减去两个padding值
   width: 740px;
   height: 100%;
-  background: url('../../assets/images02/v2/scroll.png') no-repeat;
+  background: url("../../assets/images02/v2/scroll.png") no-repeat;
   background-size: 100%;
   border-radius: 30px 30px 0px 0px;
   margin: 0 auto;
@@ -387,10 +423,14 @@ export default {
     }
     span {
       display: inline-block;
-      background: url('../../assets/images02/v2/update_img.png') no-repeat;
+      background: url("../../assets/images02/v2/update_img.png") no-repeat;
       background-size: 100%;
       width: 362px;
       height: 48px;
+    }
+    .isTopImg {
+      background: url("../../assets/images02/v2/confirm_photo.png") no-repeat;
+      background-size: 100%;
     }
   }
   .tip {
@@ -406,62 +446,58 @@ export default {
     justify-content: center;
     width: 480px;
     margin: 0 auto;
+    margin-top: 28px;
+    color: #000;
     .item {
-      // height: 62px;
-      // line-height: 62px;
-      // background: url("../../assets/images/photograph/juxing.png") no-repeat;
       background-size: 100% 100%;
       margin-bottom: 30px;
       font-size: 24px;
       font-weight: 400;
       position: relative;
-      // color: #008DFF;
+      margin: 0 18px;
     }
     .item:before {
       content: "";
       display: inline-block;
       width: 8px;
       height: 8px;
-      background: #fff;
+      background: #000;
       position: absolute;
-      top: 50%;
+      top: -10px;
       border-radius: 50%;
-      margin-top: -4px;
-      margin-left: -10px;
+      margin-top: 0;
+      margin-left: 6px;
+      word-wrap: break-word;
     }
     .item:nth-child(1) {
-      width: 160px;
+      width: 24px;
     }
     .item:nth-child(2) {
-      width: 160px;
+      width: 24px;
     }
     .item:nth-child(3) {
-      width: 160px;
+      width: 24px;
     }
     .item:nth-child(4) {
-      width: 160px;
+      width: 24px;
     }
     .item:nth-child(5) {
-      width: 160px;
+      width: 24px;
     }
   }
   .need-confirm {
-    width: 585px;
+    // width: 585px;
     height: 180px !important;
-    // background: url("../../assets/images/photograph/confirmjuxing.png")
-    //   no-repeat 100%;
     background-size: 100% 100%;
-    margin-top: -43px;
     .need-confirm-content {
-      padding: 46px 124px 45px 91px;
-
+      padding: 46px 162px 45px 162px;
       .p {
         position: relative;
         text-align: left;
         font-size: 25px;
-        font-weight: 400;
+        font-weight: 800;
         line-height: 24px;
-        color: #008dff;
+        color: #000;
         margin-bottom: 45px;
         .img_with {
           display: inline-block;
@@ -472,7 +508,8 @@ export default {
           margin: 0 auto;
         }
         span {
-          color: #fff;
+          color: #000;
+          font-weight: 400;
         }
         img {
           width: 100%;
@@ -485,7 +522,7 @@ export default {
         width: 30px;
         height: 30px;
         animation: rotatecss 1.2s linear infinite;
-        background: url("../../assets/images/saomiao/loading.png") no-repeat;
+        background: url("../../assets/images02/v2/loading.png") no-repeat;
         background-size: 100% 100%;
         float: right;
       }
@@ -521,20 +558,23 @@ export default {
       border: 2px solid rgba(62, 151, 255, 1);
       margin-top: 94px;
     }
+
+    .btn_photo_bg {
+      border: none;
+      margin-top: 60px;
+      background: url("../../assets/images02/v2/photo_btn.png") no-repeat center;
+      background-size: 100%;
+      color: #e6eeff;
+      font-size: 30px;
+    }
     .button-cancel {
       margin-top: 30px;
       background: #0f293e;
       color: #c0c0c0;
-      border: 2px solid #ff976a;
-    }
-    .btn_photo_bg {
       border: none;
-      margin-top: 60px;
-      background: url("../../assets/images02/photograph/tijiaoanniu.png")
-        no-repeat center;
+      background: url("../../assets/images02/v2/confirm_sumit.png") no-repeat
+        center;
       background-size: 100%;
-      color: #e6eeff;
-      font-size: 30px;
     }
     #btn_photo {
       .van-icon {
@@ -553,13 +593,17 @@ export default {
     }
     .button-conf {
       display: flex;
-      justify-content: space-around;
+      justify-content: center;
       .button-div {
         margin-top: 32px;
         width: 250px;
       }
       .btn_photo_color {
+        background: url("../../assets/images02/v2/re_upload.png") no-repeat
+          center;
+        background-size: 100%;
         color: #7bd5ff;
+        margin-right: 12px;
       }
     }
   }
@@ -625,18 +669,18 @@ export default {
   .ios_bug {
     z-index: 1;
     position: relative;
-    width: 55 0px;
+    width: 550px;
     height: 550px;
     overflow: hidden;
     display: inline-block;
-    border-radius: 8px;
+    border-radius: 50%;
     margin: 0 auto;
     margin-top: 20px;
     img {
       width: 100%;
       text-align: center;
       margin: 0 auto;
-      border-radius: 50%;
+      border-radius: 30%;
     }
     .imgRotate {
       transform: rotate(-90deg);

@@ -55,7 +55,12 @@
         </div>
       </div>
       <div class="receive">
-        <van-button :class="{ saveName: isName }" :disabled="!isName" type="info" @click="handleReceiveReport">领取报告</van-button>
+        <van-button
+          :class="{ saveName: isName }"
+          :disabled="!isName"
+          type="info"
+          @click="handleReceiveReport"
+        >领取报告</van-button>
       </div>
     </div>
   </div>
@@ -122,12 +127,12 @@ export default {
       }
     },
     // 保存姓名
-    handleSaveName(e){
+    handleSaveName(e) {
       console.log(this.name)
       this.isName = true
     },
     handleReceiveReport() {
-      this.$router.push({name: 'report'})
+      this.$router.push({ name: 'report' })
     }
   }
 }
@@ -361,12 +366,12 @@ export default {
         font-size: 24px;
         font-weight: 400;
       }
-      .van-button{
+      .van-button {
         position: relative;
-        top:  63px;
-        border-radius: 8px; 
+        top: 63px;
+        border-radius: 8px;
       }
-      p{
+      p {
         line-height: 150px;
       }
     }
@@ -374,16 +379,16 @@ export default {
   .receive {
     margin-top: 191px;
     .van-button {
-      background: #3E97FF;
+      background: #3e97ff;
       border-radius: 16px;
       border: 2px solid rgba(62, 151, 255, 1);
       width: 310px;
       height: 68px;
-      font-size:30px;
-      font-weight:400;
+      font-size: 30px;
+      font-weight: 400;
       color: #fff;
     }
-    .saveName{
+    .saveName {
       color: #fff;
     }
   }

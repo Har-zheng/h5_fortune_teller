@@ -1,18 +1,16 @@
 <template>
   <div class="home">
     <div class="logo_img">
-      <div class="bg-img">
-        <img src="../../assets/images02/photograph/LOGO.png" />
-      </div>
+      <div class="bg-img"></div>
     </div>
     <div class="conetnt">
       <p class="title">
-        <i class="icon"></i>
+        <!-- <i class="icon"></i>
         <span>{{ title }}</span>
-        <span>{{ title2 }}</span>
+        <span>{{ title2 }}</span>-->
       </p>
       <div class="img-Head">
-        <i :src="photo_img">
+        <i>
           <div class="bg" ref="img_Head">
             <!-- <img ref="top_img" radius="8" :src="pro_img" /> -->
             <van-swipe :autoplay="1000" :show-indicators="false" vertical :touchable="false">
@@ -31,8 +29,8 @@
         </div>-->
       </div>
       <div class="head-icon">
-        <p class="title">{{title3}}</p>
-        <p class="icon"></p>
+        <!-- <p class="title">{{title3}}</p>
+        <p class="icon"></p>-->
       </div>
 
       <BaseRouterTransition>
@@ -96,15 +94,18 @@ import { img_location } from '../../utils/CommonFunction'
 import imgExif from '../../mixin/imgExif'
 import { wxgetreport } from '../../api/app'
 // const h001 = require('../../assets/images02/haiwang/001.jpg')
-const h001 = require('../../assets/images02/haiwang_swper/001.jpg')
-const h001_1 = require('../../assets/images02/haiwang_swper/001-1.jpg')
-const h002 = require('../../assets/images02/haiwang_swper/002.jpg')
-const h003 = require('../../assets/images02/haiwang_swper/003.jpg')
-const h004 = require('../../assets/images02/haiwang_swper/004.jpg')
-const h005 = require('../../assets/images02/haiwang_swper/005.jpg')
-const h006 = require('../../assets/images02/haiwang_swper/006.jpg')
-const h007 = require('../../assets/images02/haiwang_swper/007.jpg')
-const h008 = require('../../assets/images02/haiwang_swper/008.jpg')
+const h001 = require('../../assets/images02/v2/hand/01.jpg')
+const h002 = require('../../assets/images02/v2/hand/02.jpg')
+const h003 = require('../../assets/images02/v2/hand/03.jpg')
+const h004 = require('../../assets/images02/v2/hand/04.jpg')
+const h005 = require('../../assets/images02/v2/hand/05.jpg')
+const h006 = require('../../assets/images02/v2/hand/06.jpg')
+const h007 = require('../../assets/images02/v2/hand/07.jpg')
+const h008 = require('../../assets/images02/v2/hand/08.jpg')
+const h009 = require('../../assets/images02/v2/hand/09.jpg')
+const h010 = require('../../assets/images02/v2/hand/10.jpg')
+const h011 = require('../../assets/images02/v2/hand/11.jpg')
+const h012 = require('../../assets/images02/v2/hand/12.jpg')
 export default {
   mixins: [imgExif],
   data() {
@@ -113,10 +114,9 @@ export default {
       title2: '属于哪一种类型?',
       title3: '智能解码中',
       isTitle: '',
-      photo_img: require('../../assets/images02/photograph/photo02.png'),
       pro_img: '',
       status: 'transtion-one',
-      status_img: require('../../assets/images/saomiao/status@2x.png'),
+      status_img: require('../../assets/images02/v2/status_img.png'),
       statusInfo: [
         {
           up: '上庭数据提取中',
@@ -145,7 +145,6 @@ export default {
       name: '',
       swper: [
         h001,
-        h001_1,
         h002,
         h003,
         h004,
@@ -153,6 +152,10 @@ export default {
         h006,
         h007,
         h008,
+        h009,
+        h010,
+        h011,
+        h012,
       ]
     }
   },
@@ -255,7 +258,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 .home {
-  background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
+  background: url("../../assets/images02/v2/photo_bg_img.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
   overflow: hidden;
@@ -268,7 +271,7 @@ export default {
   .bg-img {
     display: inline-block;
     z-index: 1;
-    padding: 50px 20px;
+    padding: 25px 20px;
     width: 210px;
     text-align: right;
     img {
@@ -280,12 +283,13 @@ export default {
   z-index: 2;
   line-height: 100%;
   // 宽度 计算 710 -减去两个padding值
-  width: 568px;
+  width: 740px;
   height: 100%;
-  background-color: #000018cc;
+  background: url("../../assets/images02/v2/scroll.png") no-repeat;
+  background-size: 100%;
   border-radius: 30px 30px 0px 0px;
   margin: 0 auto;
-  padding: 46px 53px 0 53px;
+  padding: 46px 0;
   .title {
     font-size: 30px;
     font-weight: 400;
@@ -325,13 +329,14 @@ export default {
   }
   .process-item {
     margin: 0 auto;
+    padding: 0 173px;
     // width: 360px;
     display: flex;
     justify-content: space-around;
     font-size: 25px;
-    font-weight: 400;
+    font-weight: 800;
     line-height: 24px;
-    color: #55b9ff;
+    color: #000;
   }
   .transtion-css {
     position: relative;
@@ -340,7 +345,7 @@ export default {
       position: absolute;
       width: 18px;
       height: 12px;
-      left: 12vw;
+      left: 31vw;
       margin: 0 auto;
       top: -10px;
       img {
@@ -350,33 +355,33 @@ export default {
       }
     }
     .transtion-two {
-      left: 36.333vw;
+      left: 48vw;
       animation: statusCssone 1.2s linear;
     }
     @keyframes statusCssone {
       0% {
-        left: 12vw;
+        left: 31vw;
       }
       100% {
-        left: 36.333vw;
+        left: 48vw;
       }
     }
     .transtion-three {
-      left: 62vw;
+      left: 66vw;
       animation: statusCssthree 1.2s linear;
     }
     @keyframes statusCssthree {
       0% {
-        left: 36.333vw;
+        left: 48vw;
       }
       100% {
-        left: 62vw;
+        left: 66vw;
       }
     }
   }
   // -css
   .status-info {
-    width: 480px;
+    width: 280px;
     margin: 0 auto;
     margin-top: 42px;
     p {
@@ -386,12 +391,13 @@ export default {
       font-size: 25px;
       font-weight: 400;
       position: relative;
+      color: #000;
       // border-bottom: 1px solid #327fe1;
       i {
         width: 22px;
         height: 22px;
         display: block;
-        background: url("../../assets/images/photograph/correct.png") no-repeat;
+        background: url("../../assets/images02/v2/correct.png") no-repeat;
         background-size: 100% 100%;
         float: right;
         margin-top: 29px;
@@ -400,7 +406,7 @@ export default {
         width: 30px;
         height: 30px;
         animation: rotatecss 1.2s linear infinite;
-        background: url("../../assets/images/saomiao/loading.png") no-repeat;
+        background: url("../../assets/images02/v2/loading.png") no-repeat;
         background-size: 100% 100%;
       }
       @keyframes rotatecss {
@@ -432,33 +438,36 @@ export default {
 }
 .img-Head {
   margin-bottom: 26px;
-  height: 310px;
+  height: 604px;
   position: relative;
   i {
     display: inline-block;
-    background: url("../../assets/images02/photograph/photo02.png") no-repeat;
+    background: url("../../assets/images02/v2/tx_yuan.png") no-repeat;
     background-size: 100%;
-    width: 310px;
-    height: 310px;
+    width: 700px;
+    height: 604px;
+    margin-left: 36px;
   }
   .bg {
     position: relative;
-    width: 270px;
-    height: 270px;
+    width: 558px;
+    height: 558px;
     overflow: hidden;
     display: inline-block;
-    border-radius: 8px;
+    border-radius: 50%;
     margin: 0 auto;
-    margin-top: 18px;
+    margin-top: 30px;
+    margin-left: -12px;
     .van-swipe {
-      height: 36vw;
+      height: 71vw;
+      border-radius: 50%;
       .van-swipe-item {
         position: relative;
-        width: 41.333vw !important;
-        height: 36vw !important;
+        width: 71vw !important;
+        height: 71vw !important;
         overflow: hidden;
         display: inline-block;
-        border-radius: 8px;
+        border-radius: 50%;
         margin: 0 auto;
         // margin-top: 16px;
       }
@@ -467,6 +476,7 @@ export default {
         text-align: center;
         margin: 0 auto;
         position: relative;
+        border-radius: 50%;
       }
     }
   }

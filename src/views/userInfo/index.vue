@@ -1,19 +1,11 @@
 <template>
   <div class="home">
-    <div class="bg-img">
-      <img src="../../assets/images02/photograph/ic_logo2.png" />
-    </div>
+    <div class="bg-img"></div>
     <div class="conetnt">
       <p class="title">
-        <i class="icon"></i>
-        <span>{{ title }}</span>
+        <!-- <i class="icon"></i> -->
+        <span></span>
       </p>
-      <BaseRouterTransition>
-        <div class="tip">
-          <p>Hi,悄悄告诉你</p>
-          <p>完整填写以下信息的人脸检测会更加准确</p>
-        </div>
-      </BaseRouterTransition>
       <BaseRouterTransition>
         <div class="from">
           <p class="from_p">
@@ -21,20 +13,19 @@
             <input type="text" v-model="name" />
           </p>
           <p class="from_p">
-            <label for="name">年龄:</label>
-            <input type="number" v-model="age" />
-          </p>
-          <p class="from_p">
             <label for="name">电话:</label>
             <input type="number" v-model="number" />
           </p>
           <div class="receive">
-            <van-button class="btn_photo_bg" @click="handleSubmitInfo">确认提交</van-button>
+            <button class="btn_photo_bg" @click="handleSubmitInfo"></button>
           </div>
         </div>
       </BaseRouterTransition>
       <div class="photograph-btn">
-        <p>HTTP://WWW.MYREAL3D.COM</p>
+        <p>请填写正确联系方式 <br/> 我们将尽快核对您的礼包信息</p>
+        <div class="banner">
+
+        </div>
       </div>
     </div>
   </div>
@@ -73,13 +64,13 @@ export default {
 </script>
 <style lang="scss" scoped>
 .home {
-  background: url("../../assets/images02/photograph/ic_bg.jpg") no-repeat;
+  background: url("../../assets/images02/v2/photo_bg_img.jpg") no-repeat;
   background-size: 100%;
   height: 100%;
   overflow: hidden;
   width: 100%;
   color: #fff;
-  background-color: #001037;
+  background-color: #fff;
 }
 .bg-img {
   z-index: 1;
@@ -94,12 +85,13 @@ export default {
   z-index: 2;
   line-height: 100%;
   // 宽度 计算 710 -减去两个padding值
-  width: 568px;
+  width: 740px;
   height: 100%;
-  background-color: #000018cc;
+  background: url("../../assets/images02/v2/scroll.png") no-repeat;
+  background-size: 100%;
   border-radius: 30px 30px 0px 0px;
   margin: 0 auto;
-  padding: 46px 53px 0 53px;
+  padding: 46px 0;
   .title {
     font-size: 30px;
     font-weight: 400;
@@ -120,26 +112,12 @@ export default {
       bottom: -7px;
     }
     span {
-      font-size: 36px;
       display: inline-block;
-      line-height: 36px;
-      color: #fff;
-      font-weight: 400;
-      position: relative;
-    }
-    span:after {
-      content: "";
-      display: inline-block;
-      width: 91px;
-      height: 6px;
-      border-radius: 8px;
-      position: absolute;
-      background: #007acf;
-      text-align: center;
-      bottom: 0;
-      left: 50%;
-      margin-bottom: -36px;
-      margin-left: -45px;
+      background: url("../../assets/images02/v2/update_img.png") no-repeat;
+      background-size: 100%;
+      width: 362px;
+      height: 48px;
+      margin: 30px 0;
     }
   }
   .tip {
@@ -150,27 +128,26 @@ export default {
   }
   .from {
     // clear: both;
-    padding: 0 36px;
+    padding: 0 100px;
     margin-top: 32px;
     .from_p {
-      background: #002b8a;
-      border-radius: 50px;
+      background: url("../../assets/images02/v2/icon_btn.png") no-repeat;
+      background-size: 100%;
+      // border-radius: 50px;
+      height: 68px;
       line-height: 68px;
       margin-top: 20px;
+      color: #90763f;
       label {
         font-size: 26px;
       }
       input {
-        // background-color: rgba(0, 0, 0, 0);
-        width: 330px;
+        width: 420px;
         margin: 0 auto;
-        top: 63px;
         border: none;
         background: none;
-        // background: url("../../assets/images/saomiao/edit.png") no-repeat;
-        // background-size: 26px 26px;
-        // background-position: 0 1.267vw;
-        // text-indent: 46px;
+        height: 68px;
+        margin-top: -6px;
       }
       input::-webkit-input-placeholder {
         color: #fff;
@@ -179,26 +156,16 @@ export default {
       }
     }
     .receive {
-      // margin-top: 140px;
-      .van-button {
-        border-radius: 16px;
-        // border: 2px solid rgba(62, 151, 255, 1);
-        width: 310px;
-        height: 120px;
-        font-size: 30px;
-        font-weight: 400;
-        color: #fff;
-      }
       .saveName {
         color: #fff;
       }
       .btn_photo_bg {
         border: none;
-        width: 60%;
+        width: 378px;
+        height: 72px;
         margin-top: 38px;
         font-size: 36px;
-        background: url("../../assets/images02/photograph/tijiaoanniu.png")
-          no-repeat center;
+        background: url("../../assets/images02/v2/sumit.png") no-repeat center;
         background-size: 100%;
         color: #e6eeff;
       }
@@ -209,11 +176,19 @@ export default {
   // position: absolute;
   width: 100%;
   p {
-    font-size: 12px;
+    font-size: 28px;
     text-align: center;
     color: #71738c;
     font-weight: 400;
-    margin-top: 140px;
+    line-height:40px;
+    margin-top: 12px;
+  }
+  .banner{
+    width: 616px;
+    height: 336px;
+    background: #CBCBCB;
+    margin: 0 auto;
+    margin-top: 39px;
   }
 }
 </style>

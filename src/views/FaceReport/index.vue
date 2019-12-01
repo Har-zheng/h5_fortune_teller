@@ -759,7 +759,8 @@ export default {
             display: inline-block;
             border-radius: 50%;
             position: relative;
-            margin: 2.333vw 0 0 3.8vw img {
+            margin: 2.333vw 0 0 3.8vw;
+             img {
               width: 100%;
               text-align: center;
               margin: 0 auto;
@@ -832,8 +833,7 @@ export default {
               color: #000;
               text-align: center;
             }
-            .title {
-            }
+
             .parts {
               font-size: 18px;
               color: #8e743b;
@@ -970,8 +970,6 @@ export default {
           left: 188px;
           top: 200px;
           color: #000;
-          img {
-          }
           .sign {
             width: 48px;
             height: 158px;
