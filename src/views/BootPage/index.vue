@@ -14,9 +14,13 @@
            webkit-playsinline
            loop
            :src="video_src"
+           x5-video-player-fullscreen="true"
+           x-webkit-airplay="allow"
+           x5-video-orientation="portrait"
            x5-video-player-type="h5-page"
            ref="videoEle">
     </video>
+    <canvas></canvas>
     <div class="logo"
          @click="handleBtnStart"></div>
   </div>
@@ -39,12 +43,6 @@ export default {
     }
   },
   created() {
-    console.log(comm_fun.AndroisIos(), comm_fun.isWeixin())
-    if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
-      this.video_src = this.ts3M
-    } else {
-      this.video_src = this.mp4
-    }
 
   },
   mounted() {
@@ -55,7 +53,7 @@ export default {
         this.isShow = true
       })
       function autoPlayAudio() {
-        
+
         console.log(window.WeixinJSBridge)
         if (window.WeixinJSBridge) {
           WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
@@ -71,6 +69,25 @@ export default {
         // return false;
       }
       console.log('autoPlayAudio', autoPlayAudio())
+    }
+    console.log(comm_fun.AndroisIos(), comm_fun.isWeixin())
+    if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
+      let player
+      let canvas = document.querySelector('canvas')
+      var src = this.ts3M
+      player = new JSMpeg.Player(src, {
+        canvas: canvas,
+        autoplay: true,
+        progressive: false,
+        loop: true,
+        onVideoDecode: function () {
+          canvas.style.display = 'block'
+          // canvas.style.height = '100%'
+          canvas.style.with = '100%'
+        }
+      })
+    } else {
+      this.video_src = this.mp4
     }
   },
   methods: {
@@ -111,6 +128,9 @@ export default {
     width: 100%;
     height: 100%;
     object-fit: fill;
+  }
+  canvas{
+    display: none;
   }
   .top_img {
     .text,
