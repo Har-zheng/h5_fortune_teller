@@ -185,5 +185,6 @@ export default {
   GetRequestUrl,
   initWxShare,
   onbeforeunloadEnvt,
-  AndroisIos
+  AndroisIos,
+  isWeixin
 }
