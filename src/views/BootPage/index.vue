@@ -19,9 +19,8 @@
            x-webkit-airplay="allow"
            x5-video-orientation="portrait"
            x5-video-player-type="h5-page"
+           :src="video_src"
            ref="videoEle">
-      <source :src="video_src"
-              type="video/mp4" />您的浏览器不支持 video 标签。
     </video>
     <div class="logo"
          @click="handleBtnStart"></div>
