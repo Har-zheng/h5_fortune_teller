@@ -40,7 +40,7 @@ export default {
   created() {
     console.log(comm_fun.AndroisIos(), comm_fun.isWeixin())
     if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
-      this.video_src = this.ts3M
+      this.video_src = this.mp4
     } else {
       this.video_src = this.mp4
     }
