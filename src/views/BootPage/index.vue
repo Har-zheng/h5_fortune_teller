@@ -14,6 +14,7 @@
            webkit-playsinline
            loop
            :src="video_src"
+           x5-video-player-type="h5-page"
            ref="videoEle">
     </video>
     <div class="logo"
