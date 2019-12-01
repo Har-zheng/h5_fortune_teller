@@ -10,14 +10,8 @@
     <video id="video"
            v-show="!isShow"
            class="video"
-           preload="auto"
            muted
            autoplay
-           webkit-playsinline="true"
-           playsinline="true"
-           x5-video-player-fullscreen="true"
-           x-webkit-airplay="allow"
-           x5-video-orientation="portrait"
            x5-video-player-type="h5-page"
            :src="video_src"
            ref="videoEle">
