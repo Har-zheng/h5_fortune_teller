@@ -74,7 +74,7 @@ export default {
     if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
       let player
       let canvas = document.querySelector('canvas')
-      var src = this.ts2M
+      var src = 'https://static.shikehuyu.com/vincent/wx-video-demo/movie.ts'
       player = new JSMpeg.Player(src, {
         canvas: canvas,
         autoplay: true,
