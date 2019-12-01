@@ -11,8 +11,7 @@
            v-show="!isShow"
            class="video"
            src="http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation.mp4"
-           x5-video-player-type="h5-page"
-           ref="videoEle">
+           x5-video-player-type="h5-page">
     </video>
     <canvas></canvas>
     <div class="logo"
@@ -46,29 +45,31 @@ export default {
       video.addEventListener('ended', () => {
         this.isShow = true
       })
-      function autoPlayAudio() {
+      // function autoPlayAudio() {
 
-        console.log(window.WeixinJSBridge)
-        if (window.WeixinJSBridge) {
-          WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
-            video.play();
-            console.log('getNetworkType')
-          }, false);
-        } else {
-          document.addEventListener("WeixinJSBridgeReady", function () {
-            video.play();
-            console.log('WeixinJSBridgeReady')
-          }, false);
-        }
-        // return false;
-      }
-      console.log('autoPlayAudio', autoPlayAudio())
+      //   console.log(window.WeixinJSBridge)
+      //   if (window.WeixinJSBridge) {
+      //     WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+      //       video.play();
+      //       console.log('getNetworkType')
+      //     }, false);
+      //   } else {
+      //     document.addEventListener("WeixinJSBridgeReady", function () {
+      //       WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+        //     video.play()
+        // });
+      //       console.log('WeixinJSBridgeReady')
+      //     }, false);
+      //   }
+      //   // return false;
+      // }
+      // console.log('autoPlayAudio', autoPlayAudio())
     }
     console.log(comm_fun.AndroisIos(), comm_fun.isWeixin())
     if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
       let player
       let canvas = document.querySelector('canvas')
-      var src = 'https://static.shikehuyu.com/vincent/wx-video-demo/movie.ts'
+      var src = 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_6.ts'
       player = new JSMpeg.Player(src, {
         canvas: canvas,
         autoplay: true,
