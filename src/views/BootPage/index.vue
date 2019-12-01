@@ -74,7 +74,7 @@ export default {
     if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
       let player
       let canvas = document.querySelector('canvas')
-      var src = this.ts3M
+      var src = this.ts2M
       player = new JSMpeg.Player(src, {
         canvas: canvas,
         autoplay: true,
@@ -129,7 +129,7 @@ export default {
     height: 100%;
     object-fit: fill;
   }
-  canvas{
+  canvas {
     display: none;
   }
   .top_img {
