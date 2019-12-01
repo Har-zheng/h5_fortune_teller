@@ -10,9 +10,9 @@
     <video id="video"
            v-show="!isShow"
            class="video"
-           muted
-           autoplay
-           x5-video-player-type="h5-page"
+           playsinline
+           webkit-playsinline
+           loop
            :src="video_src"
            ref="videoEle">
     </video>
@@ -37,14 +37,14 @@ export default {
       video_src: ''
     }
   },
-  created(){
-    console.log(comm_fun.AndroisIos() , comm_fun.isWeixin())
-    if(comm_fun.AndroisIos() && comm_fun.isWeixin() ){
+  created() {
+    console.log(comm_fun.AndroisIos(), comm_fun.isWeixin())
+    if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
       this.video_src = this.ts3M
-    }else{
-      this.video_src = this.mp4 
+    } else {
+      this.video_src = this.mp4
     }
-    
+
   },
   mounted() {
     window.onload = () => {
@@ -54,6 +54,7 @@ export default {
         this.isShow = true
       })
       function autoPlayAudio() {
+        
         console.log(window.WeixinJSBridge)
         if (window.WeixinJSBridge) {
           WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
