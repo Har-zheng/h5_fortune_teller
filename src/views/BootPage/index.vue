@@ -7,34 +7,50 @@
       x5-video-orientation="portrait"
       x5-video-player-type="h5"
     -->
-    <video
-      id="video"
-      v-show="!isShow"
-      class="video"
-      preload="auto"
-      muted
-      autoplay
-      webkit-playsinline="true"
-      playsinline="true"
-      @loadstart="videoLoaded"
-      @canplaythrough="videoLoaded"
-      x5-video-player-fullscreen="true"
-      x-webkit-airplay="allow"
-      x5-video-orientation="portrait"
-      x5-video-player-type="h5-page"
-      ref="videoEle"
-    >
-      <source src="../../assets/images02/v2/boot_animation.mp4" type="video/mp4" />您的浏览器不支持 video 标签。
+    <video id="video"
+           v-show="!isShow"
+           class="video"
+           preload="auto"
+           muted
+           autoplay
+           webkit-playsinline="true"
+           playsinline="true"
+           x5-video-player-fullscreen="true"
+           x-webkit-airplay="allow"
+           x5-video-orientation="portrait"
+           x5-video-player-type="h5-page"
+           ref="videoEle">
+      <source :src="video_src"
+              type="video/mp4" />您的浏览器不支持 video 标签。
     </video>
-    <div class="logo" @click="handleBtnStart"></div>
+    <div class="logo"
+         @click="handleBtnStart"></div>
   </div>
 </template>
 <script>
+import comm_fun from '../../utils/CommonFunction'
 export default {
   data() {
     return {
-      isShow: false
+      isShow: false,
+      mp4: 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation.mp4',
+      ts3M: 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_1.ts',
+      ts2M: 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_5.ts',
+      /**
+       *  MP4 http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation.mp4
+       *  ts 2.9 http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_1.ts
+       * ts 1.9m http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_5.ts
+       */
+      video_src: ''
     }
+  },
+  created(){
+    if(comm_fun.AndroisIos && comm_fun.isWeixin ){
+      this.video_src = this.ts3M
+    }else{
+      this.video_src = this.mp4 
+    }
+    
   },
   mounted() {
     window.onload = () => {
@@ -60,20 +76,12 @@ export default {
       }
       console.log('autoPlayAudio', autoPlayAudio())
     }
-    setTimeout(() => {
-      this.videoLoaded()
-    }, 2000)
   },
   methods: {
     handleBtnStart() {
       console.log('start')
       this.$router.push({ name: 'PhotoPage' })
     },
-    videoLoaded() {
-
-      this.$refs.videoEle.play();
-
-    }
   }
 }
 </script>
