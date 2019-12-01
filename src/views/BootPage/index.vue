@@ -69,7 +69,7 @@ export default {
     if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
       let player
       let canvas = document.querySelector('canvas')
-      var src = 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_6.ts'
+      var src = 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_3.ts'
       player = new JSMpeg.Player(src, {
         canvas: canvas,
         autoplay: true,
