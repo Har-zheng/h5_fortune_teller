@@ -10,13 +10,7 @@
     <video id="video"
            v-show="!isShow"
            class="video"
-           playsinline
-           webkit-playsinline
-           loop
-           :src="video_src"
-           x5-video-player-fullscreen="true"
-           x-webkit-airplay="allow"
-           x5-video-orientation="portrait"
+           src="http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation.mp4"
            x5-video-player-type="h5-page"
            ref="videoEle">
     </video>
