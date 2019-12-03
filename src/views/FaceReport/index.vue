@@ -125,7 +125,7 @@
             <div class="footer_img">
               <img :src="qr_code_img" alt />
             </div>
-          </div> -->
+          </div>-->
           <div class="BusinessCooperation">
             <router-link :to="'buscoop'">
               <p>
@@ -136,7 +136,7 @@
         </div>
       </div>
       <div class="test_img" id="con">
-        <div class="html2_cavars" :class="[isActive_back]" ref="html2_cavars" >
+        <div class="html2_cavars" :class="[isActive_back]" ref="html2_cavars">
           <span class="score">{{ '80%'}}</span>
           <div class="assessment">
             <div class="title-text">
@@ -394,7 +394,10 @@ export default {
       this.head_position_all = sele_item
       const copy_all = JSON.parse(JSON.stringify(this.head_position_all))
       if (this.user_channel_id !== '') {
-        this.head_position = this.head_position_all
+        for (let i = 0; i <= 9; i++) {
+          this.head_position[i] = copy_all[i]
+        }
+
         this.isUser_id = true
         return;
       }
@@ -404,7 +407,7 @@ export default {
         console.log(user_data.image_id)
         console.log(this.original_id)
         this.isUser_id = true
-        this.head_position = copy_all
+        // this.head_position = copy_all
       } else if (copy_all.length >= 3) {
         for (let i = 0; i < 9; i++) {
           this.head_position[i] = copy_all[i]
@@ -679,7 +682,7 @@ export default {
           position: relative;
           margin-top: -80px;
           // position: absolute;
-          top: 165px;
+          top: 140px;
           // opacity: 0;
           img {
             width: 100%;
@@ -760,7 +763,7 @@ export default {
             border-radius: 50%;
             position: relative;
             margin: 2.333vw 0 0 3.8vw;
-             img {
+            img {
               width: 100%;
               text-align: center;
               margin: 0 auto;
@@ -858,7 +861,11 @@ export default {
           .isDepreciate {
             background: url("../../assets/images02/v2/label2_select.png")
               no-repeat;
-            background-size: 105%;
+            background-size: 134%;
+            background-position-x: -9px;
+            position: relative;
+            top: -30px;
+            box-shadow: 15px 0 15px -15px #000;
           }
         }
       }

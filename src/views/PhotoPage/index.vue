@@ -88,7 +88,7 @@
     <van-overlay :show="showOverlay" class="overlay">
       <div class="wrapper" @click.stop>
         <div class="block">
-          <div class="brack" @click="handleBtnReturn" ></div>
+          <div class="brack" @click="handleBtnReturn"></div>
         </div>
       </div>
     </van-overlay>
@@ -299,7 +299,33 @@ export default {
           this.set_beauty_info(!this.Beauty_info)
         } else {
           this.isUploadSuccess = 'fail'
-          alert(JSON.stringify(res))
+          // alert(JSON.stringify(res))
+          // 临时添加固定数据
+          axios.get('./ai_beauty.json').then(res => {
+            console.log(res)
+            let { instance, original_id, result, user_channel_id } = res.data.data
+            this.isReload({
+              parmes_data: parmes_data.data,
+              instance,
+              original_id,
+              result,
+              imgContent,
+              user_channel_id
+            })
+            // 读取result参数  红楼梦 男拒绝  gender性别 glass是否佩戴眼镜 headpose 头部状态是否正确
+            const { gender, headpose, glass } = result
+            if (gender !== "Female") {
+              // 提示男生不得扫描(遮罩)
+              this.showOverlay = true
+              return;
+            }
+            this.headpose = headpose
+            console.log('headpose' + JSON.stringify(this.headpose))
+            this.glass = glass
+            this.isUploadSuccess = 'success'
+            this.set_beauty_info(!this.Beauty_info)
+
+          })
         }
       }).catch(error => {
         // Toast1.clear();
@@ -332,7 +358,7 @@ export default {
       });
     },
     // 返回
-    handleBtnReturn(){
+    handleBtnReturn() {
       this.handleBtnAgain()
       this.showOverlay = false
     }

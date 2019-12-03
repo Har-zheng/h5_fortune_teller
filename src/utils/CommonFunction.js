@@ -90,8 +90,8 @@ function initWxShare() {
       // ?channel_id=M3D&instance_id=98&client=2
       wx.ready(() => {
         wx.onMenuShareTimeline({
-          title: '海洋鱼类图鉴', // 分享标题
-          desc: '测！你能否统领这片海洋', // 分享描述
+          title: '红楼梦', // 分享标题
+          desc: '测！你和红楼梦哪位人物相似', // 分享描述
           // http://report-dev.myreal3d.com/
           link: `https://wechat-api.myreal3d.com/${channel_id}/ai/beauty?instance_id=${instance_id}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
@@ -104,8 +104,8 @@ function initWxShare() {
           },
         });
         wx.onMenuShareAppMessage({
-          title: '海洋鱼类图鉴', // 分享标题
-          desc: '测！你能否统领这片海洋', // 分享描述
+          title: '红楼梦', // 分享标题
+          desc: '测！你和红楼梦哪位人物相似', // 分享描述
           link: `https://wechat-api.myreal3d.com/${channel_id}/ai/beauty?instance_id=${instance_id}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
@@ -117,8 +117,8 @@ function initWxShare() {
           },
         });
         wx.onMenuShareQQ({
-          title: '海洋鱼类图鉴', // 分享标题
-          desc: '测！你能否统领这片海洋', // 分享描述
+          title: '红楼梦', // 分享标题
+          desc: '测！你和红楼梦哪位人物相似', // 分享描述
           link: `https://wechat-api.myreal3d.com/${channel_id}/ai/beauty?instance_id=${instance_id}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {
@@ -131,8 +131,8 @@ function initWxShare() {
           },
         });
         wx.onMenuShareQZone({
-          title: '海洋鱼类图鉴', // 分享标题
-          desc: '测！你能否统领这片海洋', // 分享描述
+          title: '红楼梦', // 分享标题
+          desc: '测！你和红楼梦哪位人物相似', // 分享描述
           link: `https://wechat-api.myreal3d.com/${channel_id}/ai/beauty?instance_id=${instance_id}`, // 分享链接，该链接域名或路径必须与当前页面对应的公众号JS安全域名一致
           imgUrl: `https://report.myreal3d.com/statics/img/shore.png`, // 分享图标
           success() {

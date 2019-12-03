@@ -5,8 +5,8 @@ import store from './store/index'
 import Vant from 'vant';
 // import eruda from 'eruda'
 import 'vant/lib/index.css';
-import VConsole from 'vconsole';
-new VConsole()
+// import VConsole from 'vconsole';
+// new VConsole()
 
 Vue.use(Vant);
 Vue.config.productionTip = false

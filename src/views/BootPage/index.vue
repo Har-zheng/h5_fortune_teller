@@ -7,15 +7,26 @@
       x5-video-orientation="portrait"
       x5-video-player-type="h5"
     -->
-    <video id="video"
-           v-show="!isShow"
-           class="video"
-           src="http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation.mp4"
-           x5-video-player-type="h5-page">
-    </video>
-    <canvas></canvas>
-    <div class="logo"
-         @click="handleBtnStart"></div>
+    <video
+      id="video"
+      v-show="!isShow"
+      class="video"
+      muted
+      autoplay="autoplay"
+      webkit-playsinline="true"
+      x-webkit-airplay="true"
+      playsinline="true"
+      x5-video-player-type="h5"
+      x5-video-orientation="h5"
+      x5-video-player-fullscreen="true"
+      preload="auto"
+      x5-playsinline
+      @click="start_video"
+      poster="../../assets/images02/v2/start_video.jpg"
+      src="http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation.mp4"
+    ></video>
+    <div class="andos" @click="start_video" v-show="isStart"></div>
+    <div class="logo" :class="{'active': isBtn}" @click="handleBtnStart"></div>
   </div>
 </template>
 <script>
@@ -32,71 +43,75 @@ export default {
        *  ts 2.9 http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_1.ts
        * ts 1.9m http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_5.ts
        */
-      video_src: ''
+      video_src: '',
+      isStart: false,
+      isBtn: false
     }
   },
   created() {
-
+    if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
+      this.isStart = true
+    }
   },
   mounted() {
     window.onload = () => {
       const video = document.getElementById('video')
       console.log(video)
       video.addEventListener('ended', () => {
-        this.isShow = true
-      })
-      // function autoPlayAudio() {
-
-      //   console.log(window.WeixinJSBridge)
-      //   if (window.WeixinJSBridge) {
-      //     WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
-      //       video.play();
-      //       console.log('getNetworkType')
-      //     }, false);
-      //   } else {
-      //     document.addEventListener("WeixinJSBridgeReady", function () {
-      //       WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
-        //     video.play()
-        // });
-      //       console.log('WeixinJSBridgeReady')
-      //     }, false);
-      //   }
-      //   // return false;
-      // }
-      // console.log('autoPlayAudio', autoPlayAudio())
-    }
-    console.log(comm_fun.AndroisIos(), comm_fun.isWeixin())
-    if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
-      let player
-      let canvas = document.querySelector('canvas')
-      var src = 'http://m3d-storage-dev-1251693531.cos.ap-shanghai.myqcloud.com/template/config-ui/images/boot_animation_3.ts'
-      player = new JSMpeg.Player(src, {
-        canvas: canvas,
-        autoplay: true,
-        progressive: false,
-        loop: true,
-        onVideoDecode: function () {
-          canvas.style.display = 'block'
-          // canvas.style.height = '100%'
-          canvas.style.with = '100%'
+        if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
+          this.isBtn = true
+        } else {
+          this.isShow = true
         }
+        this.isStart = false
       })
-    } else {
-      this.video_src = this.mp4
+      // this.start_video()
+      function autoPlayAudio() {
+        console.log(window.WeixinJSBridge)
+        if (window.WeixinJSBridge) {
+          WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+            video.play();
+            console.log('getNetworkType')
+          }, false);
+        } else {
+          document.addEventListener("WeixinJSBridgeReady", function () {
+            WeixinJSBridge.invoke('getNetworkType', {}, function (e) {
+              video.play()
+              console.log('WeixinJSBridgeReady')
+            });
+          }, false);
+        }
+        // return false;
+      }
+      autoPlayAudio()
     }
+
   },
   methods: {
     handleBtnStart() {
       console.log('start')
       this.$router.push({ name: 'PhotoPage' })
     },
+    start_video() {
+      this.isStart = false
+      const video = document.getElementById('video')
+      console.log(video)
+      video.addEventListener('ended', () => {
+        if (comm_fun.AndroisIos() && comm_fun.isWeixin()) {
+          this.isBtn = true
+        } else {
+          this.isShow = true
+        }
+      })
+      video.play();
+    }
   }
 }
 </script>
 <style lang="scss" scoped>
 .face_start {
   background: url("../../assets/images02/v2/start_bg_img.png") no-repeat;
-  background-size: 100%;
+  background-size: 100% 100%;
   height: 100%;
   background-color: #fff;
   color: #fff;
@@ -108,7 +123,7 @@ export default {
     height: 79px;
     margin: 0 auto;
     position: absolute;
-    top: 900px;
+    top: 62%;
     left: 50%;
     margin-left: -150px;
     z-index: 1;
@@ -124,8 +139,18 @@ export default {
     height: 100%;
     object-fit: fill;
   }
-  canvas {
-    display: none;
+  .andos {
+    background: url("../../assets/images02/v2/start_video.jpg") no-repeat;
+    background-size: 100%;
+    width: 100%;
+    height: 100%;
+    z-index: 10000;
+    position: fixed;
+    top: 0;
+  }
+  .active {
+    position: fixed;
+    z-index: 999;
   }
   .top_img {
     .text,
