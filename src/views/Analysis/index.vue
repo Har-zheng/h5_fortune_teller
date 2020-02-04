@@ -84,10 +84,12 @@
         <p>HTTP://WWW.MYREAL3D.COM</p>
       </div>
     </div>
+    <OverlayBreak class="Overlay" v-show="showOverlay" @handleBtnReturn="handleBtnReturn"></OverlayBreak>
   </div>
 </template>
 <script>
 import BaseRouterTransition from '../../components/BaseRouterTransition'
+import OverlayBreak from '../../components/overlay_break'
 import { Dialog } from 'vant';
 import { mapState, mapActions } from 'vuex'
 import { img_location } from '../../utils/CommonFunction'
@@ -156,25 +158,31 @@ export default {
         h010,
         h011,
         h012,
-      ]
+      ],
+      showOverlay: false
     }
   },
   components: {
-    BaseRouterTransition
+    BaseRouterTransition,
+    OverlayBreak
   },
   computed: {
     ...mapState({
       image: state => state.app.app.parmes_data.image,
       imgContent: state => state.app.app.imgContent,
       Beauty_info: state => state.app.Beauty_info,
+      gender: state => state.app.app.result.gender
     })
   },
   watch: {
     Beauty_info: {
       handler(newVal) {
         console.log(newVal)
-        if (newVal) {
+        if (newVal && this.gender === "Female") {
           this.$router.push({ name: 'facereport' })
+        } else {
+          this.showOverlay = true
+          console.log(this.showOverlay)
         }
       }
     }
@@ -186,6 +194,13 @@ export default {
     this.pro_img = this.imgContent
     // this.updateStatus()
     // this.getwxgetreport()
+    setTimeout(() => {
+      if (this.gender === 'Female') {
+        this.$router.push({ name: 'facereport' })
+      } else {
+        this.showOverlay = true
+      }
+    }, 9000)
   },
   methods: {
     ...mapActions([
@@ -211,9 +226,11 @@ export default {
       }
       const is_report = () => {
         setTimeout(() => {
-          this.title3 = '报告生成完成，待确认身份'
-          if (this.Beauty_info) {
+          console.log(this.gender)
+          if (this.gender === 'Female') {
             this.$router.push({ name: 'facereport' })
+          } else {
+            this.showOverlay = true
           }
           // this.isReport = false
         }, 2000)
@@ -249,6 +266,10 @@ export default {
       wxgetreport(data).then(res => {
         console.log(res)
       })
+    },
+    handleBtnReturn() {
+      this.showOverlay = false
+      this.$router.push({ name: 'PhotoPage' })
     }
   },
   beforeDestroy() {
@@ -264,7 +285,10 @@ export default {
   overflow: hidden;
   width: 100%;
   color: #fff;
-  background-color: #001037;
+  background-color: #fff;
+  .Overlay {
+    z-index: 2;
+  }
 }
 .logo_img {
   text-align: right;
@@ -440,27 +464,29 @@ export default {
   margin-bottom: 26px;
   height: 604px;
   position: relative;
+  left: 20px;
   i {
     display: inline-block;
     background: url("../../assets/images02/v2/tx_yuan.png") no-repeat;
     background-size: 100%;
     width: 700px;
     height: 604px;
-    margin-left: 36px;
   }
   .bg {
     position: relative;
-    width: 558px;
+    width: 550px;
     height: 558px;
     overflow: hidden;
     display: inline-block;
     border-radius: 50%;
     margin: 0 auto;
-    margin-top: 30px;
-    margin-left: -12px;
+    margin-top: 26px;
+    margin-left: -18px;
     .van-swipe {
       height: 71vw;
+      width: 71vw;
       border-radius: 50%;
+      overflow: hidden;
       .van-swipe-item {
         position: relative;
         width: 71vw !important;
@@ -470,13 +496,13 @@ export default {
         border-radius: 50%;
         margin: 0 auto;
         // margin-top: 16px;
-      }
-      img {
-        height: 100%;
-        text-align: center;
-        margin: 0 auto;
-        position: relative;
-        border-radius: 50%;
+        img {
+          height: 100%;
+          text-align: center;
+          margin: 0 auto;
+          position: relative;
+          border-radius: 50%;
+        }
       }
     }
   }

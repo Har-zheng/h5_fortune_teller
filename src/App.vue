@@ -19,20 +19,24 @@ export default {
   created() {
   },
   mounted() {
+    // decodeURIComponent
     console.log(comm_fun.GetRequestUrl())
     // 初始化 用户刷新时
-    let GetRequestUrl_parmes = comm_fun.GetRequestUrl()
+    let GetRequestUrl_parmes = JSON.parse(JSON.stringify(comm_fun.GetRequestUrl()))
+
+    GetRequestUrl_parmes.avatar = decodeURIComponent(GetRequestUrl_parmes.avatar)
+    GetRequestUrl_parmes.nickname = decodeURIComponent(GetRequestUrl_parmes.nickname)
     let GetRequestUrl = JSON.stringify(GetRequestUrl_parmes)
-    if (GetRequestUrl !== "{}") {
+    if (GetRequestUrl !== "{}" && GetRequestUrl_parmes.hasOwnProperty('instance_id')) {
       sessionStorage.setItem('GetRequestUrl', GetRequestUrl)
     } else {
       GetRequestUrl_parmes = JSON.parse(sessionStorage.getItem('GetRequestUrl'))
     }
     this.save_url(GetRequestUrl_parmes)
     // 判断是否第一次进入页面 只执行一次函数
-    let session_once =  JSON.parse(sessionStorage.getItem('once')) 
+    let session_once = JSON.parse(sessionStorage.getItem('once'))
     console.log(session_once)
-    if(session_once === null && this.once){
+    if (session_once === null && this.once) {
       this.once = false
       this.isBeautyLatest(GetRequestUrl_parmes)
       sessionStorage.setItem('once', this.once)

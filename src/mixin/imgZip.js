@@ -87,7 +87,7 @@ export default {
                     canvasWidth = exif_clientWidth
                     canvasHeight = exif_clientHeight
                     context.rotate(90 * Math.PI / 180)
-                    y = -canvas.height
+                    y = -canvas.width
                   }
                   break;
                 case 3:
@@ -134,8 +134,6 @@ export default {
           }
         }
       })
-
     }
-
   }
 }

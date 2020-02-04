@@ -7,6 +7,7 @@
       x5-video-orientation="portrait"
       x5-video-player-type="h5"
     -->
+    <div class="tiaoguo"  v-show="!isShow" @click="handleBtnStart">跳过</div>
     <video
       id="video"
       v-show="!isShow"
@@ -110,22 +111,32 @@ export default {
 </script>
 <style lang="scss" scoped>
 .face_start {
-  background: url("../../assets/images02/v2/start_bg_img.png") no-repeat;
+  background: url("../../assets/images02/v2/start_bg_img.jpg") no-repeat;
   background-size: 100% 100%;
   height: 100%;
   background-color: #fff;
   color: #fff;
   position: relative;
+  .tiaoguo{
+    position:absolute;
+    bottom: 30px;
+    right: 60px;
+    z-index: 3;
+    border: 1px solid #7c8a98;
+    border-radius: 12px;
+    padding: 8px; 
+    color: #2c3e50;
+  }
   .logo {
     background: url("../../assets/images02/v2/start_btn.png") no-repeat;
     background-size: 100%;
-    width: 300px;
+    width: 382px;
     height: 79px;
     margin: 0 auto;
     position: absolute;
     top: 62%;
     left: 50%;
-    margin-left: -150px;
+    margin-left: -181px;
     z-index: 1;
     img {
       width: 100%;

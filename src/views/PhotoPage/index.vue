@@ -85,13 +85,7 @@
         </div>
       </BaseRouterTransition>
     </div>
-    <van-overlay :show="showOverlay" class="overlay">
-      <div class="wrapper" @click.stop>
-        <div class="block">
-          <div class="brack" @click="handleBtnReturn"></div>
-        </div>
-      </div>
-    </van-overlay>
+    <OverlayBreak class="Overlay" v-show="showOverlay" @handleBtnReturn="handleBtnReturn"></OverlayBreak>
   </div>
 </template>
 <script>
@@ -105,6 +99,7 @@ import imgExif from '../../mixin/imgExif'
 import imgZip from '../../mixin/imgZip'
 import axios from 'axios'
 import vueMixinCom from '../../mixin/vueMixinCom.js'
+import OverlayBreak from '../../components/overlay_break'
 export default {
   data() {
     return {
@@ -141,7 +136,8 @@ export default {
   },
   mixins: [imgExif, imgZip, vueMixinCom],
   components: {
-    BaseRouterTransition
+    BaseRouterTransition,
+    OverlayBreak
   },
   computed: {
     ...mapState({
@@ -229,6 +225,9 @@ export default {
         case '':
           this.$router.push({ name: 'analysisnew' })
           break;
+        case 'male':
+          this.showOverlay = true
+          break;
         case 'success':
           this.$router.push({ name: 'analysisnew' })
           setTimeout(() => {
@@ -267,6 +266,7 @@ export default {
           instance_id,  // 配置的实例
           image,
           client,
+          type: 1
         }
       }
       // let url = '/api/ai/beauty'
@@ -289,43 +289,42 @@ export default {
           const { gender, headpose, glass } = result
           if (gender !== "Female") {
             // 提示男生不得扫描(遮罩)
-            this.showOverlay = true
-            return;
+            this.isUploadSuccess = 'male'
+          } else {
+            this.isUploadSuccess = 'success'
           }
           this.headpose = headpose
           console.log('headpose' + JSON.stringify(this.headpose))
           this.glass = glass
-          this.isUploadSuccess = 'success'
           this.set_beauty_info(!this.Beauty_info)
         } else {
           this.isUploadSuccess = 'fail'
-          // alert(JSON.stringify(res))
+          alert(JSON.stringify(res))
           // 临时添加固定数据
-          axios.get('./ai_beauty.json').then(res => {
-            console.log(res)
-            let { instance, original_id, result, user_channel_id } = res.data.data
-            this.isReload({
-              parmes_data: parmes_data.data,
-              instance,
-              original_id,
-              result,
-              imgContent,
-              user_channel_id
-            })
-            // 读取result参数  红楼梦 男拒绝  gender性别 glass是否佩戴眼镜 headpose 头部状态是否正确
-            const { gender, headpose, glass } = result
-            if (gender !== "Female") {
-              // 提示男生不得扫描(遮罩)
-              this.showOverlay = true
-              return;
-            }
-            this.headpose = headpose
-            console.log('headpose' + JSON.stringify(this.headpose))
-            this.glass = glass
-            this.isUploadSuccess = 'success'
-            this.set_beauty_info(!this.Beauty_info)
-
-          })
+          // axios.get('./ai_beauty.json').then(res => {
+          //   console.log(res)
+          //   let { instance, original_id, result, user_channel_id } = res.data.data
+          //   this.isReload({
+          //     parmes_data: parmes_data.data,
+          //     instance,
+          //     original_id,
+          //     result,
+          //     imgContent,
+          //     user_channel_id
+          //   })
+          //   // 读取result参数  红楼梦 男拒绝  gender性别 glass是否佩戴眼镜 headpose 头部状态是否正确
+          //   const { gender, headpose, glass } = result
+          //   if (gender !== "Female") {
+          //     // 提示男生不得扫描(遮罩)
+          //     this.showOverlay = true
+          //     return;
+          //   }
+          //   this.headpose = headpose
+          //   console.log('headpose' + JSON.stringify(this.headpose))
+          //   this.glass = glass
+          //   this.isUploadSuccess = 'success'
+          //   this.set_beauty_info(!this.Beauty_info)
+          // })
         }
       }).catch(error => {
         // Toast1.clear();
@@ -376,29 +375,8 @@ export default {
   width: 100%;
   color: #fff;
   background-color: #fff;
-  .overlay {
+  .Overlay {
     z-index: 3 !important;
-  }
-  .wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-  }
-  .block {
-    width: 100%;
-    height: 100%;
-    background-color: #fff;
-    background: url("../../assets/images02/v2/noman.jpg") no-repeat;
-    background-size: 100%;
-    .brack {
-      background: url("../../assets/images02/v2/black.png") no-repeat;
-      background-size: 100%;
-      width: 240px;
-      height: 60px;
-      display: inline-block;
-      margin-top: 1100px;
-    }
   }
 }
 .bg-img {
@@ -587,7 +565,7 @@ export default {
 
     .btn_photo_bg {
       border: none;
-      margin-top: 60px;
+      margin-top: 12px;
       background: url("../../assets/images02/v2/photo_btn.png") no-repeat center;
       background-size: 100%;
       color: #e6eeff;
@@ -603,6 +581,7 @@ export default {
       background-size: 100%;
     }
     #btn_photo {
+      width: 388px;
       .van-icon {
         position: relative;
         top: 4px;
@@ -679,18 +658,6 @@ export default {
     background: url("../../assets/images02/v2/tx_yuan.png") no-repeat;
     background-size: 100%;
   }
-  //  .img-radio {
-  //           width: 220px;
-  //           height: 220px;
-  //           overflow: hidden;
-  //           display: inline-block;
-  //           border-radius: 50%;
-  //           img {
-  //             height: 100%;
-  //             text-align: center;
-  //             margin: 0 auto;
-  //           }
-  //         }
 
   .ios_bug {
     z-index: 1;
@@ -706,7 +673,6 @@ export default {
       width: 100%;
       text-align: center;
       margin: 0 auto;
-      border-radius: 30%;
     }
     .imgRotate {
       transform: rotate(-90deg);

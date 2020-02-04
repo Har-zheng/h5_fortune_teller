@@ -1,4 +1,5 @@
 import request from '../utils/request'
+const version = 1
 export function upladImage (data){
   return request({
     method: 'post',
@@ -32,7 +33,7 @@ export function ImgUrlBeauty(data) {
 // 判断用户是否已经绑定过
 export function wxgetreport(data){
   return request({
-    url: 'http://core-service.myreal3d.com/api/wxgetreport',
+    url: '/api/wxgetreport',
     method: 'POST',
     data
   })
@@ -40,9 +41,12 @@ export function wxgetreport(data){
 // 获取验证码
 export function getSendCode(data){
   return request({
-    url: 'http://core-service.myreal3d.com/api/sendcode',
+    url: '/api/sendcode',
     method: 'POST',
-    data
+    data: {
+      version,
+      data
+    }
   })
 }
 // 用戶綁定 提交信息 /api/ai/bind
@@ -50,7 +54,10 @@ export function userBindInfo(data){
   return request({
     url: '/api/ai/bind',
     method: 'POST',
-    data
+    data:{
+      version,
+      data
+    }
   })
 }
 // 判断此用户是否有扫描记录  yes=> 报告详情 no=> 正常开始扫描 /api/ai/beauty/latest

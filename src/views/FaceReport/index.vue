@@ -3,25 +3,25 @@
     <div class="report_content">
       <div class="top">
         <img class="top_img" :src="top_img" alt />
-        <span class="score">{{ '80%'}}</span>
+        <span class="score">{{ similar *20 + 80}}%</span>
       </div>
       <div class="container">
         <div class="assessment">
-          <div class="title-text">
+          <!-- <div class="title-text">
             <p>
               你们最相似的
-              <span>相貌特征</span>: 方脸
+              <span>相貌特征</span>: {{ best_features }}
             </p>
             <p>
               你们最相似的
-              <span>气质特征</span>: 英气
+              <span>气质特征</span>: {{ best_temperament }}
             </p>
-          </div>
+          </div>-->
           <div class="share_btn">
             <div id="share_img">
               <img :src="screenShotImg" id="shore_img_src" alt />
             </div>
-            <van-button class="btn_photo_bg" @click="saveshare"></van-button>
+            <van-button class="btn_photo_bg"></van-button>
           </div>
         </div>
         <div class="footer-content">
@@ -39,7 +39,7 @@
             <div class="part_item">
               <div
                 class="item_list"
-                v-for="(item,index) in  head_position_new"
+                v-for="(item,index) in  head_position"
                 :class="{ 'img_active': img_num === index, 'depreciate':item.is_defect === -1,  'isDepreciate': (item.is_defect === -1 &&  img_num === index ) }"
                 @click="handlePart(item,index)"
                 :key="index"
@@ -51,14 +51,14 @@
             <div class="content">
               <p class="part_title">部位分析</p>
               <p class="item_p">
-                <span class="title_span">{{ head_position_all[img_num].explanation['D'] }}</span>
+                <span class="title_span">{{ head_position[img_num].temperament }}</span>
                 <!-- <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span> -->
               </p>
             </div>
             <div class="content">
               <p class="part_title">解决方案</p>
               <p class="item_p">
-                <span class="title_span">{{ head_position_all[img_num].explanation['D'] }}</span>
+                <span class="title_span">{{ head_position[img_num].improvement }}</span>
                 <!-- <span class="title_text">{{ head_position_all[0].explanation['D'] }}</span> -->
               </p>
             </div>
@@ -78,17 +78,34 @@
           </div>-->
           <div class="user_info">
             <div class="icon_img">
-              <img class="sign" src="../../assets/images02/v2/sign.png" alt />
-              <img class="fuhao" src="../../assets/images02/v2/fuhao.png" alt />
+              <div class="sign_">
+                <img class="sign" src="../../assets/images02/v2/sign.png" alt />
+              </div>
+              <div class="fuhao_">
+                <img class="fuhao" src="../../assets/images02/v2/fuhao.png" alt />
+              </div>
               <span>
                 星
                 <br />和
               </span>
             </div>
             <div class="content">
-              <p>恭喜你，请保持住你的最佳状态~可到店领取深度保湿补水面部护理一次(价值1000元)</p>
-              <p>客服将在7个工作日内致电与您联系，感谢您的参与!</p>
-              <p>本次服务体验由星和医美提供</p>
+              <span class="icon_img"></span>
+              <!-- head_position_all[img_num].promotion -->
+              <p>
+                请保持住你的最佳状态~
+                <!-- 咨询 -->
+                <!-- <span class="maney">（价值600元）</span> -->
+              </p>
+              <p>
+                点击下图
+                <strong>【申请注册】</strong>
+                <br />可获得价值1000元的深度保湿面部护理*1次
+                <br />*本次服务由
+                <strong>【星和医美】</strong>提供
+              </p>
+              <p>*申请后客服将在7个工作日内致电与您联系</p>
+              <i></i>
             </div>
             <div class="bth_register" @click="hanleBtnRegister"></div>
             <!-- <p class="p1">鼻基底、下颌、皱纹... ...</p>
@@ -109,7 +126,8 @@
               <div class="receive">
                 <van-button class="btn_photo_bg" @click="handleSubmitInfo">确认提交</van-button>
               </div>
-            </div>-->
+            </div>
+            -->
           </div>
           <!-- <div class="footer" v-show="isUser_id">
             <van-button type="info" @click="hanleBtnRetest">重测一次</van-button>
@@ -137,9 +155,9 @@
       </div>
       <div class="test_img" id="con">
         <div class="html2_cavars" :class="[isActive_back]" ref="html2_cavars">
-          <span class="score">{{ '80%'}}</span>
+          <span class="score">{{ similar *20 + 80}}%</span>
           <div class="assessment">
-            <div class="title-text">
+            <!-- <div class="title-text">
               <i class="before"></i>
               <p>
                 你们最相似的
@@ -150,7 +168,7 @@
                 <span>气质特征</span>: 英气
               </p>
               <i class="after"></i>
-            </div>
+            </div>-->
           </div>
           <div class="seaking_code">
             <p>长按识别二维码</p>
@@ -214,36 +232,28 @@ export default {
           solutions: [],
         }
       ],
-      overview: '你的长相就是人们口中传颂的海王鼻基底挺拔的你是个自信有想法且有征服欲望的人，两颞饱满让你有敏捷的思维，更好的理清和把控两性关系，眼睛下方的卧蚕让你更加迷人，大多数异性见了你都会被你的双眼深深吸引，你知道你自己有多么迷人，并且持续的散发着魅力，感情中你能够占据主导地位，拥有着号令整个海洋的潜力。你的目标不是一片小小的鱼塘，而是广阔的星辰大海。',
+      overview: '',
       top_img: require('../../assets/images02/v2/people/001.jpg'),
       attribute: '海王',
       qr_code_img: require('../../assets/images02/photograph/more_report.png'),
       qr_code_shore_img: require('../../assets/images02/photograph/start_test.png'),
       personal_type: {},
       type_num: 1,
-      isUser_id: false,
-      btn_text: '获取验证码',
-      name: '',
-      number: '',
-      code_num: '',
-      isSubmit: false,
       isActive_back: '',
       src_image: '',
-      img_num: 0
+      img_num: 0,
+      best_features: '方脸',
+      best_temperament: '英气'
     }
   },
   computed: {
     head_position_new: function () {
       return this.head_position.filter((element, index) => {
-        if (index !== 0) {
-          return element
-        } else {
-          this.onle_one = element
-        }
+        return element
       })
     },
     ...mapState({
-      image: state => state.app.app.image,
+      imgContent: state => state.app.app.imgContent,
       customized_features: state => state.app.app.instance.customized_features,
       level: state => state.app.app.result.level,
       gender: state => state.app.app.result.gender,
@@ -251,6 +261,8 @@ export default {
       original_id: state => state.app.app.original_id,
       parmes_data: state => state.app.app.parmes_data,
       score: state => state.app.app.result.score,
+      similar: state => state.app.app.result.similar,
+      best: state => state.app.app.result.best,
       user_channel_id: state => state.app.app.user_channel_id,
       save_url: state => state.app.save_url
     })
@@ -260,9 +272,9 @@ export default {
   },
   mounted() {
     // 当微信用户已扫描 直接进入道报告详情时 头像img需要后台返回了
-    console.log(this.image)
-    if (this.image !== undefined) {
-      this.src_image = this.image
+    // console.log(this.imgContent)
+    if (this.imgContent !== undefined || this.imgContent !== '') {
+      this.src_image = this.imgContent
     } else {
       this.src_image = this.parmes_data.image
     }
@@ -272,93 +284,6 @@ export default {
     this.isImage()
   },
   methods: {
-    // 失去焦点
-    ios_blur() {
-      window.scroll(0, 0);//失焦后强制让页面归位
-    },
-    handlegetCode() {
-      if (this.number.length !== 11) {
-        Dialog.alert({
-          message: '请输入11位手机号!'
-        }).then(() => {
-          // on close
-        });
-        return
-      }
-      if (this.btn_text === '获取验证码' || this.btn_text === '重新获取') {
-        this.btn_text = 60;
-        const code_time = setInterval(() => {
-          if (this.btn_text >= 0) {
-            this.btn_text = this.btn_text - 1;
-          }
-          if (this.btn_text === 0) {
-            this.btn_text = '重新获取';
-            clearInterval(code_time);
-          }
-        }, 1000);
-        console.log(this.number)
-        let user_info = {
-          version: 1,
-          data: {
-            mobile: this.number
-          }
-        }
-        getSendCode(user_info).then(res => {
-          console.log(res)
-        })
-      }
-    },
-    // 提交userinfo
-    handleSubmitInfo() {
-      if (this.number === '' || this.code_num === '' || this.name === '') {
-        Dialog.alert({
-          message: '请完善信息!'
-        }).then(() => {
-          // on close
-        });
-        return
-      }
-      console.log(this.isSubmit)
-      if (this.isSubmit) return
-      let user_info = {
-        version: 1,
-        data: {
-          image_id: this.original_id,
-          mobile: this.number,
-          country_code: 86,
-          code: this.code_num,
-          nickname: this.name
-        }
-      }
-      let { open_id } = this.parmes_data
-      if (open_id !== undefined) {
-        user_info.data['open_id'] = open_id
-      }
-      // "open_id": "asdasdadsdasdas",
-      this.isSubmit = false
-      userBindInfo(user_info).then(res => {
-        console.log(res)
-        if (res.code === 0) {
-          this.isSubmit = true
-          const user_data = res.data
-          this.head_position = []
-          this.head_position = this.head_position_all
-          this.isUser_id = true
-          if (this.head_position_all.length >= 3) {
-            this.head_position[2].explanation['D'] = this.head_position_all[2].explanation['D']
-            this.$set(this.head_position[2].explanation, 'D', this.head_position_all[2].explanation['D'])
-          }
-          //防止 刷新当前页面 已提交user info 丢失
-          sessionStorage.setItem('user_data', JSON.stringify(user_data))
-        } else {
-          this.isSubmit = true
-          alert(JSON.stringify(res))
-        }
-      })
-    },
-    saveshare() {
-
-    },
     headPositionMiddle() {
     },
     get_all_types() {
@@ -369,7 +294,7 @@ export default {
         const personal_type = data.find((element, index) => {
           return element.type === this.type_num
         })
-        console.log(personal_type)
+        // console.log(personal_type)
         this.personal_type = personal_type
       })
       console.log(this.customized_features)
@@ -377,42 +302,53 @@ export default {
       this.customized_features.filter((item, index) => {
         if (item.selected_label_id === 0) return
         const se = item.labels.filter((label_item, label_index) => {
-          return item.selected_label_id === label_item.label_id
-        })
-        console.log(se.length)
-        if (se.length !== 0 && se[0].explanation === null) {
-          se[0].explanation = {
-            "C": '',
-            "D": ''
+          if (this.best === label_item.original.number) {
+            this.best_features = label_item.full_name
           }
-        }
-        if (se.length !== 0 && se[0].hasOwnProperty('explanation') && se[0].explanation !== null) {
-          // console.log(se[0])
-          sele_item.push(se[0])
-        }
+          return this.best.filter((best_item, best_index) => {
+            if (best_item === label_item.original.number) {
+              sele_item.push(label_item)
+            }
+          })
+          // return item.original.selected_label_id === label_item.original.id
+        })
       })
       this.head_position_all = sele_item
       const copy_all = JSON.parse(JSON.stringify(this.head_position_all))
-      if (this.user_channel_id !== '') {
-        for (let i = 0; i <= 9; i++) {
-          this.head_position[i] = copy_all[i]
+      // let arr_is_defect_k = []
+      // let arr_is_defect_b = []
+      const arr_slot = []
+      copy_all.forEach(element => {
+        if (element.is_defect === 1) {
+          arr_slot.unshift(element)
+        } else {
+          arr_slot.push(element)
         }
+      });
+      console.log(this.head_position_all)
 
-        this.isUser_id = true
-        return;
-      }
-      const user_data = JSON.parse(sessionStorage.getItem('user_data'))
-      console.log(user_data)
-      if (user_data !== null && user_data.image_id === this.original_id) {
-        console.log(user_data.image_id)
-        console.log(this.original_id)
-        this.isUser_id = true
-        // this.head_position = copy_all
-      } else if (copy_all.length >= 3) {
-        for (let i = 0; i < 9; i++) {
-          this.head_position[i] = copy_all[i]
-        }
-      }
+      this.head_position = arr_slot
+
+      // console.log(sele_item)
+      // if (this.user_channel_id !== '') {
+      //   for (let i = 0; i <= 9; i++) {
+      //     this.head_position[i] = copy_all[i]
+      //   }
+      //   this.isUser_id = true
+      //   return;
+      // }
+      // const user_data = JSON.parse(sessionStorage.getItem('user_data'))
+      // console.log(user_data)
+      // if (user_data !== null && user_data.image_id === this.original_id) {
+      //   console.log(user_data.image_id)
+      //   console.log(this.original_id)
+      //   this.isUser_id = true
+      //   // this.head_position = copy_all
+      // } else if (copy_all.length >= 3) {
+      //   for (let i = 0; i <= 9; i++) {
+      //     this.head_position[i] = copy_all[i]
+      //   }
+      // }
     },
     // bg
     isImage() {
@@ -422,42 +358,42 @@ export default {
       switch (this.type_num) {
         case 0:
           this.top_img = h001
-          // this.draw_canvas(1)
+          this.draw_canvas(1)
           break;
         case 1:
           this.top_img = h002
-          // this.draw_canvas(2)
+          this.draw_canvas(2)
           break;
         case 2:
           this.top_img = h003
-          // this.draw_canvas(3)
+          this.draw_canvas(3)
           break;
         case 3:
           this.top_img = h004
-          // this.draw_canvas(4)
+          this.draw_canvas(4)
           break;
         case 4:
           this.top_img = h005
-          // this.draw_canvas(5)
+          this.draw_canvas(5)
           break;
         case 5:
           this.top_img = h006
-          // this.draw_canvas(6)
+          this.draw_canvas(6)
           break;
         case 6:
           this.top_img = h007
-          // this.draw_canvas(7)
+          this.draw_canvas(7)
           break;
         case 7:
           this.top_img = h008
-          // this.draw_canvas(8)
+          this.draw_canvas(8)
           break;
         default:
           break;
       }
       if (this.gender === "Female" && this.type_num === 0) {
         this.top_img = h001_1
-        // this.draw_canvas(9)
+        this.draw_canvas(9)
       }
       let img_radio_img = this.$refs.img_radio_img
       console.log(img_radio_img)
@@ -472,6 +408,8 @@ export default {
     },
     // 点击部位
     handlePart(item, index) {
+      console.log(index)
+      console.log(item)
       this.img_num = index
     }
   }
@@ -496,17 +434,16 @@ export default {
     }
     .score {
       position: absolute;
-      top: 476px;
-      right: 89px;
+      top: 760px;
+      right: 76px;
       color: #947540;
-      font-size: 42px;
+      font-size: 36px;
       font-weight: 800;
-      letter-spacing: 6px;
     }
     .line {
       position: absolute;
       top: 364px;
-      font-size: 80px;
+      font-size: 60px;
       font-weight: 400;
       color: #001a56;
       line-height: 172px;
@@ -549,9 +486,9 @@ export default {
   .container {
     background: url("../../assets/images02/v2/beijing002.jpg") no-repeat;
     background-size: 100%;
-    background-position-y: -60px;
+    background-position-y: -120px;
     // height: 1700px;
-    margin-top: -150px;
+    margin-top: -10px;
     position: relative;
     z-index: 2;
     .title {
@@ -584,6 +521,8 @@ export default {
       padding-bottom: 78px;
     }
     .assessment {
+      position: relative;
+      top: -180px;
       .info {
         position: relative;
         margin: 0 auto;
@@ -740,8 +679,8 @@ export default {
         background-size: 100%;
         height: 1500px;
         margin: 0 auto;
-        // background-position-y: 0;
-        margin-top: 60px;
+        background-position-y: 0;
+        // margin-top: 60px;
         padding: 76px 59px 0 37px;
         position: relative;
         z-index: 99;
@@ -783,22 +722,25 @@ export default {
           }
         }
         .content {
-          padding: 69px 23px 0 23px;
+          padding: 18px 23px 0 23px;
           color: #000;
           .part_title {
-            font-size: 36px;
-            font-weight: 800;
+            margin: 24px 0;
+            font-size: 25px;
             line-height: 35px;
             text-align: left;
+            font-weight: bold;
+            margin-bottom: 12px;
           }
           .item_p {
-            margin-top: 26px;
-            font-size: 25px;
+            margin: 6px 0;
+            font-size: 30px;
             text-align: left;
-            position: relative;
+            font-weight: 800;
+            // position: relative;
             .title_span {
               display: inline-block;
-              position: absolute;
+              // position: absolute;
               left: 0;
               font-weight: 400;
               line-height: 38px;
@@ -817,15 +759,16 @@ export default {
         }
 
         .part_item {
-          padding: 0 20px;
           display: flex;
           margin-top: 60px;
+          justify-content: space-around;
+          margin-left: 40px;
           .item_list {
             width: 58px;
-            height: 306px;
+            height: 326px;
             margin-right: 15px;
             background: url("../../assets/images02/v2/label1.png") no-repeat;
-            background-size: 100%;
+            background-size: 100% 100%;
             span {
               display: inline-block;
               height: 120px;
@@ -836,19 +779,22 @@ export default {
               color: #000;
               text-align: center;
             }
-
+            .title {
+              top: 26px;
+            }
             .parts {
               font-size: 18px;
               color: #8e743b;
               width: 29px;
+              margin-top: 12px;
             }
           }
           .img_active {
             // width: 86px;
-            height: 316px;
+            height: 326px;
             background: url("../../assets/images02/v2/label1_select.png")
               no-repeat;
-            background-size: 134%;
+            background-size: 140%;
             background-position-x: -9px;
             position: relative;
             top: -30px;
@@ -856,12 +802,12 @@ export default {
           }
           .depreciate {
             background: url("../../assets/images02/v2/label2.png") no-repeat;
-            background-size: 100%;
+            background-size: 100% 100%;
           }
           .isDepreciate {
             background: url("../../assets/images02/v2/label2_select.png")
               no-repeat;
-            background-size: 134%;
+            background-size: 140%;
             background-position-x: -9px;
             position: relative;
             top: -30px;
@@ -974,19 +920,26 @@ export default {
         background-size: 100%;
         .icon_img {
           position: absolute;
-          left: 188px;
+          left: 196px;
           top: 200px;
           color: #000;
-          .sign {
+          .sign_ {
             width: 48px;
             height: 158px;
+            .sign {
+              width: 100%;
+            }
           }
-          .fuhao {
+          .fuhao_ {
             width: 14px;
-            display: block;
-            margin: 14px;
-            text-align: center;
+            position: relative;
+            height: 20px;
+            left: 16px;
+            .fuhao {
+              width: 100%;
+            }
           }
+
           span {
             width: 48px;
             font-size: 24px;
@@ -994,17 +947,51 @@ export default {
           }
         }
         .content {
-          width: 380px;
+          width: 310px;
           position: absolute;
-          top: 180px;
+          top: 140px;
           left: 263px;
-          font-size: 26px;
+          font-size: 24px;
           line-height: 36px;
+          color: #0c0c0c;
+          font-weight: 400;
+          text-align: left;
+          padding-top: 10px;
+          .icon_img {
+            width: 220px;
+            height: 60px;
+            display: inline-block;
+            background: url("../../assets/images02/v2/title.png") no-repeat;
+            background-size: 100%;
+            position: absolute;
+            top: -16px;
+            left: 50%;
+            margin-left: -100px;
+          }
+          .maney {
+            color: #9a5c4a;
+          }
+          strong {
+            font-weight: 800;
+          }
           p {
             margin-top: 34px;
           }
           p:nth-child(1) {
-            margin-top: 0;
+            margin-top: 12px;
+          }
+          p:nth-child(3),
+          p:nth-child(4) {
+            margin-top: 17px;
+          }
+          i {
+            position: absolute;
+            right: 0;
+            display: inline-block;
+            width: 120px;
+            height: 70px;
+            background: url("../../assets/images02/v2/xingfeng.png") no-repeat;
+            background-size: 100%;
           }
         }
         .bth_register {
@@ -1161,16 +1148,15 @@ export default {
     background: url("../../assets/images02/v2/people/001.jpg") no-repeat;
     background-size: 100%;
     width: 1500px;
-    height: 3200px;
+    height: 2860px;
     position: relative;
     .score {
       position: absolute;
-      top: 952px;
-      right: 180px;
+      top: 1530px;
+      right: 170px;
       color: #947540;
-      font-size: 82px;
+      font-size: 76px;
       font-weight: 800;
-      letter-spacing: 12px;
     }
     .seaking_code {
       background: url("../../assets/images02/photograph/code.png") no-repeat;
@@ -1180,13 +1166,14 @@ export default {
       position: absolute;
       left: 50%;
       margin-left: -180px;
-      bottom: 200px;
+      bottom: 180px;
+      padding-bottom: 60px;
       p {
         width: 100%;
         color: #000;
         position: absolute;
         font-size: 50px;
-        bottom: -80px;
+        bottom: -10px;
         font-weight: bold;
         left: 0;
       }
@@ -1197,8 +1184,9 @@ export default {
         height: 136px;
         position: absolute;
         left: 50%;
+        margin: 10px 0;
         margin-left: -444px;
-        bottom: -240px;
+        bottom: -180px;
       }
     }
     .assessment {
