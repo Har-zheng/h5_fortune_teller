@@ -58,6 +58,7 @@ export default {
     isBeautyLatest(RequestUrl) {
       const copy_RequestUrl = JSON.parse(JSON.stringify(RequestUrl))
       copy_RequestUrl.client = 2
+      copy_RequestUrl.type = 1
       // Object.assign({client: 2})
       BeautyLatest(copy_RequestUrl).then(res => {
         if (res.code === 0) {

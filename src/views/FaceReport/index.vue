@@ -1,8 +1,14 @@
 <template>
   <div class="report">
     <div class="report_content">
+
       <div class="top">
-        <img class="top_img" :src="top_img" alt />
+        <div class="top_icon">
+          <img :src="hospital[parmes_data.channel_id].icon">
+        </div>
+        <img class="top_img"
+             :src="top_img"
+             alt />
         <span class="score">{{ similar *20 + 80}}%</span>
       </div>
       <div class="container">
@@ -19,31 +25,35 @@
           </div>-->
           <div class="share_btn">
             <div id="share_img">
-              <img :src="screenShotImg" id="shore_img_src" alt />
+              <img :src="screenShotImg"
+                   id="shore_img_src"
+                   alt />
             </div>
             <van-button class="btn_photo_bg"></van-button>
           </div>
         </div>
         <div class="footer-content">
-          <div class="top" :style="{ 'z-index': 99}">
+          <div class="top"
+               :style="{ 'z-index': 99}">
             <div class="analysis_result">
               <img src="../../assets/images02/v2/analysis_result.png" />
             </div>
             <div class="hand-img">
               <i class="icon_yuan"></i>
-              <div class="img-radio" ref="img_Head">
-                <img ref="img_radio_img" :src="src_image" alt />
+              <div class="img-radio"
+                   ref="img_Head">
+                <img ref="img_radio_img"
+                     :src="src_image"
+                     alt />
               </div>
             </div>
 
             <div class="part_item">
-              <div
-                class="item_list"
-                v-for="(item,index) in  head_position"
-                :class="{ 'img_active': img_num === index, 'depreciate':item.is_defect === -1,  'isDepreciate': (item.is_defect === -1 &&  img_num === index ) }"
-                @click="handlePart(item,index)"
-                :key="index"
-              >
+              <div class="item_list"
+                   v-for="(item,index) in  head_position"
+                   :class="{ 'img_active': img_num === index, 'depreciate':item.is_defect === -1,  'isDepreciate': (item.is_defect === -1 &&  img_num === index ) }"
+                   @click="handlePart(item,index)"
+                   :key="index">
                 <span class="title">{{ item.full_name }}</span>
                 <span class="parts">{{ item.is_defect !== -1? '部位 分析': '面部 问题'}}</span>
               </div>
@@ -79,14 +89,17 @@
           <div class="user_info">
             <div class="icon_img">
               <div class="sign_">
-                <img class="sign" src="../../assets/images02/v2/sign.png" alt />
+                <img class="sign"
+                     src="../../assets/images02/v2/sign.png"
+                     alt />
               </div>
               <div class="fuhao_">
-                <img class="fuhao" src="../../assets/images02/v2/fuhao.png" alt />
+                <img class="fuhao"
+                     src="../../assets/images02/v2/fuhao.png"
+                     alt />
               </div>
-              <span>
-                星
-                <br />和
+              <span class="hospital_name">
+                {{hospital[parmes_data.channel_id].name}}
               </span>
             </div>
             <div class="content">
@@ -100,14 +113,15 @@
               <p>
                 点击下图
                 <strong>【申请注册】</strong>
-                <br />可获得价值1000元的深度保湿面部护理*1次
+                <br />可获得价值{{hospital[parmes_data.channel_id].price}}元的深度保湿面部护理*1次
                 <br />*本次服务由
-                <strong>【星和医美】</strong>提供
+                <strong>【{{hospital[parmes_data.channel_id].name}}】</strong>提供
               </p>
               <p>*申请后客服将在7个工作日内致电与您联系</p>
-              <i></i>
+              <i v-if="parmes_data.channel_id === 'M3D'"></i>
             </div>
-            <div class="bth_register" @click="hanleBtnRegister"></div>
+            <div class="bth_register"
+                 @click="hanleBtnRegister"></div>
             <!-- <p class="p1">鼻基底、下颌、皱纹... ...</p>
             <p class="p2">更多面部详细参数点击获取</p>
             <div class="from">
@@ -147,14 +161,18 @@
           <div class="BusinessCooperation">
             <router-link :to="'buscoop'">
               <p>
-                <img src="../../assets/images02/photograph/BusinessCooperation.png" alt />
+                <img src="../../assets/images02/photograph/BusinessCooperation.png"
+                     alt />
               </p>
             </router-link>
           </div>
         </div>
       </div>
-      <div class="test_img" id="con">
-        <div class="html2_cavars" :class="[isActive_back]" ref="html2_cavars">
+      <div class="test_img"
+           id="con">
+        <div class="html2_cavars"
+             :class="[isActive_back]"
+             ref="html2_cavars">
           <span class="score">{{ similar *20 + 80}}%</span>
           <div class="assessment">
             <!-- <div class="title-text">
@@ -176,7 +194,8 @@
           </div>
         </div>
       </div>
-      <div id="qrcode" v-show="false"></div>
+      <div id="qrcode"
+           v-show="false"></div>
     </div>
   </div>
 </template>
@@ -195,9 +214,10 @@ const h007 = require('../../assets/images02/v2/people/007.jpg')
 const h008 = require('../../assets/images02/v2/people/008.jpg')
 import html2cavas from './mixin/html2cavas'
 import imgExif from '../../mixin/imgExif'
+import channel from '../../mixin/channel'
 import { log } from 'util'
 export default {
-  mixins: [html2cavas, imgExif],
+  mixins: [html2cavas, imgExif,channel],
   data() {
     return {
       onle_one: [],
@@ -243,7 +263,7 @@ export default {
       src_image: '',
       img_num: 0,
       best_features: '方脸',
-      best_temperament: '英气'
+      best_temperament: '英气',
     }
   },
   computed: {
@@ -431,6 +451,14 @@ export default {
     .top_img {
       width: 100%;
       z-index: 1;
+    }
+    .top_icon{
+      position: absolute;
+      top: 6px;
+      right: 10px;
+      img{
+        width: 160px;
+      }
     }
     .score {
       position: absolute;
@@ -941,8 +969,10 @@ export default {
           }
 
           span {
-            width: 48px;
+            display: inline-block;
+            width: 20px;
             font-size: 24px;
+            margin-top: 16px;
             word-wrap: break-word;
           }
         }

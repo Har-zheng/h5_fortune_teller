@@ -34,7 +34,7 @@
           <br />我们将尽快核对您的礼包信息
         </p>
         <div class="banner">
-          <img src="../../assets/images02/v2/banner.jpg" alt="">
+          <img  v-if="parmes_data.channel_id ==='M3D'" src="../../assets/images02/v2/banner.jpg" alt="">
         </div>
       </div>
     </div>
@@ -45,9 +45,10 @@ import BaseRouterTransition from '../../components/BaseRouterTransition'
 import { Dialog } from 'vant';
 import { mapState } from 'vuex'
 import MobilePhoneVerification from '../../mixin/MobilePhoneVerification'
+import channel from '../../mixin/channel'
 
 export default {
-  mixins: [MobilePhoneVerification],
+  mixins: [MobilePhoneVerification,channel],
   data() {
     return {
       title: '填写信息'
@@ -55,6 +56,11 @@ export default {
   },
   components: {
     BaseRouterTransition,
+  },
+  computed: {
+    ...mapState({
+       parmes_data: state => state.app.app.parmes_data
+    })
   },
   mounted() {
   },

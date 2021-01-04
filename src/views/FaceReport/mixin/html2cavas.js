@@ -20,6 +20,7 @@ const qr_code = require('../../../assets/images02/photograph/code.png')
 // 底部
 const font_png = require('../../../assets/images02/v2/font.png')
 const footer_bg = require('../../../assets/images02/v2/beijing002.jpg')
+const logo_66936 = require('../../../assets/images02/v2/icon_logo/66936.jpg')
 export default {
   data() {
     return {
@@ -140,11 +141,11 @@ export default {
       const context = canvas2.getContext('2d');
       context.scale(2, 2);
       domtoimage.toPng(node, {
-          canvas: canvas2,
-          // useCORS: true,
-          logging: true,
-          imageTimeout: 0
-        })
+        canvas: canvas2,
+        // useCORS: true,
+        logging: true,
+        imageTimeout: 0
+      })
         .then((dataUrl, canvas) => {
 
           // document.getElementById('shore_img_src').src = dataUrl
@@ -186,7 +187,7 @@ export default {
       var canvas = document.createElement('canvas'),
         ctx = canvas.getContext('2d');
       canvas.width = 1500 * 1.5;
-      canvas.height = 3000 * 1.5;
+      canvas.height = 3000 * 1.2;
 
       ctx.rect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = '#fff';
@@ -198,10 +199,10 @@ export default {
       var image1 = data[index - 1];
       let this_ = this
       let text = null
-      if(this.save_url.render_url){
-        text =  `https://wechat-api.myreal3d.com/${this.save_url.channel_id}/ai/beauty?instance_id=${this.save_url.instance_id}&render_url=${this.save_url.render_url}`
-      }else{
-        text =  `https://wechat-api.myreal3d.com/${this.save_url.channel_id}/ai/beauty?instance_id=${this.save_url.instance_id}`
+      if (this.save_url.render_url) {
+        text = `https://wechat-api.myreal3d.com/${this.save_url.channel_id}/ai/beauty?instance_id=${this.save_url.instance_id}&render_url=${this.save_url.render_url}`
+      } else {
+        text = `https://wechat-api.myreal3d.com/${this.save_url.channel_id}/ai/beauty?instance_id=${this.save_url.instance_id}`
       }
       jQuery('#qrcode').qrcode({
         width: 372 * 1.5,
@@ -221,20 +222,26 @@ export default {
         img.onload = function () {
           ctx.drawImage(img, offsetWidth, offsetheight, width, height);
           i = i + 1
-          if (i === 9) return
+          if (i === 10) return
           if (i === 2) {
-            img_synthesis(footer_bg, 0, 2500 * 1.5, 1500 * 1.5, 2259 * 1.5)
+            img_synthesis(footer_bg, 0, 2800, 1500 * 1.5, 2259 * 1.5)
           } else if (i === 3) {
+            if (this.save_url.channel_id === '66936') {
+              img_synthesis(logo_66936, 1700, 10, 500, 250)
+            } else {
+              img_synthesis()
+            }
+          } else if (i === 4) {
             // const font_png 
             // const footer_bg
-            img_synthesis(font_png, 950 - 600, 2760 * 1.5, 560 * 3, 100 * 3)
-          } else if (i === 4) {
-            img_synthesis(code_url, 950 - 200, 2000 * 1.5, 360 * 2, 360 * 2)
+            img_synthesis(font_png, 950 - 400, 3000, 560 * 3, 100 * 3)
+          } else if (i === 5) {
+            img_synthesis(code_url, 200, 2000 * 1.5, 360, 360)
 
             ctx.fillStyle = '#000';
             ctx.strokeStyle = '#000';
-            ctx.font = "bold 80px '字体','字体','微软雅黑','宋体'"; //设置字体
-            ctx.fillText('长按识别二维码', 820, 3860); //设置文本内容 
+            ctx.font = "bold 60px '字体','字体','微软雅黑','宋体'"; //设置字体
+            ctx.fillText('长按识别二维码', 1000, 3360); //设置文本内容 
 
             ctx.fillStyle = '#947540';
             ctx.strokeStyle = '#947540';
@@ -251,9 +258,9 @@ export default {
             // ctx.textAlign = 'center';
             ctx.fillText(this_.save_url.nickname, 260, 1800); //设置文本内容
             // console.log(this_.similar)
-          } else if (i === 5) {
-            img_synthesis(this_.save_url.avatar, 950 - 40, -660 * 1.5, 450, 450)
           } else if (i === 6) {
+            img_synthesis(this_.save_url.avatar, 950 - 40, -660 * 1.5, 450, 450)
+          } else if (i === 7) {
             //画头像,这里画矩形图
             var r = 200
             var x = 260
@@ -272,14 +279,14 @@ export default {
             ctx.drawImage(img, x, y, d, d) // 画头像
             // ctx.restore() // 返回上一状态
             img_synthesis(this_.save_url.avatar, 950 - 20, -660 * 1.5, 450, 450)
-          } else if (i === 7) {
+          } else if (i === 8) {
             console.log(i)
             ctx.fillStyle = '#947540';
             ctx.strokeStyle = '#947540';
             ctx.font = "bold 80px '字体','字体','微软雅黑','宋体'"; //设置字体
             ctx.fillText(this_.similar * 20 + 80 + '%', 1760, 2370); //设置文本内容
           }
-          if (i === 7) {
+          if (i === 8) {
             console.log(canvas)
             this_.screenShotImg = canvas.toDataURL("image/jpeg", 0.2)
             // console.log(base64)
@@ -288,7 +295,6 @@ export default {
         }
       }
       img_synthesis(image1, 0, 0, 1500 * 1.5, 2259 * 1.5)
-
     }
   }
 };
